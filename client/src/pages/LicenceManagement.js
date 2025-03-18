@@ -2,7 +2,7 @@ import React from "react";
 import './MainContainer.css'; 
 
 
-const ApliecibuParvaldiba = () => {
+const LicenceManagement = () => {
     return (
         <div className="main-container">
             <h1>Apliecību Pārvaldība</h1>
@@ -11,4 +11,4 @@ const ApliecibuParvaldiba = () => {
     );
 };
 
-export default ApliecibuParvaldiba;
+export default LicenceManagement;

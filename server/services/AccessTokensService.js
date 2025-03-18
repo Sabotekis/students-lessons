@@ -22,7 +22,7 @@ class AccessTokensService {
       throw new Error('Email is required to create a token');
     }
 
-    const token = jwt.sign({ email }, process.env.JWT_SECRET);
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, {expiresIn: '1h'});
 
     const newToken = new AccessToken({ email, token });
 

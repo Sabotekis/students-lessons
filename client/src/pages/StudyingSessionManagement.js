@@ -1,7 +1,7 @@
 import React from "react";
 import './MainContainer.css'; 
 
-const ApmacibuSessijuParvaldiba = () => {
+const StudyingSessionManagement = () => {
     return (
         <div className="main-container">
             <h1>ApmacibuSessijuParvaldiba</h1>
@@ -9,4 +9,4 @@ const ApmacibuSessijuParvaldiba = () => {
     );
 };
 
-export default ApmacibuSessijuParvaldiba;
+export default StudyingSessionManagement;

@@ -1,12 +1,12 @@
 import React from "react";
 import './MainContainer.css'; 
 
-const ApliecibuRegistrs = () => {
+const AppointmentRegister = () => {
     return (
         <div className="main-container">
-            <h1>ApliecibuRegistrs</h1>
+            <h1>ApmeklejumaUzskaite</h1>
         </div>
     );
 };
 
-export default ApliecibuRegistrs;
+export default AppointmentRegister;

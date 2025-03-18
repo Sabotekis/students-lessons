@@ -13,7 +13,7 @@ router.get('/protected', authMiddleware, async (req, res) => {
 
     const token = await AccessTokensService.getToken({ email: user.email });
     
-    res.json({ status: "success", data: { token }, message: 'Veiksmīgi atgriezti dati', user });
+    res.status(200).json({ status: "success", data: { token }, message: 'Veiksmīgi atgriezti dati', user });
   } catch (err) {
     console.error('Error retrieving token:', err);
     res.status(500).json({ status: "error", data: null, message: 'Server error' });
