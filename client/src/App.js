@@ -39,11 +39,11 @@ function App() {
                 <Route path="/licence-register" element={<LicenceRegister />} />
                 <Route path="/add-group" element={isLoggedIn ? <AddGroup /> : <Home />} />
                 <Route path="/edit-group/:id" element={ isLoggedIn ? <EditGroup /> : <Home />} />
-                <Route path="/view-group/:id" element={<ViewGroup />} />
+                <Route path="/view-group/:id" element={<ViewGroup isLoggedIn={isLoggedIn}/>} />
                 <Route path="/add-student" element={isLoggedIn ? <AddStudent /> : <Home />} />
                 <Route path="/edit-student/:id" element={isLoggedIn ? <EditStudent /> : <Home/>} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/view-student/:id" element={<ViewStudent />} />
+                <Route path="/view-student/:id" element={<ViewStudent isLoggedIn={isLoggedIn}/>} />
             </Routes>
         </Router>
     );

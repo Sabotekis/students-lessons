@@ -224,19 +224,17 @@ const StudentManagement = ({ isLoggedIn }) => {
                         <strong>Groups:</strong>{" "}
                         {student.groups && student.groups.map(group => group.title).join(", ")}
                     </div>
-                        {isLoggedIn && (
                             <div>
-                                {groupId ? (
-                                    <Button onClick={() => handleAddStudentToGroup(student._id)}>Add to Group</Button>
-                                ) : (
-                                    <>
-                                        <Button onClick={() => handleViewStudent(student._id)}>View</Button>
-                                        <Button onClick={() => handleEditStudent(student._id)}>Edit</Button>
-                                        <Button onClick={() => handleDeleteStudent(student._id)}>Delete</Button>
-                                    </>
-                                )}
-                            </div>
-                        )}
+                            {groupId ? (
+                                isLoggedIn && ( <Button onClick={() => handleAddStudentToGroup(student._id)}>Add to Group</Button>)
+                            ) : (
+                                <>
+                                    <Button onClick={() => handleViewStudent(student._id)}>View</Button>
+                                    {isLoggedIn && <Button onClick={() => handleEditStudent(student._id)}>Edit</Button>}
+                                    {isLoggedIn && <Button onClick={() => handleDeleteStudent(student._id)}>Delete</Button>}
+                                </>
+                            )}
+                        </div>
                     </StudentCard>
                 ))}
                 {isLoggedIn && !groupId && (

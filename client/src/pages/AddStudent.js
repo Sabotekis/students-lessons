@@ -42,22 +42,27 @@ const AddStudent = () => {
     const navigate = useNavigate();
 
     const handleAddStudent = () => {
-        if (!student.name || !student.surname || !student.personal_code) {
-            alert("All fields are required");
-            return;
-        }
-        fetch("/api/students", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(student)
-        })
-        .then(response => response.json())
-        .then(() => {
-            navigate("/student-management");
-        });
-    };
+    const personalCodeRegex = /^\d{6}-?\d{5}$/;
+    if (!student.name || !student.surname || !student.personal_code) {
+        alert("All fields are required");
+        return;
+    }
+    if (!personalCodeRegex.test(student.personal_code)) {
+        alert("Personal code must be in the proper format");
+        return;
+    }
+    fetch("/api/students", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(student)
+    })
+    .then(response => response.json())
+    .then(() => {
+        navigate("/student-management");
+    });
+};
 
     const handleBack = () => {
         navigate("/student-management");
@@ -87,7 +92,7 @@ const AddStudent = () => {
             <div>
                 <Input
                     type="text"
-                    placeholder="Personal Code"
+                    placeholder="e.g. 123456-12345"
                     value={student.personal_code}
                     onChange={(e) => setStudent({ ...student, personal_code: e.target.value })}
                     required

@@ -105,14 +105,12 @@ const GroupManagement = ({ isLoggedIn }) => {
                         <div><strong>Start Date:</strong> {new Date(group.start_date).toLocaleDateString()}</div>
                         <div><strong>End Date:</strong> {new Date(group.end_date).toLocaleDateString()}</div>
                         <div><strong>Professor:</strong> {group.professor}</div>
-                        {isLoggedIn && (    
-                            <div>
-                                <Button onClick={() => handleViewGroup(group._id)}>View</Button>
-                                <Button onClick={() => handleEditGroup(group._id)}>Edit</Button>
-                                <Button onClick={() => handleDeleteGroup(group._id)}>Delete</Button>
-                                <Button onClick={() => handleAddStudentToGroup(group._id)}>Add Student</Button>
-                            </div>
-                        )}
+                        <div>
+                            <Button onClick={() => handleViewGroup(group._id)}>View</Button>
+                            {isLoggedIn && <Button onClick={() => handleEditGroup(group._id)}>Edit</Button>}
+                            {isLoggedIn && <Button onClick={() => handleDeleteGroup(group._id)}>Delete</Button>}
+                            {isLoggedIn && <Button onClick={() => handleAddStudentToGroup(group._id)}>Add Student</Button>}
+                        </div>
                     </GroupCard>
                 ))}
                 {isLoggedIn && (

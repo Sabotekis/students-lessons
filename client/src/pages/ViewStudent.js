@@ -43,7 +43,7 @@ const GroupCard = styled.div`
     text-align: center;
 `;
 
-const ViewStudent = () => {
+const ViewStudent = ({ isLoggedIn }) => {
     const { id } = useParams();
     const [student, setStudent] = useState(null);
     const [error, setError] = useState("");
@@ -118,8 +118,8 @@ const ViewStudent = () => {
                     ))}
                 </GroupGrid>
             </div>
-            <Button onClick={handleEditStudent}>Edit</Button>
-            <Button onClick={handleDeleteStudent}>Delete</Button>
+            {isLoggedIn && <Button onClick={handleEditStudent}>Edit</Button>}
+            {isLoggedIn && <Button onClick={handleDeleteStudent}>Delete</Button>}
             <Button onClick={handleBack}>Back</Button>
         </Container>
     );

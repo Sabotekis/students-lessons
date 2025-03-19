@@ -58,26 +58,31 @@ const EditStudent = () => {
     }, [id]);
 
     const handleUpdateStudent = () => {
-        if (!student.name || !student.surname || !student.personal_code) {
-            alert("All fields are required");
-            return;
-        }
-        fetch(`/api/students/${id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(student)
-        })
-        .then(response => response.json())
-        .then(() => {
-            navigate("/student-management");
-        })
-        .catch(error => {
-            console.error('Error updating student:', error);
-            setError('Error updating student');
-        });
-    };
+    const personalCodeRegex = /^\d{6}-?\d{5}$/;
+    if (!student.name || !student.surname || !student.personal_code) {
+        alert("All fields are required");
+        return;
+    }
+    if (!personalCodeRegex.test(student.personal_code)) {
+        alert("Personal code must be in the proper format");
+        return;
+    }
+    fetch(`/api/students/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(student)
+    })
+    .then(response => response.json())
+    .then(() => {
+        navigate("/student-management");
+    })
+    .catch(error => {
+        console.error('Error updating student:', error);
+        setError('Error updating student');
+    });
+};
 
     return (
         <Container>
@@ -104,7 +109,7 @@ const EditStudent = () => {
             <div>
                 <Input
                     type="text"
-                    placeholder="Personal Code"
+                    placeholder="e.g. 123456-12345"
                     value={student.personal_code}
                     onChange={(e) => setStudent({ ...student, personal_code: e.target.value })}
                     required

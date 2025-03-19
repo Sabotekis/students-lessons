@@ -58,7 +58,7 @@ const StudentCard = styled.div`
     text-align: center;
 `;
 
-const ViewGroup = () => {
+const ViewGroup = ({isLoggedIn}) => {
     const { id } = useParams();
     const [group, setGroup] = useState(null);
     const [error, setError] = useState("");
@@ -161,15 +161,15 @@ const ViewGroup = () => {
                             <div><strong>Name:</strong> {student.name}</div>
                             <div><strong>Surname:</strong> {student.surname}</div>
                             <div><strong>Personal Code:</strong> {student.personal_code}</div>
-                            <DeleteButton onClick={() => handleDeleteStudentFromGroup(student._id)}>Remove</DeleteButton>
+                            {isLoggedIn && <DeleteButton onClick={() => handleDeleteStudentFromGroup(student._id)}>Remove</DeleteButton>}
                         </StudentCard>
                     ))}
                 </StudentGrid>
             </div>
-            <Button onClick={handleEditGroup}>Edit</Button>
-            <Button onClick={handleDeleteGroup}>Delete</Button>
+            {isLoggedIn && <Button onClick={handleEditGroup}>Edit</Button>}
+            {isLoggedIn && <Button onClick={handleDeleteGroup}>Delete</Button>}
             <Button onClick={handleBack}>Back</Button>
-            <Button onClick={() => handleAddStudentToGroup(group._id)}>Add Student</Button>
+            {isLoggedIn && <Button onClick={() => handleAddStudentToGroup(group._id)}>Add Student</Button>}
         </Container>
     );
 };
