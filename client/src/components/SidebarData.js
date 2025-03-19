@@ -1,14 +1,14 @@
 export const SidebarData = [
     {
-        title: "Studentu Parvaldiba",
+        title: "Studentu Parvaldība",
         path: "/student-management",
     },
     {
-        title: "Grupu Parvaldiba",
+        title: "Grupu Parvaldība",
         path: "/group-management",
     },
     {
-        title: "Apmacicbu Sessiju Parvaldiba",
+        title: "Apmacību Sessiju Parvaldība",
         path: "/studying-session-management",
     },
     {
@@ -16,11 +16,11 @@ export const SidebarData = [
         path: "/appointment-register",
     },
     {
-        title: "Apliecibu Parvaldiba",
+        title: "Apliecību Parvaldiba",
         path: "/licence-management",
     },
     {
-        title: "Apliecibu Registrs",
+        title: "Apliecību Registrs",
         path: "/licence-register",
     },
 ];

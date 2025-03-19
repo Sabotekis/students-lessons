@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
@@ -90,6 +90,7 @@ const Sidebar = () => {
     const [sidebar, setSidebar] = useState(false);
     const [username, setUsername] = useState(null);
     const navigate = useNavigate();
+    const sidebarRef = useRef(null);
 
     useEffect(() => {
         const token = Cookies.get('token');
@@ -117,6 +118,17 @@ const Sidebar = () => {
                 console.error('Error fetching user data:', error);
             });
         }
+        const handleClickOutside = (event) => {
+            if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+                closeSidebar();
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
     }, [navigate]);
 
     const showSidebar = () => setSidebar(!sidebar);
@@ -138,26 +150,58 @@ const Sidebar = () => {
             <IconContext.Provider value={{ color: "#fff" }}>
                 <Nav>
                     <NavIcon to="#">
-                        <FaIcons.FaBars onClick={showSidebar} />
+                        <FaIcons.FaBars 
+                            onClick={showSidebar} 
+                            style={{ transition: "color 200ms ease-in-out" }}
+                            onMouseEnter={(e) => (e.target.style.color = "#4CAF50")}
+                            onMouseLeave={(e) => (e.target.style.color = "white")}
+                        />
                     </NavIcon>
                     <Link to="/" style={{ textDecoration: "none" }}>
-                        <h1 style={{ textAlign: "center", marginLeft: "200px", color: "white", cursor: "pointer" }}>
-                            Izglītojamo tiešsaistes nodarbībās pavadītā laika 
+                        <h1
+                            style={{
+                                textAlign: "center",
+                                marginLeft: "200px",
+                                color: "white",
+                                cursor: "pointer",
+                                transition: "color 200ms ease-in-out",
+                            }}
+                            onMouseEnter={(e) => (e.target.style.color = "#4CAF50")}
+                            onMouseLeave={(e) => (e.target.style.color = "white")}
+                        >
+                            Izglītojamo tiešsaistes nodarbībās pavadītā laika
                         </h1>
                     </Link>
                     {username ? (
                         <div style={{ display: "flex", alignItems: "center", marginRight: "20px" }}>
                             <div style={{ color: "white" }}>{username}</div>
-                            <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
+                            <LogoutButton 
+                                onClick={handleLogout}
+                                onMouseEnter={(e) => (e.target.style.backgroundColor = "#e53935")}
+                                onMouseLeave={(e) => (e.target.style.backgroundColor = "#f44336")}
+                            >
+                                Logout
+                            </LogoutButton>
                         </div>
                     ) : (
-                        <LoginButton onClick={handleLogin}>Login</LoginButton>
+                        <LoginButton 
+                            onClick={handleLogin}
+                            onMouseEnter={(e) => (e.target.style.backgroundColor = "#45a049")}
+                            onMouseLeave={(e) => (e.target.style.backgroundColor = "#4CAF50")}
+                        >
+                            Login
+                        </LoginButton>
                     )}
                 </Nav>
-                <SidebarNav $sidebar={sidebar}>
+                <SidebarNav $sidebar={sidebar} ref={sidebarRef}>
                     <SidebarWrap>
                         <NavIcon to="#">
-                            <AiIcons.AiOutlineClose onClick={showSidebar} />
+                            <AiIcons.AiOutlineClose 
+                                onClick={closeSidebar} 
+                                style={{ transition: "color 200ms ease-in-out" }}
+                                onMouseEnter={(e) => (e.target.style.color = "#4CAF50")}
+                                onMouseLeave={(e) => (e.target.style.color = "white")}
+                            />
                         </NavIcon>
                         {SidebarData.map((item, index) => (
                             <SubMenu item={item} key={index} closeSidebar={closeSidebar} />
