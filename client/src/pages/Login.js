@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -30,7 +29,7 @@ const Login = () => {
       navigate('/');
       window.location.reload();
     } catch (error) {
-      setError(error.message);
+      alert("Invalid email or password");
       console.error("Login error:", error);
     }
   };
@@ -67,11 +66,6 @@ const Login = () => {
           .login-form button:hover {
             background-color: #45a049;
           }
-
-          .error {
-            color: red;
-            margin-top: 10px;
-          }
         `}
       </style>
       <form className="login-form" onSubmit={handleSubmit}>
@@ -90,7 +84,6 @@ const Login = () => {
           required
         />
         <button type="submit">Login</button>
-        {error && <div className="error">{error}</div>}
         <button onClick={() => navigate('/')}>Back to Home</button>
       </form>
     </div>

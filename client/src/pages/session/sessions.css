@@ -1,0 +1,174 @@
+@media (max-width: 768px) {
+    .main-container {
+        margin-left: 0;
+    }
+}
+
+.session-container {
+    margin-top: 80px;
+    padding: 20px;
+    transition: margin-left 250ms ease-in-out;
+}
+
+.session-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.session-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.session-button:hover {
+    background-color: #45a049;
+}
+
+.session-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.session-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+}
+
+.addbuttoncard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.addbuttoncard:hover {
+    background-color: #e0e0e0;
+}
+
+/*Add session*/
+.add-session-container {
+    margin-top: 80px;
+    padding: 20px;
+    text-align: center;
+    transition: margin-left 250ms ease-in-out;
+}
+
+.add-session-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.add-session-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
+.add-session-button:hover {
+    background-color: #45a049;
+}
+
+.add-session-input {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 20%;
+}
+
+/*View Session*/
+.view-session-container {
+    margin-top: 80px;
+    padding: 20px;
+    transition: margin-left 250ms ease-in-out;
+}
+
+.view-session-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.view-session-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
+.view-session-button:hover {
+    background-color: #45a049;
+}
+
+.group-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.group-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+}
+
+/*Edit Session*/
+.edit-session-container {
+    margin-top: 80px;
+    padding: 20px;
+    text-align: center;
+    transition: margin-left 250ms ease-in-out;
+}
+
+.edit-session-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.edit-session-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.edit-session-button:hover {
+    background-color: #45a049;
+}
+
+.edit-session-input{
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 20%;
+}

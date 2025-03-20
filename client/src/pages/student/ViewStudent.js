@@ -1,47 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import './MainContainer.css';
-
-const Container = styled.div`
-    margin-top: 80px;
-    padding: 20px;
-`;
-
-const Title = styled.h1`
-    text-align: center;
-    margin-bottom: 20px;
-`;
-
-const Button = styled.button`
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    margin-right: 10px;
-
-    &:hover {
-        background-color: #45a049;
-    }
-`;
-
-const GroupGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-`;
-
-const GroupCard = styled.div`
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 20px;
-    text-align: center;
-`;
+import './students.css';
 
 const ViewStudent = ({ isLoggedIn }) => {
     const { id } = useParams();
@@ -86,16 +45,16 @@ const ViewStudent = ({ isLoggedIn }) => {
     };
 
     if (error) {
-        return <Container><div className="error">{error}</div></Container>;
+        return <div className="view-student-container"><div className="error">{error}</div></div>;
     }
 
     if (!student) {
-        return <Container><div>Loading...</div></Container>;
+        return <div className="view-student-container"><div>Loading...</div></div>;
     }
 
     return (
-        <Container>
-            <Title>View Student</Title>
+        <div className="view-student-container">
+            <h1 className="view-student-title">View Student</h1>
             <div>
                 <strong>Name:</strong> {student.name}
             </div>
@@ -107,21 +66,21 @@ const ViewStudent = ({ isLoggedIn }) => {
             </div>
             <div>
                 <strong>Groups:</strong>
-                <GroupGrid>
+                <div className="group-grid">
                     {student.groups.map((group) => (
-                        <GroupCard key={group._id}>
+                        <div className="group-card" key={group._id}>
                             <div><strong>Title:</strong> {group.title}</div>
                             <div><strong>Start date:</strong> {new Date(group.start_date).toLocaleDateString()}</div>
                             <div><strong>End Date:</strong> {new Date(group.end_date).toLocaleDateString()}</div>
                             <div><strong>Professor:</strong> {group.professor}</div>
-                        </GroupCard>
+                        </div>
                     ))}
-                </GroupGrid>
+                </div>
             </div>
-            {isLoggedIn && <Button onClick={handleEditStudent}>Edit</Button>}
-            {isLoggedIn && <Button onClick={handleDeleteStudent}>Delete</Button>}
-            <Button onClick={handleBack}>Back</Button>
-        </Container>
+            {isLoggedIn && <button className="view-student-button" onClick={handleEditStudent}>Edit</button>}
+            {isLoggedIn && <button className="view-student-button" onClick={handleDeleteStudent}>Delete</button>}
+            <button className="view-student-button" onClick={handleBack}>Back</button>
+        </div>
     );
 };
 

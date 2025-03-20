@@ -1,40 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
-import './MainContainer.css';
-
-const Container = styled.div`
-    margin-top: 80px;
-    padding: 20px;
-    text-align: center;
-`;
-
-const Title = styled.h1`
-    text-align: center;
-    margin-bottom: 20px;
-`;
-
-const Button = styled.button`
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-
-    &:hover {
-        background-color: #45a049;
-    }
-`;
-
-const Input = styled.input`
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 20%;
-`;
+import './students.css';
 
 const EditStudent = () => {
     const { id } = useParams();
@@ -85,11 +51,12 @@ const EditStudent = () => {
 };
 
     return (
-        <Container>
-            <Title>Edit Student</Title>
+        <div className="edit-student-container">
+            <h1 className="edit-student-title">Edit Student</h1>
             {error && <div className="error">{error}</div>}
             <div>
-                <Input
+                <input
+                    className="edit-student-input"
                     type="text"
                     placeholder="Name"
                     value={student.name}
@@ -98,7 +65,8 @@ const EditStudent = () => {
                 />
             </div>
             <div>
-                <Input
+                <input
+                    className="edit-student-input"
                     type="text"
                     placeholder="Surname"
                     value={student.surname}
@@ -107,7 +75,8 @@ const EditStudent = () => {
                 />
             </div>
             <div>
-                <Input
+                <input
+                    className="edit-student-input"
                     type="text"
                     placeholder="e.g. 123456-12345"
                     value={student.personal_code}
@@ -115,8 +84,8 @@ const EditStudent = () => {
                     required
                 />
             </div>
-            <Button onClick={handleUpdateStudent}>Update Student</Button>
-        </Container>
+            <button className="edit-student-button" onClick={handleUpdateStudent}>Update Student</button>
+        </div>
     );
 };
 

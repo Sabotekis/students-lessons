@@ -1,41 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import './MainContainer.css';
-
-const Container = styled.div`
-    margin-top: 80px;
-    padding: 20px;
-    text-align: center;
-`;
-
-const Title = styled.h1`
-    text-align: center;
-    margin-bottom: 20px;
-`;
-
-const Button = styled.button`
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    margin-right: 10px;
-
-    &:hover {
-        background-color: #45a049;
-    }
-`;
-
-const Input = styled.input`
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 20%;
-`;
+import './students.css';
 
 const AddStudent = () => {
     const [student, setStudent] = useState({ name: "", surname: "", personal_code: "" });
@@ -69,10 +34,11 @@ const AddStudent = () => {
     };
 
     return (
-        <Container>
-            <Title>Add Student</Title>
+        <div className="add-student-container">
+            <h1 className="add-student-title">Add Student</h1>
             <div>
-                <Input
+                <input
+                    className="add-student-input"
                     type="text"
                     placeholder="Name"
                     value={student.name}
@@ -81,7 +47,8 @@ const AddStudent = () => {
                 />
             </div>
             <div>
-                <Input
+                <input
+                    className="add-student-input"
                     type="text"
                     placeholder="Surname"
                     value={student.surname}
@@ -90,7 +57,8 @@ const AddStudent = () => {
                 />
             </div>
             <div>
-                <Input
+                <input
+                    className="add-student-input"
                     type="text"
                     placeholder="e.g. 123456-12345"
                     value={student.personal_code}
@@ -98,9 +66,9 @@ const AddStudent = () => {
                     required
                 />
             </div>
-            <Button onClick={handleAddStudent}>Add Student</Button>
-            <Button onClick={handleBack}>Back</Button>
-        </Container>
+            <button className="add-student-button" onClick={handleAddStudent}>Add Student</button>
+            <button className="add-student-button" onClick={handleBack}>Back</button>
+        </div>
     );
 };
 

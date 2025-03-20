@@ -1,41 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
-import './MainContainer.css';
-
-const Container = styled.div`
-    margin-top: 80px;
-    padding: 20px;
-    text-align: center;
-`;
-
-const Title = styled.h1`
-    text-align: center;
-    margin-bottom: 20px;
-`;
-
-const Button = styled.button`
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    margin-right: 10px;
-
-    &:hover {
-        background-color: #45a049;
-    }
-`;
-
-const Input = styled.input`
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 20%;
-`;
+import './groups.css';
 
 const EditGroup = () => {
     const { id } = useParams();
@@ -89,11 +54,12 @@ const EditGroup = () => {
     };
 
     return (
-        <Container>
-            <Title>Edit Group</Title>
+        <div className="edit-group-container">
+            <h1 className="edit-group-title">Edit Group</h1>
             {error && <div className="error">{error}</div>}
             <div>
-                <Input
+                <input
+                    className="edit-group-input"
                     type="text"
                     placeholder="Group title"
                     value={group.title}
@@ -102,7 +68,8 @@ const EditGroup = () => {
                 />
             </div>
             <div>
-                <Input
+                <input
+                    className="edit-group-input"
                     type="date"
                     placeholder="Start date"
                     value={group.start_date}
@@ -111,7 +78,8 @@ const EditGroup = () => {
                 />
             </div>
             <div>
-                <Input
+                <input
+                    className="edit-group-input"
                     type="date"
                     placeholder="End date"
                     value={group.end_date}
@@ -120,7 +88,8 @@ const EditGroup = () => {
                 />
             </div>
             <div>
-                <Input
+                <input
+                    className="edit-group-input"
                     type="text"
                     placeholder="Professor"
                     value={group.professor}
@@ -128,8 +97,8 @@ const EditGroup = () => {
                     required
                 />
             </div>
-            <Button onClick={handleUpdateGroup}>Update Group</Button>
-        </Container>
+            <button className="edit-group-button" onClick={handleUpdateGroup}>Update Group</button>
+        </div>
     );
 };
 

@@ -1,44 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
-
-const SidebarLink = styled(Link)`
-    display: flex;
-    color: #e1e9fc;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    list-style: none;
-    height: 60px;
-    text-decoration: none;
-    font-size: 18px;
-
-    &:hover {
-        background: #252831;
-        border-left: 4px solid green;
-        cursor: pointer;
-    }
-`;
-
-const SidebarLabel = styled.span`
-    margin-left: 16px;
-`;
-
-const DropdownLink = styled(Link)`
-    background: #252831;
-    height: 60px;
-    padding-left: 3rem;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: #f5f5f5;
-    font-size: 18px;
-
-    &:hover {
-        background: green;
-        cursor: pointer;
-    }
-`;
+import './sidebar.css';
 
 const SubMenu = ({ item, closeSidebar }) => {
     const [subnav, setSubnav] = useState(false);
@@ -47,27 +9,35 @@ const SubMenu = ({ item, closeSidebar }) => {
 
     return (
         <>
-            <SidebarLink to={item.path} onClick={item.subNav ? showSubnav : closeSidebar}>
+            <Link 
+                to={item.path} 
+                className="sidebar-link" 
+                onClick={item.subNav ? showSubnav : closeSidebar}
+            >
                 <div>
                     {item.icon}
-                    <SidebarLabel>{item.title}</SidebarLabel>
+                    <span className="sidebar-label">{item.title}</span>
                 </div>
                 <div>
                     {item.subNav && subnav ? item.iconOpened : item.subNav ? item.iconClosed : null}
                 </div>
-            </SidebarLink>
+            </Link>
             {subnav &&
                 item.subNav.map((subItem, index) => {
                     return (
-                        <DropdownLink to={subItem.path} key={index} onClick={closeSidebar}>
+                        <Link 
+                            to={subItem.path} 
+                            key={index} 
+                            className="dropdown-link" 
+                            onClick={closeSidebar}
+                        >
                             {subItem.icon}
-                            <SidebarLabel>{subItem.title}</SidebarLabel>
-                        </DropdownLink>
+                            <span className="sidebar-label">{subItem.title}</span>
+                        </Link>
                     );
                 })}
         </>
     );
 };
-
 
 export default SubMenu;

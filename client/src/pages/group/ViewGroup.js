@@ -1,62 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import './MainContainer.css';
-
-const Container = styled.div`
-    margin-top: 80px;
-    padding: 20px;
-`;
-
-const Title = styled.h1`
-    text-align: center;
-    margin-bottom: 20px;
-`;
-
-const Button = styled.button`
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    margin-right: 10px;
-
-    &:hover {
-        background-color: #45a049;
-    }
-`;
-
-const DeleteButton = styled.button`
-    background-color: #f44336;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    margin-right: 10px;
-
-    &:hover {
-        background-color: #e53935;
-    }
-`;
-
-const StudentGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-`;
-
-const StudentCard = styled.div`
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 20px;
-    text-align: center;
-`;
+import './groups.css';
 
 const ViewGroup = ({isLoggedIn}) => {
     const { id } = useParams();
@@ -131,16 +75,16 @@ const ViewGroup = ({isLoggedIn}) => {
     };
 
     if (error) {
-        return <Container><div className="error">{error}</div></Container>;
+        return <div className="view-group-container"><div className="error">{error}</div></div>;
     }
 
     if (!group) {
-        return <Container><div>Loading...</div></Container>;
+        return <div className="view-group-container"><div>Loading...</div></div>;
     }
 
     return (
-        <Container>
-            <Title>View Group</Title>
+        <div className="view-group-container">
+            <h1 className="view-group-title">View Group</h1>
             <div>
                 <strong>Title:</strong> {group.title}
             </div>
@@ -155,22 +99,23 @@ const ViewGroup = ({isLoggedIn}) => {
             </div>
             <div>
                 <strong>Students:</strong>
-                <StudentGrid>
+                <div className="student-grid">
+                    {group.students.length === 0 && <div>There is no students added</div>}
                     {group.students.map(student => (
-                        <StudentCard key={student._id}>
+                        <div className="student-card" key={student._id}>
                             <div><strong>Name:</strong> {student.name}</div>
                             <div><strong>Surname:</strong> {student.surname}</div>
                             <div><strong>Personal Code:</strong> {student.personal_code}</div>
-                            {isLoggedIn && <DeleteButton onClick={() => handleDeleteStudentFromGroup(student._id)}>Remove</DeleteButton>}
-                        </StudentCard>
+                            {isLoggedIn && <button className="view-group-delete-button" onClick={() => handleDeleteStudentFromGroup(student._id)}>Remove</button>}
+                        </div>
                     ))}
-                </StudentGrid>
+                </div>
             </div>
-            {isLoggedIn && <Button onClick={handleEditGroup}>Edit</Button>}
-            {isLoggedIn && <Button onClick={handleDeleteGroup}>Delete</Button>}
-            <Button onClick={handleBack}>Back</Button>
-            {isLoggedIn && <Button onClick={() => handleAddStudentToGroup(group._id)}>Add Student</Button>}
-        </Container>
+            {isLoggedIn && <button className="view-group-button" onClick={handleEditGroup}>Edit</button>}
+            {isLoggedIn && <button className="view-group-button" onClick={handleDeleteGroup}>Delete</button>}
+            <button className="view-group-button" onClick={handleBack}>Back</button>
+            {isLoggedIn && <button className="view-group-button" onClick={() => handleAddStudentToGroup(group._id)}>Add Student</button>}
+        </div>
     );
 };
 

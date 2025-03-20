@@ -1,41 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import './MainContainer.css';
-
-const Container = styled.div`
-    margin-top: 80px;
-    padding: 20px;
-    text-align: center;
-`;
-
-const Title = styled.h1`
-    text-align: center;
-    margin-bottom: 20px;
-`;
-
-const Button = styled.button`
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    margin-right: 10px;
-
-    &:hover {
-        background-color: #45a049;
-    }
-`;
-
-const Input = styled.input`
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 20%;
-`;
+import './groups.css';
 
 const AddGroup = () => {
     const [newGroup, setNewGroup] = useState({ title: "", start_date: "", end_date: "", professor: "" });
@@ -68,10 +33,11 @@ const AddGroup = () => {
     };
 
     return (
-        <Container>
-            <Title>Add Group</Title>
+        <div className="add-group-container">
+            <h1 className="add-group-title">Add Group</h1>
             <div>
-                <Input
+                <input  
+                    className="add-group-input"
                     type="text"
                     placeholder="Group title"
                     value={newGroup.title}
@@ -80,7 +46,8 @@ const AddGroup = () => {
                 />
             </div>
             <div>
-                <Input
+                <input
+                    className="add-group-input"
                     type="date"
                     placeholder="Start date"
                     value={newGroup.start_date}
@@ -89,7 +56,8 @@ const AddGroup = () => {
                 />
             </div>
             <div>
-                <Input
+                <input  
+                    className="add-group-input"
                     type="date"
                     placeholder="End date"
                     value={newGroup.end_date}
@@ -98,7 +66,8 @@ const AddGroup = () => {
                 />
             </div>
             <div>
-                <Input
+                <input  
+                    className="add-group-input"
                     type="text"
                     placeholder="Professor"
                     value={newGroup.professor}
@@ -106,9 +75,9 @@ const AddGroup = () => {
                     required
                 />
             </div>
-            <Button onClick={handleAddGroup}>Add Group</Button>
-            <Button onClick={handleBack}>Back</Button>
-        </Container>
+            <button className="add-group-button" onClick={handleAddGroup}>Add Group</button>
+            <button className="add-group-button" onClick={handleBack}>Back</button>
+        </div>
     );
 };
 

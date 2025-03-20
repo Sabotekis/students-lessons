@@ -9,7 +9,7 @@ export const SidebarData = [
     },
     {
         title: "Apmacību Sessiju Parvaldība",
-        path: "/studying-session-management",
+        path: "/session-management",
     },
     {
         title: "Apmeklejuma Uzskaite",
