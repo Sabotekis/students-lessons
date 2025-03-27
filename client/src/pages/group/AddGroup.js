@@ -75,6 +75,16 @@ const AddGroup = () => {
                     required
                 />
             </div>
+            <div>
+                <input
+                    className="add-group-input"
+                    type="number"
+                    placeholder="Academic Hours"
+                    value={newGroup.academic_hours}
+                    onChange={(e) => setNewGroup({ ...newGroup, academic_hours: e.target.value })}
+                    required
+                />
+            </div>
             <button className="add-group-button" onClick={handleAddGroup}>Add Group</button>
             <button className="add-group-button" onClick={handleBack}>Back</button>
         </div>

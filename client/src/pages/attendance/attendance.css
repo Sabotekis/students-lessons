@@ -1,0 +1,130 @@
+@media (max-width: 768px) {
+    .main-container {
+        margin-left: 0;
+    }
+}
+
+/*Attendance Management*/
+.attendance-container {
+    margin-top: 80px;
+    padding: 20px;
+    transition: margin-left 250ms ease-in-out;
+}
+
+.attendance-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.attendance-student-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.attendance-student-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+}
+
+.attendance-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+.attendance-button:hover {
+    background-color: #45a049;
+}
+
+/*View Attendance History*/
+.view-attendance-container {
+    margin-top: 80px;
+    padding: 20px;
+    transition: margin-left 250ms ease-in-out;
+}
+
+.view-attendance-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.view-attendance-history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.view-attendance-history-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+}
+
+.view-attendance-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.view-attendance-button:hover {
+    background-color: #45a049;
+}
+
+/*Add Attendance*/
+.add-attendance-container {
+    margin-top: 80px;
+    padding: 20px;
+    transition: margin-left 250ms ease-in-out;
+    text-align: center;
+}
+
+.add-attendance-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.add-attendance-input {
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.add-attendance-select {
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.add-attendance-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.add-attendance-button:hover {
+    background-color: #45a049;
+}

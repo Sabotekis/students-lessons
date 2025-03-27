@@ -53,6 +53,10 @@ const EditGroup = () => {
         });
     };
 
+    const Backbutton = () => {
+        navigate("/view-group/" + id);
+    };
+
     return (
         <div className="edit-group-container">
             <h1 className="edit-group-title">Edit Group</h1>
@@ -97,7 +101,18 @@ const EditGroup = () => {
                     required
                 />
             </div>
+            <div>
+                <input
+                    className="edit-group-input"
+                    type="number"
+                    placeholder="Academic Hours"
+                    value={group.academic_hours}
+                    onChange={(e) => setGroup({ ...group, academic_hours: e.target.value })}
+                    required
+                />
+            </div>
             <button className="edit-group-button" onClick={handleUpdateGroup}>Update Group</button>
+            <button className="edit-group-button" onClick={Backbutton}>Back</button>
         </div>
     );
 };

@@ -13,7 +13,7 @@ export const SidebarData = [
     },
     {
         title: "Apmeklejuma Uzskaite",
-        path: "/appointment-register",
+        path: "/attendance-management",
     },
     {
         title: "Apliecību Parvaldiba",

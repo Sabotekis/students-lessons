@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import './groups.css';
 
-const ViewGroup = ({isLoggedIn}) => {
+const ViewGroup = () => {
     const { id } = useParams();
     const [group, setGroup] = useState(null);
     const [error, setError] = useState("");
@@ -98,23 +98,26 @@ const ViewGroup = ({isLoggedIn}) => {
                 <strong>Professor:</strong> {group.professor}
             </div>
             <div>
+                <strong>Academic Hours:</strong> {group.academic_hours}
+            </div>
+            <div>
                 <strong>Students:</strong>
-                <div className="student-grid">
+                <div className="view-group-student-grid">
                     {group.students.length === 0 && <div>There is no students added</div>}
                     {group.students.map(student => (
-                        <div className="student-card" key={student._id}>
+                        <div className="view-group-student-card" key={student._id}>
                             <div><strong>Name:</strong> {student.name}</div>
                             <div><strong>Surname:</strong> {student.surname}</div>
                             <div><strong>Personal Code:</strong> {student.personal_code}</div>
-                            {isLoggedIn && <button className="view-group-delete-button" onClick={() => handleDeleteStudentFromGroup(student._id)}>Remove</button>}
+                            <button className="view-group-delete-button" onClick={() => handleDeleteStudentFromGroup(student._id)}>Remove</button>
                         </div>
                     ))}
                 </div>
             </div>
-            {isLoggedIn && <button className="view-group-button" onClick={handleEditGroup}>Edit</button>}
-            {isLoggedIn && <button className="view-group-button" onClick={handleDeleteGroup}>Delete</button>}
+            <button className="view-group-button" onClick={handleEditGroup}>Edit</button>
+            <button className="view-group-button" onClick={handleDeleteGroup}>Delete</button>
             <button className="view-group-button" onClick={handleBack}>Back</button>
-            {isLoggedIn && <button className="view-group-button" onClick={() => handleAddStudentToGroup(group._id)}>Add Student</button>}
+            <button className="view-group-button" onClick={() => handleAddStudentToGroup(group._id)}>Add Student</button>
         </div>
     );
 };

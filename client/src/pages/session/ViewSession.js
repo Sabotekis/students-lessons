@@ -17,7 +17,7 @@ const ViewSession = () => {
             })
             .then(data => setSession(data))
             .catch(error => {
-                console.error('Error fetching group:', error);
+                console.error('Error fetching session:', error);
             });
     }, [id]);
 
@@ -37,8 +37,8 @@ const ViewSession = () => {
             </div>
             <div>
                 <strong>Group:</strong>
-                <div className="group-grid">
-                    <div className="group-card">
+                <div className="view-session-group-grid">
+                    <div className="view-session-group-card">
                         <div><strong>Title:</strong> {session.group.title}</div>
                         <div><strong>Start date:</strong> {new Date(session.group.start_date).toLocaleDateString()}</div>
                         <div><strong>End Date:</strong> {new Date(session.group.end_date).toLocaleDateString()}</div>
@@ -46,6 +46,31 @@ const ViewSession = () => {
                     </div>
                 </div>
             </div>
+            <div>
+                <strong>Students:</strong>
+                {session.students.length === 0 && <div>No students</div>}
+                <div className="view-session-student-grid">
+                    {session.students.map(student => (
+                        <div className="view-session-student-card" key={student._id}>
+                            <div><strong>Name:</strong> {student.name}</div>
+                            <div><strong>Surname:</strong> {student.surname}</div>
+                            <div><strong>Personal code:</strong> {student.personal_code}</div>
+                            {student.deleted && (
+                                <div>(This student is deleted)</div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </div>
+            {!session.finished && (
+                <>
+                    <button className="view-session-button" onClick={() => navigate(`/edit-session/${id}`)}>Edit</button>
+                    <button className="view-session-button" onClick={() => {
+                        fetch(`/api/sessions/${id}`, { method: "DELETE" })
+                            .then(() => navigate("/session-management"));
+                    }}>Delete</button>
+                </>
+            )}
             <button className="view-session-button" onClick={handleBack}>Back</button>
         </div>
     );

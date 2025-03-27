@@ -24,31 +24,35 @@ const EditStudent = () => {
     }, [id]);
 
     const handleUpdateStudent = () => {
-    const personalCodeRegex = /^\d{6}-?\d{5}$/;
-    if (!student.name || !student.surname || !student.personal_code) {
-        alert("All fields are required");
-        return;
-    }
-    if (!personalCodeRegex.test(student.personal_code)) {
-        alert("Personal code must be in the proper format");
-        return;
-    }
-    fetch(`/api/students/${id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(student)
-    })
-    .then(response => response.json())
-    .then(() => {
-        navigate("/student-management");
-    })
-    .catch(error => {
-        console.error('Error updating student:', error);
-        setError('Error updating student');
-    });
-};
+        const personalCodeRegex = /^\d{6}-?\d{5}$/;
+        if (!student.name || !student.surname || !student.personal_code) {
+            alert("All fields are required");
+            return;
+        }
+        if (!personalCodeRegex.test(student.personal_code)) {
+            alert("Personal code must be in the proper format");
+            return;
+        }
+        fetch(`/api/students/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(student)
+        })
+        .then(response => response.json())
+        .then(() => {
+            navigate("/student-management");
+        })
+        .catch(error => {
+            console.error('Error updating student:', error);
+            setError('Error updating student');
+        });
+    };
+
+    const Backbutton = () => {
+        navigate("/view-student/" + id);
+    };
 
     return (
         <div className="edit-student-container">
@@ -85,6 +89,7 @@ const EditStudent = () => {
                 />
             </div>
             <button className="edit-student-button" onClick={handleUpdateStudent}>Update Student</button>
+            <button className="edit-student-button" onClick={Backbutton}>Back</button>
         </div>
     );
 };

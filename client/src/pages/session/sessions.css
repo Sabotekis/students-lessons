@@ -4,6 +4,7 @@
     }
 }
 
+/*Session Management*/
 .session-container {
     margin-top: 80px;
     padding: 20px;
@@ -23,6 +24,8 @@
     border-radius: 5px;
     cursor: pointer;
     margin-bottom: 20px;
+    margin-left: 5px;
+    margin-top: 5px;
 }
 
 .session-button:hover {
@@ -33,7 +36,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .session-card {
@@ -58,6 +61,63 @@
 
 .addbuttoncard:hover {
     background-color: #e0e0e0;
+}
+
+/*Session History*/
+.session-history-container {
+    margin-top: 80px;
+    padding: 20px;
+    transition: margin-left 250ms ease-in-out;
+}
+
+.session-history-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.session-history-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+.session-history-button:hover {
+    background-color: #45a049;
+}
+
+.session-history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.session-history-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+}
+
+.session-history-back-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.session-history-back-button:hover {
+    background-color: #45a049;
 }
 
 /*Add session*/
@@ -96,6 +156,51 @@
     width: 20%;
 }
 
+.add-session-student-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.add-session-student-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+}
+
+.add-session-add-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.add-session-add-button:hover {
+    background-color: #45a049;
+}
+
+.add-session-delete-button {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.add-session-delete-button:hover {
+    background-color: #e53935;
+}
+
 /*View Session*/
 .view-session-container {
     margin-top: 80px;
@@ -123,14 +228,30 @@
     background-color: #45a049;
 }
 
-.group-grid {
+.view-session-group-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
-    margin-top: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
-.group-card {
+.view-session-group-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+}
+
+.view-session-student-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 5px;
+}
+
+.view-session-student-card {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -159,6 +280,7 @@
     border-radius: 5px;
     cursor: pointer;
     margin-top: 20px;
+    margin-left: 5px;
 }
 
 .edit-session-button:hover {
@@ -171,4 +293,49 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 20%;
+}
+
+.edit-session-student-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.edit-session-student-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+}
+
+.edit-session-add-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.edit-session-add-button:hover {
+    background-color: #45a049;
+}
+
+.edit-session-delete-button {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.edit-session-delete-button:hover {
+    background-color: #e53935;
 }

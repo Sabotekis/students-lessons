@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import './students.css';
 
-const StudentManagement = ({ isLoggedIn }) => {
+const StudentManagement = () => {
     const [students, setStudents] = useState([]);
     const [groupStudents, setGroupStudents] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -12,16 +12,21 @@ const StudentManagement = ({ isLoggedIn }) => {
     const groupId = location.state?.groupId;
 
     useEffect(() => {
-        fetch("/api/students")
-            .then(response => response.json())
+        fetch("/api/students", {credentials: "include"})
+            .then(response => {
+                if (response.status === 401) {
+                    navigate("/login");
+                }
+                return response.json();
+            })
             .then(data => setStudents(data));
 
         if (groupId) {
-            fetch(`/api/groups/${groupId}`)
+            fetch(`/api/groups/${groupId}`, {credentials: "include"})
                 .then(response => response.json())
                 .then(data => setGroupStudents(data.students));
         }
-    }, [groupId]);
+    }, [groupId, navigate]);
 
     const handleAddStudent = () => {
         navigate("/add-student");
@@ -97,13 +102,13 @@ const StudentManagement = ({ isLoggedIn }) => {
             <h1 className="student-title">Studentu pārvaldība</h1>
             <div>
                 <input 
-                    className="search-input"
+                    className="student-search-input"
                     type="text"
                     placeholder="Search"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <select className="search-select" value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
+                <select className="student-search-select" value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
                     <option value="name">Name</option>
                     <option value="surname">Surname</option>
                     <option value="personal_code">Personal Code</option>
@@ -114,7 +119,7 @@ const StudentManagement = ({ isLoggedIn }) => {
             </div>
             <div className="student-grid">
                 {groupId && filteredStudents.length === 0 ? (
-                    <div className="no-students-message">No students available</div>
+                    <div>No students available</div>
                 ) : (
                     filteredStudents.map(student => (
                         <div className="student-card" key={student._id}>
@@ -123,23 +128,21 @@ const StudentManagement = ({ isLoggedIn }) => {
                             <div><strong>Personal Code:</strong> {student.personal_code}</div>
                             <div>
                                 {groupId ? (
-                                    isLoggedIn && (
-                                        <button className="button" onClick={() => handleAddStudentToGroup(student._id)}>Add to Group</button>
-                                    )
+                                    <button className="student-button" onClick={() => handleAddStudentToGroup(student._id)}>Add to Group</button>
                                 ) : (
                                     <>
-                                        <button className="button" onClick={() => handleViewStudent(student._id)}>View</button>
-                                        {isLoggedIn && <button className="button" onClick={() => handleEditStudent(student._id)}>Edit</button>}
-                                        {isLoggedIn && <button className="button" onClick={() => handleDeleteStudent(student._id)}>Delete</button>}
+                                        <button className="student-button" onClick={() => handleViewStudent(student._id)}>View</button>
+                                        <button className="student-button" onClick={() => handleEditStudent(student._id)}>Edit</button>
+                                        <button className="student-button" onClick={() => handleDeleteStudent(student._id)}>Delete</button>
                                     </>
                                 )}
                             </div>
                         </div>
                     ))
                 )}
-                {isLoggedIn && !groupId && (
+                {!groupId && (
                     <div className="addbuttoncard">
-                        <button className="button" onClick={handleAddStudent}>Add Student</button>
+                        <button className="student-button" onClick={handleAddStudent}>Add Student</button>
                     </div>
                 )}
             </div>

@@ -1,9 +1,8 @@
 import React from "react";
-import '../MainContainer.css'; 
 
 const LicenceRegister = () => {
     return (
-        <div className="main-container">
+        <div>
             <h1>ApliecibuRegistrs</h1>
         </div>
     );

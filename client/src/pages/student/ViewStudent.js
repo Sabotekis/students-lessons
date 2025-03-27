@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import './students.css';
 
-const ViewStudent = ({ isLoggedIn }) => {
+const ViewStudent = () => {
     const { id } = useParams();
     const [student, setStudent] = useState(null);
     const [error, setError] = useState("");
@@ -66,9 +66,10 @@ const ViewStudent = ({ isLoggedIn }) => {
             </div>
             <div>
                 <strong>Groups:</strong>
-                <div className="group-grid">
+                {student.groups.length === 0 && <div>No groups</div>}
+                <div className="view-student-group-grid">
                     {student.groups.map((group) => (
-                        <div className="group-card" key={group._id}>
+                        <div className="view-student-group-card" key={group._id}>
                             <div><strong>Title:</strong> {group.title}</div>
                             <div><strong>Start date:</strong> {new Date(group.start_date).toLocaleDateString()}</div>
                             <div><strong>End Date:</strong> {new Date(group.end_date).toLocaleDateString()}</div>
@@ -77,8 +78,8 @@ const ViewStudent = ({ isLoggedIn }) => {
                     ))}
                 </div>
             </div>
-            {isLoggedIn && <button className="view-student-button" onClick={handleEditStudent}>Edit</button>}
-            {isLoggedIn && <button className="view-student-button" onClick={handleDeleteStudent}>Delete</button>}
+            <button className="view-student-button" onClick={handleEditStudent}>Edit</button>
+            <button className="view-student-button" onClick={handleDeleteStudent}>Delete</button>
             <button className="view-student-button" onClick={handleBack}>Back</button>
         </div>
     );
