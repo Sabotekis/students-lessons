@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const AttendanceService = require('../services/AttendanceService');
-const Attendance = require('../models/attendance.model');
 
 router.post('/', async (req, res) => {
     try {
@@ -14,16 +13,7 @@ router.post('/', async (req, res) => {
 
 router.get('/history/:studentId', async (req, res) => {
     try {
-        const { studentId } = req.params;
-        const attendances = await Attendance.find({ student: studentId })
-            .populate({
-                path: 'session',
-                populate: {
-                    path: 'group',
-                    select: 'title'
-                }
-            })
-            .populate('student');
+        const attendances = await AttendanceService.getAttendanceHistory({ studentId: req.params.studentId });
         res.status(200).json(attendances);
     } catch (error) {
         res.status(500).json({ status: "error", message: error.message });

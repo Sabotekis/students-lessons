@@ -17,7 +17,14 @@ class SessionService {
                 path: 'group',
                 select: 'title start_date end_date professor'
             })
-            .populate('students');
+            .populate('students')
+            .populate({
+                path: 'attendances',
+                populate: {
+                    path: 'student',
+                    select: '_id'
+                }
+            }); 
     }
 
     static async getDeletedSessions() {
@@ -28,8 +35,17 @@ class SessionService {
             })
             .populate('students');
     }
-    static async getSessionById({id}) {
-        return await Session.findById(id).populate('group').populate('students');
+    static async getSessionById({ id }) {
+        return await Session.findById(id)
+            .populate('group')
+            .populate('students')
+            .populate({
+                path: 'attendances',
+                populate: {
+                    path: 'student', 
+                    select: '_id name surname personal_code'
+                }
+            });
     }
 
     static async createSession({sessionData}) {
@@ -54,17 +70,17 @@ class SessionService {
         if (!student || student.deleted) {
             throw new Error('Cannot add a deleted student to a session');
         }
-
+    
         const session = await Session.findById(sessionId);
         if (!session) {
             throw new Error('Session not found');
         }
-
+    
         if (!session.students.includes(studentId)) {
             session.students.push(studentId);
             await session.save();
         }
-
+    
         return session;
     }
 

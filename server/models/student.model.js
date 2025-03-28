@@ -9,6 +9,7 @@ const studentSchema = new mongoose.Schema({
     attendances: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Attendance' }],
     licence: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Licence' }],
     licenceRegistration: [{ type: mongoose.Schema.Types.ObjectId, ref: 'LicenceRegistration' }],
+    total_academic_hours: { type: Number, default: 0 },
     deleted: { type: Boolean, default: false }
 });
 

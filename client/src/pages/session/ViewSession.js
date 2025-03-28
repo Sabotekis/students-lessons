@@ -28,7 +28,7 @@ const ViewSession = () => {
     if (!session) {
         return <div className="view-session-container"><div>Loading...</div></div>;
     }
-    
+
     return (
         <div className="view-session-container">
             <h1 className="view-session-title">View Session</h1>
@@ -50,16 +50,25 @@ const ViewSession = () => {
                 <strong>Students:</strong>
                 {session.students.length === 0 && <div>No students</div>}
                 <div className="view-session-student-grid">
-                    {session.students.map(student => (
-                        <div className="view-session-student-card" key={student._id}>
-                            <div><strong>Name:</strong> {student.name}</div>
-                            <div><strong>Surname:</strong> {student.surname}</div>
-                            <div><strong>Personal code:</strong> {student.personal_code}</div>
-                            {student.deleted && (
-                                <div>(This student is deleted)</div>
-                            )}
-                        </div>
-                    ))}
+                    {session.students.map(student => {
+                        const hasAttendance = session.attendances.some(attendance => 
+                            attendance.student && attendance.student._id === student._id
+                        );
+
+                        return (
+                            <div
+                                className={`view-session-student-card ${hasAttendance ? 'attended' : 'not-attended'}`}
+                                key={student._id}
+                            >
+                                <div><strong>Name:</strong> {student.name}</div>
+                                <div><strong>Surname:</strong> {student.surname}</div>
+                                <div><strong>Personal code:</strong> {student.personal_code}</div>
+                                {student.deleted && (
+                                    <div>(This student is deleted)</div>
+                                )}
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
             {!session.finished && (

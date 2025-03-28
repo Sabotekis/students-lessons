@@ -31,9 +31,10 @@ const AddAttendance = () => {
     const handleGroupChange = (groupId) => {
         setAttendance({ ...attendance, groupId, sessionId: "" });
     
-        const groupSessions = sessions.filter(session => 
+        const groupSessions = sessions.filter(session =>
             session.group._id === groupId &&
-            !session.attendances.some(attendance => attendance.student.toString() === studentId)
+            session.students.some(student => student._id === studentId) && 
+            !session.attendances.some(attendance => attendance.student._id.toString() === studentId) 
         );
         setFilteredSessions(groupSessions);
     };
@@ -43,7 +44,7 @@ const AddAttendance = () => {
             alert("All fields are required");
             return;
         }
-
+    
         fetch("/api/attendance", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -56,6 +57,11 @@ const AddAttendance = () => {
                     });
                 }
                 return response.json();
+            })
+            .then(() => {
+                return fetch("/api/sessions/finished")
+                    .then(response => response.json())
+                    .then(data => setSessions(data));
             })
             .then(() => navigate("/attendance-management"))
             .catch(error => alert(error.message));

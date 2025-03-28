@@ -3,15 +3,28 @@ import "./attendance.css";
 import { useNavigate } from "react-router-dom";
 
 const AttendanceManagement = () => {
-    const [students, setStudents] = useState([]);
+    const [students, setStudents] = useState([]); // Initialize as an empty array
     const navigate = useNavigate();
 
     useEffect(() => {
         fetch("/api/students", { credentials: "include" })
-            .then(response => response.json())
-            .then(data => setStudents(data))
-            .catch(error => console.error("Error fetching students:", error));
-    }, []);
+            .then(response => {
+                if (response.status === 401) {
+                    navigate("/login");
+                    return null; 
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data) {
+                    setStudents(data);
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching students:", error);
+                setStudents([]);
+            });
+    }, [navigate]);
 
     const handleAddAttendance = (studentId) => {
         navigate("/add-attendance", { state: { studentId } });
@@ -31,6 +44,7 @@ const AttendanceManagement = () => {
                         <div><strong>Name:</strong> {student.name}</div>
                         <div><strong>Surname:</strong> {student.surname}</div>
                         <div><strong>Personal Code:</strong> {student.personal_code}</div>
+                        <div><strong>Total Academic Hours:</strong> {student.total_academic_hours}</div>
                         <button className="attendance-button" onClick={() => handleViewAttendanceHistory(student._id)}>View Attendance History</button>
                         <button className="attendance-button" onClick={() => handleAddAttendance(student._id)}>Add Attendance</button>
                     </div>

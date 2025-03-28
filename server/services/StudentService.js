@@ -1,15 +1,14 @@
 const Student = require('../models/student.model');
-const Group = require('../models/group.model');
 
 class StudentService {
   static async getAllStudents({ includeDeleted = false } = {}) {
     const filter = includeDeleted ? {} : { deleted: false };
-    return await Student.find(filter).populate('groups');
+    return await Student.find(filter).populate('groups').select('name surname personal_code total_academic_hours');
   }
 
   static async getStudentById({ id, includeDeleted = false }) {
     const filter = includeDeleted ? { _id: id } : { _id: id, deleted: false };
-    return await Student.findOne(filter).populate('groups');
+    return await Student.findOne(filter).populate('groups').select('name surname personal_code total_academic_hours');
   }
   
   static async createStudent({studentData}) {
