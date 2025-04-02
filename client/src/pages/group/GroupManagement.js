@@ -41,7 +41,7 @@ const GroupManagement = () => {
     const handleAddStudentToGroup = (groupId) => {
         navigate("/student-management", { state: { groupId } });
     };
-
+    
     return (
         <div className="group-container">
             <h1 className="group-title">Grupu Parvaldība</h1>

@@ -46,6 +46,20 @@
     background-color: #45a049;
 }
 
+.upload-attendance-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.upload-attendance-button:hover {
+    background-color: #45a049;
+}
+
 /*View Attendance History*/
 .view-attendance-container {
     margin-top: 80px;
@@ -127,4 +141,38 @@
 
 .add-attendance-button:hover {
     background-color: #45a049;
+}
+
+/*Upload Attendance*/
+
+.upload-attendance-container {
+    margin-top: 80px;
+    padding: 20px;
+    transition: margin-left 250ms ease-in-out;
+    text-align: center;
+}
+.upload-attendance-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.upload-attendance-file-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.upload-attendance-file-button:hover {
+    background-color: #45a049;
+}
+
+.upload-attendance-input {
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }

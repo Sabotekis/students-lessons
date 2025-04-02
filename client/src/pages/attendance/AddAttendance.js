@@ -5,10 +5,10 @@ const AddAttendance = () => {
     const [filteredGroups, setFilteredGroups] = useState([]);
     const [sessions, setSessions] = useState([]);
     const [filteredSessions, setFilteredSessions] = useState([]);
-    const [attendance, setAttendance] = useState({ groupId: "", sessionId: "", timeMinute: "", academicHours: "" });
+    const [attendance, setAttendance] = useState({ groupId: "", sessionId: "", timeMinute: "", academicHours: 0 });
     const navigate = useNavigate();
     const location = useLocation();
-    const { studentId } = location.state || {}; 
+    const { studentId } = location.state || {};
 
     useEffect(() => {
         if (!studentId) return;
@@ -17,34 +17,39 @@ const AddAttendance = () => {
             .then(response => response.json())
             .then(data => {
                 if (data.groups) {
-                    setFilteredGroups(data.groups); 
+                    setFilteredGroups(data.groups);
                 }
             })
             .catch(error => console.error("Error fetching student groups:", error));
 
         fetch("/api/sessions/finished")
             .then(response => response.json())
-            .then(data => setSessions(data)) 
+            .then(data => setSessions(data))
             .catch(error => console.error("Error fetching sessions:", error));
     }, [studentId]);
 
     const handleGroupChange = (groupId) => {
         setAttendance({ ...attendance, groupId, sessionId: "" });
-    
+
         const groupSessions = sessions.filter(session =>
             session.group._id === groupId &&
-            session.students.some(student => student._id === studentId) && 
-            !session.attendances.some(attendance => attendance.student._id.toString() === studentId) 
+            session.students.some(student => student._id === studentId) &&
+            !session.attendances.some(attendance => attendance.student._id.toString() === studentId)
         );
         setFilteredSessions(groupSessions);
     };
 
+    const handleMinutesChange = (minutes) => {
+        const academicHours = Math.floor(minutes / 40); // Convert minutes to academic hours
+        setAttendance({ ...attendance, timeMinute: minutes, academicHours });
+    };
+
     const handleAddAttendance = () => {
-        if (!attendance.groupId || !attendance.sessionId || !attendance.timeMinute || !attendance.academicHours) {
+        if (!attendance.groupId || !attendance.sessionId || !attendance.timeMinute) {
             alert("All fields are required");
             return;
         }
-    
+
         fetch("/api/attendance", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -109,17 +114,11 @@ const AddAttendance = () => {
                     type="number"
                     placeholder="Time (minutes)"
                     value={attendance.timeMinute}
-                    onChange={(e) => setAttendance({ ...attendance, timeMinute: e.target.value })}
+                    onChange={(e) => handleMinutesChange(e.target.value)}
                 />
             </div>
             <div>
-                <input
-                    className="add-attendance-input"
-                    type="number"
-                    placeholder="Academic Hours"
-                    value={attendance.academicHours}
-                    onChange={(e) => setAttendance({ ...attendance, academicHours: e.target.value })}
-                />
+                <strong>Academic Hours:</strong> {attendance.academicHours}
             </div>
             <button className="add-attendance-button" onClick={handleAddAttendance}>Add Attendance</button>
             <button className="add-attendance-button" onClick={handleBack}>Back</button>

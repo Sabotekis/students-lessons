@@ -1,5 +1,6 @@
 const Session = require('../models/session.model');
 const Student = require('../models/student.model');
+const Group = require('../models/group.model');
 
 class SessionService {
     static async getAllSessions() {
@@ -48,9 +49,23 @@ class SessionService {
             });
     }
 
-    static async createSession({sessionData}) {
+    static async createSession({ sessionData }) {
+        const { group, students } = sessionData;
         const newSession = new Session(sessionData);
-        return await newSession.save();
+        const savedSession = await newSession.save();
+
+        await Group.findByIdAndUpdate(
+            group,
+            { $push: { sessions: savedSession._id } },
+            { new: true }
+        );
+
+        await Student.updateMany(
+            { _id: { $in: students } },
+            { $push: { sessions: savedSession._id } }
+        );
+
+        return savedSession;
     }
 
     static async updateSession({ id, sessionData }) {
@@ -58,11 +73,21 @@ class SessionService {
     }
 
     static async deleteSession({ id }) {
-        return await Session.findByIdAndUpdate(
+        const session = await Session.findByIdAndUpdate(
             id,
             { deleted: true },
             { new: true }
         );
+
+        if (session && session.group) {
+            await Group.findByIdAndUpdate(
+                session.group,
+                { $pull: { sessions: session._id } },
+                { new: true }
+            );
+        }
+
+        return session;
     }
 
     static async addStudentToSession({ sessionId, studentId }) {

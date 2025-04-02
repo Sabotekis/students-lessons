@@ -84,7 +84,6 @@ const Login = () => {
           required
         />
         <button type="submit">Login</button>
-        <button onClick={() => navigate('/')}>Back to Home</button>
       </form>
     </div>
   );

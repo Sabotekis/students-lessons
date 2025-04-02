@@ -34,11 +34,16 @@ const AttendanceManagement = () => {
         navigate(`/view-attendance-history/${id}`);
     };
 
+    const handelUploadFile = () => {
+        navigate("/upload-attendance");
+    };
+
     return (
         <div className="attendance-container">
             <h1 className="attendance-title">Apmeklējuma uzskaite</h1>
             <h2 className="attendance-title">Studenti:</h2>
             <div className="attendance-student-grid">
+                {students.length === 0 && <div>Nav atrasti studenti</div>}
                 {students.map(student => (
                     <div className="attendance-student-card" key={student._id}>
                         <div><strong>Name:</strong> {student.name}</div>
@@ -50,6 +55,7 @@ const AttendanceManagement = () => {
                     </div>
                 ))}
             </div>
+            <button className="upload-attendance-button" onClick={handelUploadFile}>Upload File</button>
         </div>
     );
 };

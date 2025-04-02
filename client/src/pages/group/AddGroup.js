@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import './groups.css';
 
 const AddGroup = () => {
-    const [newGroup, setNewGroup] = useState({ title: "", start_date: "", end_date: "", professor: "" });
+    const [newGroup, setNewGroup] = useState({ title: "", start_date: "", end_date: "", professor: "", academic_hours: 0 });
     const navigate = useNavigate();
 
     const handleAddGroup = () => {

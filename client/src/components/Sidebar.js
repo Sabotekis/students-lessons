@@ -65,7 +65,7 @@ const Sidebar = () => {
     const handleLogout = () => {
         Cookies.remove('token');
         setUsername(null);
-        navigate('/');
+        navigate('/login');
         window.location.reload();
     };
 
