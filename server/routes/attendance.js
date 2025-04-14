@@ -4,7 +4,6 @@ const AttendanceService = require('../services/AttendanceService');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 
-
 router.post('/', async (req, res) => {
     try {
         const attendance = await AttendanceService.addAttendance({ attendanceData: req.body });
@@ -39,6 +38,18 @@ router.post('/upload-attendance', async (req, res) => {
         res.status(200).json({ status: "success", data: null, message: "Veiksmīgi atgriezti dati" });
     } catch (error) {
         res.status(500).json({ status: "error", data: null, message: error.message  });
+    }
+});
+
+router.get('/report/html/:groupId/:month', async (req, res) => {
+    const { groupId, month } = req.params;
+
+    try {
+        const report = await AttendanceService.getAttendanceReport({ groupId, month });
+        res.json(report);
+    } catch (error) {
+        console.error('Error fetching attendance report:', error.message);
+        res.status(404).json({ message: 'Attendance report not found' });
     }
 });
 

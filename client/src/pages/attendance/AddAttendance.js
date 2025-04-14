@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import "./attendance.css";
 
 const AddAttendance = () => {
     const [filteredGroups, setFilteredGroups] = useState([]);
@@ -49,11 +50,16 @@ const AddAttendance = () => {
             alert("All fields are required");
             return;
         }
-
+    
         fetch("/api/attendance", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ...attendance, studentId }),
+            body: JSON.stringify({
+                student: studentId,
+                session: attendance.sessionId,
+                time_minute: parseInt(attendance.timeMinute, 10),
+                academic_hours: parseInt(attendance.academicHours, 10),
+            }),
         })
             .then(response => {
                 if (!response.ok) {
@@ -64,11 +70,9 @@ const AddAttendance = () => {
                 return response.json();
             })
             .then(() => {
-                return fetch("/api/sessions/finished")
-                    .then(response => response.json())
-                    .then(data => setSessions(data));
+                alert("Attendance added successfully");
+                navigate("/attendance-management");
             })
-            .then(() => navigate("/attendance-management"))
             .catch(error => alert(error.message));
     };
 

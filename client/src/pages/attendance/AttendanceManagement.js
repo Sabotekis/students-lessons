@@ -3,7 +3,7 @@ import "./attendance.css";
 import { useNavigate } from "react-router-dom";
 
 const AttendanceManagement = () => {
-    const [students, setStudents] = useState([]); // Initialize as an empty array
+    const [students, setStudents] = useState([]); 
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -38,6 +38,14 @@ const AttendanceManagement = () => {
         navigate("/upload-attendance");
     };
 
+    const handleAttendanceReport = () => {
+        navigate("/attendance-report-management");
+    };
+
+    const handelAttendanceGroupReport = () => {
+        navigate("/attendance-group-report-management");
+    };
+
     return (
         <div className="attendance-container">
             <h1 className="attendance-title">Apmeklējuma uzskaite</h1>
@@ -56,6 +64,8 @@ const AttendanceManagement = () => {
                 ))}
             </div>
             <button className="upload-attendance-button" onClick={handelUploadFile}>Upload File</button>
+            <button className="attendance-button" onClick={handleAttendanceReport}>Attendance Report</button>    
+            <button className="attendance-button" onClick={handelAttendanceGroupReport}>Attendance Group Report</button>
         </div>
     );
 };

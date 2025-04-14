@@ -8,7 +8,8 @@ const groupSchema = new mongoose.Schema({
   academic_hours: { type: Number, required: true },
   students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Student' }],
   sessions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Session' }],
-  deleted: { type: Boolean, default: false }
+  deleted: { type: Boolean, default: false },
+  plannedData: { type: Map, of: { days: Number, hours: Number } }, 
 });
 
 module.exports = mongoose.model('Group', groupSchema);

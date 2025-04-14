@@ -31,6 +31,13 @@
     text-align: center;
 }
 
+.attendance-management-select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
 .attendance-button {
     background-color: #4CAF50;
     color: white;
@@ -176,3 +183,206 @@
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+
+/*Attendance Report Management*/
+.attendance-report-management-container {
+    margin-top: 80px;
+    padding: 20px;
+    transition: margin-left 250ms ease-in-out;
+    text-align: center;
+}
+
+.attendance-report-management-filters {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.attendance-report-management-select {
+    padding: 10px;
+    margin: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.attendance-report-management-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.attendance-report-management-button:hover {
+    background-color: #45a049;
+}
+
+.attendance-report-management-inputs {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.attendance-report-management-inputs label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bold;
+}
+
+.attendance-report-management-inputs input {
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+/*Attendance Report*/
+.attendance-report-container {
+    margin-top: 80px;
+    padding: 20px;
+    transition: margin-left 250ms ease-in-out;
+    text-align: center;
+}
+
+.group-report-table {
+    width: 35%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.group-report-table th, .group-report-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.group-report-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.group-report-table td {
+    background-color: #fff;
+}
+
+.attendance-report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.attendance-report-table th, .attendance-report-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.attendance-report-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.attendance-report-table td {
+    background-color: #fff;
+}
+
+.attendance-report-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+.attendance-report-button:hover {
+    background-color: #45a049;
+}
+
+/*Attendance Group Report Management*/
+.attendance-group-report-management-container {
+    margin-top: 80px;
+    padding: 20px;
+    transition: margin-left 250ms ease-in-out;
+    text-align: center;
+}
+
+.attendance-group-report-management-title {
+    text-align: center;
+}
+
+.attendance-group-report-management-select {
+    padding: 10px;
+    margin: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.attendance-group-report-management-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.attendance-group-report-management-button:hover {
+    background-color: #45a049;
+}
+
+/*Attendance group report*/
+.attendance-group-report-container {
+    margin-top: 80px;
+    padding: 20px;
+    transition: margin-left 250ms ease-in-out;
+    text-align: center;
+}
+
+.attendance-group-report-title {
+    text-align: center;
+}
+
+.attendance-group-report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.attendance-group-report-table th, .attendance-group-report-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.attendance-group-report-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.attendance-group-report-table td {
+    background-color: #fff;
+}
+
+.attendance-group-report-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+.attendance-group-report-button:hover {
+    background-color: #45a049;
+}
+

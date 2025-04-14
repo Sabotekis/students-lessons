@@ -8,7 +8,7 @@ class StudentService {
 
   static async getStudentById({ id, includeDeleted = false }) {
     const filter = includeDeleted ? { _id: id } : { _id: id, deleted: false };
-    return await Student.findOne(filter).populate('groups').select('name surname personal_code total_academic_hours');
+    return await Student.findOne(filter).populate('groups').select('name surname personal_code total_academic_hours groupAcademicHours');
   }
   
   static async createStudent({studentData}) {

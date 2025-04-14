@@ -24,7 +24,10 @@ import AttendanceManagement from "./pages/attendance/AttendanceManagement";
 import AddAttendance from "./pages/attendance/AddAttendance";
 import ViewAttendanceHistory from "./pages/attendance/ViewAttendanceHistory";
 import UploadAttendance from "./pages/attendance/UploadAttendance";
-
+import AttendanceReportManagement from "./pages/attendance/AttendanceReportManagement"
+import AttendanceReport from "./pages/attendance/AttendanceReport";
+import AttendanceGroupReportManagement from "./pages/attendance/AttendanceGroupReportManagement";
+import AttendanceGroupReport from "./pages/attendance/AttendanceGroupReport";
 
 import LicenceManagement from "./pages/licence/LicenceManagement";
 import LicenceRegister from "./pages/licence-register/LicenceRegister";
@@ -55,7 +58,11 @@ const ProtectedApp = () => {
                 <Route path="/add-attendance" element={<AddAttendance />} />
                 <Route path="/view-attendance-history/:id" element={<ViewAttendanceHistory />} />
                 <Route path="/upload-attendance" element={<UploadAttendance />} />
-
+                <Route path="/attendance-report-management" element={<AttendanceReportManagement />} />
+                <Route path="/attendance-report" element={<AttendanceReport />} />
+                <Route path="/attendance-group-report-management" element={<AttendanceGroupReportManagement />} />
+                <Route path="/attendance-group-report/:groupId" element={<AttendanceGroupReport />} />
+                
                 <Route path="/licence-management" element={<LicenceManagement />} />
                 <Route path="/licence-register" element={<LicenceRegister />} />
             </Routes>

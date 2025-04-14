@@ -1,10 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import './groups.css';
 
 const AddGroup = () => {
     const [newGroup, setNewGroup] = useState({ title: "", start_date: "", end_date: "", professor: "", academic_hours: 0 });
+    const [plannedMonths, setPlannedMonths] = useState([]);
+    const [plannedData, setPlannedData] = useState({});
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (newGroup.start_date && newGroup.end_date) {
+            const startDate = new Date(newGroup.start_date);
+            const endDate = new Date(newGroup.end_date);
+            const months = [];
+
+            while (startDate <= endDate) {
+                const year = startDate.getFullYear();
+                const month = (startDate.getMonth() + 1).toString().padStart(2, "0");
+                months.push(`${year}-${month}`);
+                startDate.setMonth(startDate.getMonth() + 1);
+            }
+
+            setPlannedMonths(months);
+        } else {
+            setPlannedMonths([]);
+        }
+    }, [newGroup.start_date, newGroup.end_date]);
+
+    const handlePlannedChange = (month, field, value) => {
+        setPlannedData(prev => ({
+            ...prev,
+            [month]: {
+                ...prev[month],
+                [field]: value,
+            },
+        }));
+    };
 
     const handleAddGroup = () => {
         if (!newGroup.title || !newGroup.start_date || !newGroup.end_date || !newGroup.professor) {
@@ -15,15 +46,18 @@ const AddGroup = () => {
             alert("Start date cannot be after end date");
             return;
         }
+
+        const groupData = { ...newGroup, plannedData };
+
         fetch("/api/groups", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(newGroup)
+            body: JSON.stringify(groupData)
         })
         .then(response => response.json())
-        .then(newGroup => {
+        .then(() => {
             navigate("/group-management");
         });
     };
@@ -85,6 +119,24 @@ const AddGroup = () => {
                     required
                 />
             </div>
+            <h3>Planned Days and Hours</h3>
+            {plannedMonths.map(month => (
+                <div key={month}>
+                    <h4>{month}</h4>
+                    <input
+                        type="number"
+                        placeholder="Planned Days"
+                        value={plannedData[month]?.days || ""}
+                        onChange={(e) => handlePlannedChange(month, "days", e.target.value)}
+                    />
+                    <input
+                        type="number"
+                        placeholder="Planned Hours"
+                        value={plannedData[month]?.hours || ""}
+                        onChange={(e) => handlePlannedChange(month, "hours", e.target.value)}
+                    />
+                </div>
+            ))}
             <button className="add-group-button" onClick={handleAddGroup}>Add Group</button>
             <button className="add-group-button" onClick={handleBack}>Back</button>
         </div>

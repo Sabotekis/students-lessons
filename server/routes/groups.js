@@ -68,4 +68,15 @@ router.post('/:id/remove-student', async (req, res) => {
     }
 });
 
+router.get('/:groupId/report', async (req, res) => {
+    try {
+        const report = await GroupService.generateGroupReport({ groupId: req.params.groupId });
+        res.json(report);
+    } catch (error) {
+        console.error("Error generating group report:", error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
+
 module.exports = router;

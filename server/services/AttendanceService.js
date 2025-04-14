@@ -1,9 +1,12 @@
 const Attendance = require('../models/attendance.model');
 const Student = require('../models/student.model');
 const Session = require('../models/session.model');
+const Group = require('../models/group.model');
 const fs = require('fs');
 const csvParser = require('csv-parser');
 const moment = require('moment');
+const GroupService = require('./GroupService');
+
 
 class AttendanceService {
     static async addAttendance({ attendanceData }) {
@@ -186,6 +189,58 @@ class AttendanceService {
         }
     }
 
+    static async getAttendanceReport({ groupId, month }) {
+        const group = await Group.findById(groupId).populate('students').populate('sessions');
+        if (!group) throw new Error('Group not found');
+    
+        const plannedData = group.plannedData?.get(month) || { days: 0, hours: 0 };
+    
+        const startDate = moment(month, 'YYYY-MM').startOf('month').toDate();
+        const endDate = moment(month, 'YYYY-MM').endOf('month').toDate();
+    
+        const sessionsInMonth = group.sessions.filter(session => {
+            const sessionDate = moment(session.date);
+            return sessionDate.isBetween(startDate, endDate, 'day', '[]');
+        });
+    
+        const daysInMonth = moment(month, 'YYYY-MM').daysInMonth();
+    
+        const attendances = await Attendance.find({
+            session: { $in: sessionsInMonth.map(session => session._id) },
+        })
+            .populate('student')
+            .populate('session');
+    
+        const report = group.students.map(student => {
+            const studentAttendances = attendances.filter(a => a.student._id.equals(student._id));
+            const dailyMinutes = Array(daysInMonth).fill(null);
+    
+            sessionsInMonth.forEach(session => {
+                const sessionDay = moment(session.date).date() - 1;
+                const attendance = studentAttendances.find(a => a.session._id.equals(session._id));
+                dailyMinutes[sessionDay] = attendance ? attendance.academic_hours : 0;
+            });
+    
+            const totalDays = studentAttendances.length;
+            const totalHours = studentAttendances.reduce((sum, a) => sum + a.academic_hours, 0);
+    
+            return {
+                name: `${student.name} ${student.surname}`,
+                dailyMinutes,
+                actualDays: totalDays,
+                actualHours: totalHours,
+            };
+        });
+    
+        return {
+            group: group.title,
+            month,
+            daysInMonth,
+            plannedDays: plannedData.days,
+            plannedHours: plannedData.hours,
+            report,
+        };
+    }
 }
 
 module.exports = AttendanceService;
