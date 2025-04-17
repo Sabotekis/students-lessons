@@ -29,8 +29,14 @@ import AttendanceReport from "./pages/attendance/AttendanceReport";
 import AttendanceGroupReportManagement from "./pages/attendance/AttendanceGroupReportManagement";
 import AttendanceGroupReport from "./pages/attendance/AttendanceGroupReport";
 
-import LicenceManagement from "./pages/licence/LicenceManagement";
-import LicenceRegister from "./pages/licence-register/LicenceRegister";
+import CertificateManagement from "./pages/certificate/CertificateManagement";
+import AddCertificate from "./pages/certificate/AddCertificate";
+
+import GroupCertificateRegister from "./pages/groupCertificateRegister/GroupCertificateRegister";
+import GroupRegister from "./pages/groupCertificateRegister/GroupRegister";
+import CertificateRegister from "./pages/groupCertificateRegister/CertificateRegister";
+import GroupRegisterManagement from "./pages/groupCertificateRegister/GroupRegisterManagement";
+
 
 const ProtectedApp = () => {
     return (
@@ -63,8 +69,13 @@ const ProtectedApp = () => {
                 <Route path="/attendance-group-report-management" element={<AttendanceGroupReportManagement />} />
                 <Route path="/attendance-group-report/:groupId" element={<AttendanceGroupReport />} />
                 
-                <Route path="/licence-management" element={<LicenceManagement />} />
-                <Route path="/licence-register" element={<LicenceRegister />} />
+                <Route path="/certificate-management" element={<CertificateManagement />} />
+                <Route path="/add-certificate" element={<AddCertificate />} />
+
+                <Route path="/group-certificate-register" element={<GroupCertificateRegister />} />
+                <Route path="/group-register/:groupId" element={<GroupRegister />} />
+                <Route path="/certificate-register" element={<CertificateRegister />} />
+                <Route path="/group-register-management" element={<GroupRegisterManagement />} />
             </Routes>
         </>
     );

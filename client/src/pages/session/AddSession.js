@@ -85,8 +85,8 @@ const AddSession = () => {
         setSession((prevSession) => {
             const selectedGroup = groups.find(group => group._id === prevSession.group);
             if (selectedGroup) {
-                const groupStartDate = new Date(selectedGroup.start_date);
-                const groupEndDate = new Date(selectedGroup.end_date);
+                const groupStartDate = new Date(selectedGroup.startDate);
+                const groupEndDate = new Date(selectedGroup.endDate);
                 const sessionDate = new Date(newDate);
 
                 if (sessionDate < groupStartDate || sessionDate > groupEndDate) {
@@ -99,19 +99,19 @@ const AddSession = () => {
 
     const filteredGroups = groups.filter(group => {
         const sessionDate = new Date(session.date);
-        const groupStartDate = new Date(group.start_date);
-        const groupEndDate = new Date(group.end_date);
+        const groupStartDate = new Date(group.startDate);
+        const groupEndDate = new Date(group.endDate);
         return sessionDate >= groupStartDate && sessionDate <= groupEndDate;
     });
 
     return (
         <div className="add-session-container">
-            <h1 className="add-session-title">Add Session</h1>
+            <h1 className="add-session-title">Apmācību sesiju pievienošana</h1>
             <div>
                 <input
                     className="add-session-input"
                     type="date"
-                    placeholder="Date"
+                    placeholder="Datums"
                     value={session.date}
                     onChange={handleDateChange}
                     required
@@ -124,7 +124,7 @@ const AddSession = () => {
                     onChange={(e) => setSession({ ...session, group: e.target.value })}
                     required
                 >
-                    <option value="">Select Group</option>
+                    <option value="">Izvēlies grupu</option>
                     {filteredGroups.map(group => (
                         <option key={group._id} value={group._id}>{group.title}</option>
                     ))}
@@ -133,31 +133,33 @@ const AddSession = () => {
             {students.length > 0 ? (
                 <div>
                     {session.students.length !== students.length ? ( 
-                        <button className="add-session-add-button" onClick={handleAddAllStudentsToSession}>Add All</button>
+                        <button className="add-session-add-button" onClick={handleAddAllStudentsToSession}>Pievienot visus</button>
                     ) : (
-                        <button className="add-session-delete-button" onClick={handleRemoveAllStudentsFromSession}>Remove All</button>
+                        <button className="add-session-delete-button" onClick={handleRemoveAllStudentsFromSession}>Noņemt visus</button>
                     )}
-                    <h2>Students:</h2>
+                    <h2>Studenti:</h2>
                     <div className="add-session-student-grid">
                         {students.map(student => (
                             <div className="add-session-student-card" key={student._id}>
-                                <div><strong>Name:</strong> {student.name}</div>
-                                <div><strong>Surname:</strong> {student.surname}</div>
-                                <div><strong>Personal Code:</strong> {student.personal_code}</div>
+                                <div><strong>Vārds:</strong> {student.name}</div>
+                                <div><strong>Uzvārds:</strong> {student.surname}</div>
+                                <div><strong>Personas kods:</strong> {student.personalCode}</div>
+                                <div><strong>Telefona numurs:</strong> {student.phoneNumber}</div>
+                                <div><strong>E-pasts:</strong> {student.email}</div>
                                 {session.students.includes(student._id) ? (
-                                    <button className="add-session-delete-button" onClick={() => handleRemoveStudentFromSession(student._id)}>Remove</button>
+                                    <button className="add-session-delete-button" onClick={() => handleRemoveStudentFromSession(student._id)}>Izdzēst</button>
                                 ) : (
-                                    <button className="add-session-add-button" onClick={() => handleAddStudentToSession(student._id)}>Add</button>
+                                    <button className="add-session-add-button" onClick={() => handleAddStudentToSession(student._id)}>Pievienot</button>
                                 )}
                             </div>
                         ))}
                     </div>
                 </div>
             ):(
-                <div>No students in this group</div>
+                <div>Šajā grupā nav studentu vai grupa nav izvēlēta</div>
             )}
-            <button className="add-session-button" onClick={handleAddSession}>Add Session</button>
-            <button className="add-session-button" onClick={handleBack}>Back</button>
+            <button className="add-session-button" onClick={handleAddSession}>Pievienot sesiju</button>
+            <button className="add-session-button" onClick={handleBack}>Atgriezties</button>
         </div>
     );
 };

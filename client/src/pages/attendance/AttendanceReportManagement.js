@@ -22,8 +22,8 @@ const AttendanceReportManagement = () => {
 
         const group = groups.find(g => g._id === groupId);
         if (group) {
-            const startDate = new Date(group.start_date);
-            const endDate = new Date(group.end_date);
+            const startDate = new Date(group.startDate);
+            const endDate = new Date(group.endDate);
             const months = [];
 
             while (startDate <= endDate) {
@@ -41,7 +41,7 @@ const AttendanceReportManagement = () => {
 
     const handleShowReport = () => {
         if (!selectedGroup || !selectedMonth) {
-            alert("Please select both a group and a month.");
+            alert("Izvēlieties gan grupu, gan mēnesi");
             return;
         }
     
@@ -59,38 +59,42 @@ const AttendanceReportManagement = () => {
 
     return (
         <div className="attendance-report-management-container">
-            <h1>Apmeklējuma tabeles ģenerēšana</h1>
+            <h1>Apmeklējuma atskaite ģenerēšana</h1>
             <div className="attendance-report-management-filters">
-                <select
-                    className="attendance-report-management-select"
-                    value={selectedGroup}
-                    onChange={(e) => handleGroupChange(e.target.value)}
-                >
-                    <option value="">Select Group</option>
-                    {groups.map(group => (
-                        <option key={group._id} value={group._id}>
-                            {group.title}
-                        </option>
-                    ))}
-                </select>
-                <select
-                    className="attendance-report-management-select"
-                    value={selectedMonth}
-                    onChange={(e) => setSelectedMonth(e.target.value)}
-                    disabled={!availableMonths.length}
-                >
-                    <option value="">Select Month</option>
-                    {availableMonths.map(month => (
-                        <option key={month} value={month}>
-                            {new Date(`${month}-01`).toLocaleString("default", { month: "long", year: "numeric" })}
-                        </option>
-                    ))}
-                </select>
+                <div>
+                    <select
+                        className="attendance-report-management-select"
+                        value={selectedGroup}
+                        onChange={(e) => handleGroupChange(e.target.value)}
+                    >
+                        <option value="">Izvēlieties grupu</option>
+                        {groups.map(group => (
+                            <option key={group._id} value={group._id}>
+                                {group.title}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div>
+                    <select
+                        className="attendance-report-management-select"
+                        value={selectedMonth}
+                        onChange={(e) => setSelectedMonth(e.target.value)}
+                        disabled={!availableMonths.length}
+                    >
+                        <option value="">Izvēlieties mēnesi</option>
+                        {availableMonths.map(month => (
+                            <option key={month} value={month}>
+                                {new Date(`${month}-01`).toLocaleString("lv", { month: "long", year: "numeric" })}
+                            </option>
+                        ))}
+                    </select>
+                </div>  
                 <button className="attendance-report-management-button" onClick={handleShowReport}>
-                    Show Report
+                    Ģenerēt atskaiti
                 </button>
                 <button className="attendance-report-management-button" onClick={handleBack}>
-                    Back
+                    Atgriezties
                 </button>
             </div>
         </div>

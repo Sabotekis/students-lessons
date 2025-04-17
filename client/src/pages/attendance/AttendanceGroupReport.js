@@ -29,7 +29,7 @@ const AttendanceGroupReport = () => {
 
     const handleExportToExcel = async () => {
         const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet("Attendance Group Report");
+        const worksheet = workbook.addWorksheet("Apmeklējuma grupas atskaite");
         worksheet.properties.defaultRowHeight = 20;
 
         worksheet.addRow([
@@ -107,7 +107,7 @@ const AttendanceGroupReport = () => {
 
     return (
         <div className="attendance-group-report-container">
-            <h1 className="attendance-group-report-title">Attendance Group Report</h1>
+            <h1 className="attendance-group-report-title">Apmeklējuma grupas atskaite</h1>
             {reportData.length > 0 ? (
                 <table className="attendance-group-report-table">
                     <thead>
@@ -136,13 +136,13 @@ const AttendanceGroupReport = () => {
                     </tbody>
                 </table>
             ) : (
-                <p>No data available for this group.</p>
+                <p>Nav datu par šo grupu.</p>
             )}
-            <button className="attendance-group-report-button" onClick={handleBack}>
-                Back
-            </button>
             <button className="attendance-group-report-button" onClick={handleExportToExcel}>
-                Export to Excel
+                Eksportēšana uz Excel
+            </button>
+            <button className="attendance-group-report-button" onClick={handleBack}>
+                Atgriezties
             </button>
         </div>
     );

@@ -4,33 +4,32 @@ import './students.css';
 
 const EditStudent = () => {
     const { id } = useParams();
-    const [student, setStudent] = useState({ name: "", surname: "", personal_code: ""});
-    const [error, setError] = useState("");
+    const [student, setStudent] = useState({ name: "", surname: "", personalCode: "", phoneNumber: "", email: "" });
     const navigate = useNavigate();
 
     useEffect(() => {
         fetch(`/api/students/${id}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => setStudent(data))
-            .catch(error => {
-                console.error('Error fetching student:', error);
-                setError('Error fetching student');
-            });
+            .catch(error => console.error("Error fetching students:", error));
     }, [id]);
 
     const handleUpdateStudent = () => {
         const personalCodeRegex = /^\d{6}-?\d{5}$/;
-        if (!student.name || !student.surname || !student.personal_code) {
-            alert("All fields are required");
+        if (!student.name || !student.surname || !student.personalCode || !student.phoneNumber || !student.email) {
+            alert("Visi lauki ir obligāti");
             return;
         }
-        if (!personalCodeRegex.test(student.personal_code)) {
-            alert("Personal code must be in the proper format");
+        if (!personalCodeRegex.test(student.personalCode)) {
+            alert("Personas kodam jābūt pareizā formātā");
+            return;
+        }
+        if (student.phoneNumber.length !== 8) {
+            alert("Tālruņa numuram jābūt 8 ciparu garam");
+            return;
+        }
+        if (!student.email.includes("@")) {
+            alert("E-pastam jābūt pareizā formātā");
             return;
         }
         fetch(`/api/students/${id}`, {
@@ -44,25 +43,21 @@ const EditStudent = () => {
         .then(() => {
             navigate("/student-management");
         })
-        .catch(error => {
-            console.error('Error updating student:', error);
-            setError('Error updating student');
-        });
+        .catch(error => console.error('Error updating student:', error));
     };
 
-    const Backbutton = () => {
+    const handleBack = () => {
         navigate("/view-student/" + id);
     };
 
     return (
         <div className="edit-student-container">
-            <h1 className="edit-student-title">Edit Student</h1>
-            {error && <div className="error">{error}</div>}
+            <h1 className="edit-student-title">Studentu rediģēšana</h1>
             <div>
                 <input
                     className="edit-student-input"
                     type="text"
-                    placeholder="Name"
+                    placeholder="Vārds"
                     value={student.name}
                     onChange={(e) => setStudent({ ...student, name: e.target.value })}
                     required
@@ -72,7 +67,7 @@ const EditStudent = () => {
                 <input
                     className="edit-student-input"
                     type="text"
-                    placeholder="Surname"
+                    placeholder="Uzvārds"
                     value={student.surname}
                     onChange={(e) => setStudent({ ...student, surname: e.target.value })}
                     required
@@ -82,14 +77,34 @@ const EditStudent = () => {
                 <input
                     className="edit-student-input"
                     type="text"
-                    placeholder="e.g. 123456-12345"
-                    value={student.personal_code}
-                    onChange={(e) => setStudent({ ...student, personal_code: e.target.value })}
+                    placeholder="Personas kods"
+                    value={student.personalCode}
+                    onChange={(e) => setStudent({ ...student, personalCode: e.target.value })}
                     required
                 />
             </div>
-            <button className="edit-student-button" onClick={handleUpdateStudent}>Update Student</button>
-            <button className="edit-student-button" onClick={Backbutton}>Back</button>
+            <div>
+                <input
+                    className="edit-student-input"
+                    type="text"
+                    placeholder="Tālruņa numurs"
+                    value={student.phoneNumber}
+                    onChange={(e) => setStudent({ ...student, phoneNumber: e.target.value })}
+                    required
+                />
+            </div>
+            <div>
+                <input
+                    className="edit-student-input"
+                    type="text"
+                    placeholder="E-pasts"
+                    value={student.email}
+                    onChange={(e) => setStudent({ ...student, email: e.target.value })}
+                    required
+                />
+            </div>
+            <button className="edit-student-button" onClick={handleUpdateStudent}>Atjaunināt studentu</button>
+            <button className="edit-student-button" onClick={handleBack}>Atgriezties</button>
         </div>
     );
 };

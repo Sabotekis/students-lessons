@@ -90,7 +90,7 @@ const Sidebar = () => {
                                 className="logout-button"
                                 onClick={handleLogout}
                             >
-                                Logout
+                                Iziet
                             </button>
                         </div>
                     ) : (
@@ -98,7 +98,7 @@ const Sidebar = () => {
                             className="login-button"
                             onClick={handleLogin}
                         >
-                            Login
+                            Ienākt
                         </button>
                     )}
                 </div>

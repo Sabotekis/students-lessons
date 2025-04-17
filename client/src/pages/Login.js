@@ -24,12 +24,11 @@ const Login = () => {
       if (!response.ok) {
         throw new Error(data.message || 'Something went wrong');
       }
-  
-      alert("Login successful");
+
       navigate('/');
       window.location.reload();
     } catch (error) {
-      alert("Invalid email or password");
+      alert("Nederīgs e-pasts vai parole");
       console.error("Login error:", error);
     }
   };
@@ -73,17 +72,17 @@ const Login = () => {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
+          placeholder="E-pasts"
           required
         />
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
+          placeholder="Parole"
           required
         />
-        <button type="submit">Login</button>
+        <button type="submit">Ienākt</button>
       </form>
     </div>
   );

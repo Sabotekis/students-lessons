@@ -16,11 +16,7 @@ const AddAttendance = () => {
 
         fetch(`/api/students/${studentId}`)
             .then(response => response.json())
-            .then(data => {
-                if (data.groups) {
-                    setFilteredGroups(data.groups);
-                }
-            })
+            .then(data => setFilteredGroups(data.groups))
             .catch(error => console.error("Error fetching student groups:", error));
 
         fetch("/api/sessions/finished")
@@ -41,7 +37,7 @@ const AddAttendance = () => {
     };
 
     const handleMinutesChange = (minutes) => {
-        const academicHours = Math.floor(minutes / 40); // Convert minutes to academic hours
+        const academicHours = Math.floor(minutes / 40); 
         setAttendance({ ...attendance, timeMinute: minutes, academicHours });
     };
 
@@ -57,20 +53,12 @@ const AddAttendance = () => {
             body: JSON.stringify({
                 student: studentId,
                 session: attendance.sessionId,
-                time_minute: parseInt(attendance.timeMinute, 10),
-                academic_hours: parseInt(attendance.academicHours, 10),
+                timeMinute: parseInt(attendance.timeMinute, 10),
+                academicHours: parseInt(attendance.academicHours, 10),
             }),
         })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(data => {
-                        throw new Error(data.message);
-                    });
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(() => {
-                alert("Attendance added successfully");
                 navigate("/attendance-management");
             })
             .catch(error => alert(error.message));
@@ -82,14 +70,14 @@ const AddAttendance = () => {
 
     return (
         <div className="add-attendance-container">
-            <h1 className="add-attendance-title">Add Attendance</h1>
+            <h1 className="add-attendance-title">Apmeklējumu pievienošana</h1>
             <div>
                 <select
                     className="add-attendance-select"
                     onChange={(e) => handleGroupChange(e.target.value)}
                     value={attendance.groupId}
                 >
-                    <option value="">Select Group</option>
+                    <option value="">Izvēlieties grupu</option>
                     {filteredGroups.map(group => (
                         <option key={group._id} value={group._id}>
                             {group.title}
@@ -104,7 +92,7 @@ const AddAttendance = () => {
                     value={attendance.sessionId}
                     disabled={!attendance.groupId}
                 >
-                    <option value="">Select Session</option>
+                    <option value="">Izvēlieties sesiju</option>
                     {filteredSessions.map(session => (
                         <option key={session._id} value={session._id}>
                             {new Date(session.date).toLocaleDateString()} - {session.group.title}
@@ -116,16 +104,16 @@ const AddAttendance = () => {
                 <input
                     className="add-attendance-input"
                     type="number"
-                    placeholder="Time (minutes)"
+                    placeholder="Laiks (minūtes)"
                     value={attendance.timeMinute}
                     onChange={(e) => handleMinutesChange(e.target.value)}
                 />
             </div>
             <div>
-                <strong>Academic Hours:</strong> {attendance.academicHours}
+                <strong>Akadēmiskās stundas: {attendance.academicHours}</strong>
             </div>
-            <button className="add-attendance-button" onClick={handleAddAttendance}>Add Attendance</button>
-            <button className="add-attendance-button" onClick={handleBack}>Back</button>
+            <button className="add-attendance-button" onClick={handleAddAttendance}>Pievienot apmeklējumu</button>
+            <button className="add-attendance-button" onClick={handleBack}>Atgriezties</button>
         </div>
     );
 };

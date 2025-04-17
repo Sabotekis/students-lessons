@@ -13,12 +13,7 @@ const StudentManagement = () => {
 
     useEffect(() => {
         fetch("/api/students", {credentials: "include"})
-            .then(response => {
-                if (response.status === 401) {
-                    navigate("/login");
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => setStudents(data));
 
         if (groupId) {
@@ -104,36 +99,41 @@ const StudentManagement = () => {
                 <input 
                     className="student-search-input"
                     type="text"
-                    placeholder="Search"
+                    placeholder="Meklēt"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <select className="student-search-select" value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
-                    <option value="name">Name</option>
-                    <option value="surname">Surname</option>
-                    <option value="personal_code">Personal Code</option>
+                    <option value="name">Vārds</option>
+                    <option value="surname">Uzvārds</option>
+                    <option value="personalCode">Personas kods</option>
+                    <option value="phoneNumber">Telefona numurs</option>
+                    <option value="email">E-pasts</option>
                 </select>
                 { groupId && <button className="backbutton" onClick={handleBack}>
-                    Back
+                    Atgriezties
                 </button>}
             </div>
             <div className="student-grid">
                 {groupId && filteredStudents.length === 0 ? (
-                    <div>No students available</div>
+                    <div>Nav pieejamu studentu</div>
                 ) : (
                     filteredStudents.map(student => (
                         <div className="student-card" key={student._id}>
-                            <div><strong>Name:</strong> {student.name}</div>
-                            <div><strong>Surname:</strong> {student.surname}</div>
-                            <div><strong>Personal Code:</strong> {student.personal_code}</div>
+                            <div><strong>Vārds:</strong> {student.name}</div>
+                            <div><strong>Uzvārds:</strong> {student.surname}</div>
+                            <div><strong>Personas kods:</strong> {student.personalCode}</div>
+                            <div><strong>Telefona numurs:</strong> {student.phoneNumber}</div>
+                            <div><strong>E-pasts:</strong> {student.email}</div>
+                            <div><strong>Akadēmiskās stundas: {student.totalAcademicHours}</strong></div>
                             <div>
                                 {groupId ? (
-                                    <button className="student-button" onClick={() => handleAddStudentToGroup(student._id)}>Add to Group</button>
+                                    <button className="student-button" onClick={() => handleAddStudentToGroup(student._id)}>Pievienot grupai</button>
                                 ) : (
                                     <>
-                                        <button className="student-button" onClick={() => handleViewStudent(student._id)}>View</button>
-                                        <button className="student-button" onClick={() => handleEditStudent(student._id)}>Edit</button>
-                                        <button className="student-button" onClick={() => handleDeleteStudent(student._id)}>Delete</button>
+                                        <button className="student-button" onClick={() => handleViewStudent(student._id)}>Apskatīt</button>
+                                        <button className="student-button" onClick={() => handleEditStudent(student._id)}>Rediģēt</button>
+                                        <button className="student-button" onClick={() => handleDeleteStudent(student._id)}>Izdzēst</button>
                                     </>
                                 )}
                             </div>
@@ -142,7 +142,7 @@ const StudentManagement = () => {
                 )}
                 {!groupId && (
                     <div className="addbuttoncard">
-                        <button className="student-button" onClick={handleAddStudent}>Add Student</button>
+                        <button className="student-button" onClick={handleAddStudent}>Pievienot studentu</button>
                     </div>
                 )}
             </div>

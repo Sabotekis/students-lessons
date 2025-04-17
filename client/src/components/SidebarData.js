@@ -17,10 +17,10 @@ export const SidebarData = [
     },
     {
         title: "Apliecību Parvaldiba",
-        path: "/licence-management",
+        path: "/certificate-management",
     },
     {
-        title: "Apliecību Registrs",
-        path: "/licence-register",
+        title: "Grupu un Apliecību Reģistrs",
+        path: "/group-certificate-register",	
     },
 ];

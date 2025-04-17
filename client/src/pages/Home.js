@@ -19,7 +19,7 @@ const Home = () => {
         </style>
             <div className="container">
                 <p className="description">
-                    This website is designed to manage students and groups. You can add, edit, and view students and groups, as well as manage various other aspects related to student management.
+                    Šī vietne ir paredzēta studentu un grupu pārvaldībai. Varat pievienot, rediģēt un skatīt studentus un grupas, kā arī pārvaldīt dažādus citus ar studentu pārvaldību saistītus aspektus.                
                 </p>
             </div>
         </div>

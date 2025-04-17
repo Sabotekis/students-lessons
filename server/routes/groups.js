@@ -78,5 +78,15 @@ router.get('/:groupId/report', async (req, res) => {
     }
 });
 
+router.get('/:groupId/register', async (req, res) => {
+    try {
+        const register = await GroupService.generateGroupRegister({ groupId: req.params.groupId });
+        res.json(register);
+    } catch (error) {
+        console.error("Error generating group register:", error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
 
 module.exports = router;

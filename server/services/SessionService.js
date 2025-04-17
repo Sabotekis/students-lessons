@@ -7,7 +7,7 @@ class SessionService {
         return await Session.find({ deleted: false, finished: false })
             .populate({
                 path: 'group',
-                select: 'title start_date end_date professor'
+                select: 'title startDate endDate professor'
             })
             .select('date group finished');
     }
@@ -16,7 +16,7 @@ class SessionService {
         return await Session.find({ finished: true, deleted: false })
             .populate({
                 path: 'group',
-                select: 'title start_date end_date professor'
+                select: 'title startDate endDate professor'
             })
             .populate('students')
             .populate({
@@ -28,14 +28,6 @@ class SessionService {
             }); 
     }
 
-    static async getDeletedSessions() {
-        return await Session.find({ deleted: true })
-            .populate({
-                path: 'group',
-                select: 'title start_date end_date professor'
-            })
-            .populate('students');
-    }
     static async getSessionById({ id }) {
         return await Session.findById(id)
             .populate('group')
@@ -44,7 +36,7 @@ class SessionService {
                 path: 'attendances',
                 populate: {
                     path: 'student', 
-                    select: '_id name surname personal_code'
+                    select: '_id name surname personalCode'
                 }
             });
     }
@@ -69,7 +61,27 @@ class SessionService {
     }
 
     static async updateSession({ id, sessionData }) {
-        return await Session.findByIdAndUpdate(id, sessionData, { new: true });
+        const { students } = sessionData;
+    
+        const existingSession = await Session.findById(id).populate('students');
+        if (!existingSession) {
+            throw new Error('Session not found');
+        }
+    
+        const oldStudentIds = existingSession.students.map(student => student._id.toString());
+        await Student.updateMany(
+            { _id: { $in: oldStudentIds } },
+            { $pull: { sessions: id } }
+        );
+    
+        const updatedSession = await Session.findByIdAndUpdate(id, sessionData, { new: true }).populate('students');
+    
+        await Student.updateMany(
+            { _id: { $in: students } },
+            { $addToSet: { sessions: id } }
+        );
+    
+        return updatedSession;
     }
 
     static async deleteSession({ id }) {
@@ -87,42 +99,6 @@ class SessionService {
             );
         }
 
-        return session;
-    }
-
-    static async addStudentToSession({ sessionId, studentId }) {
-        const student = await Student.findById(studentId);
-        if (!student || student.deleted) {
-            throw new Error('Cannot add a deleted student to a session');
-        }
-    
-        const session = await Session.findById(sessionId);
-        if (!session) {
-            throw new Error('Session not found');
-        }
-    
-        if (!session.students.includes(studentId)) {
-            session.students.push(studentId);
-            await session.save();
-        }
-    
-        return session;
-    }
-
-    static async removeStudentFromSession({ sessionId, studentId }) {
-        const student = await Student.findById(studentId);
-        if (!student || student.deleted) {
-            throw new Error('Cannot remove a deleted student from a session');
-        }
-    
-        const session = await Session.findById(sessionId);
-        if (!session) {
-            throw new Error('Session not found');
-        }
-    
-        session.students = session.students.filter(id => id.toString() !== studentId);
-        await session.save();
-    
         return session;
     }
 }

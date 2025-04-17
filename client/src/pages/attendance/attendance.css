@@ -19,7 +19,7 @@
 .attendance-student-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+    gap: 10px;
     margin-top: 20px;
 }
 
@@ -45,27 +45,14 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-left: 5px;
-    margin-top: 5px;
+    margin-top: 7px;
+    margin-right: 5px;
 }
 
 .attendance-button:hover {
     background-color: #45a049;
 }
 
-.upload-attendance-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.upload-attendance-button:hover {
-    background-color: #45a049;
-}
 
 /*View Attendance History*/
 .view-attendance-container {
@@ -76,7 +63,7 @@
 
 .view-attendance-title {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .view-attendance-history-grid {
@@ -123,14 +110,14 @@
 
 .add-attendance-input {
     padding: 10px 20px;
-    margin: 10px 0;
+    margin: 5px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
 .add-attendance-select {
     padding: 10px 20px;
-    margin: 10px 0;
+    margin: 5px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
@@ -142,7 +129,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 5px;
+    margin-top: 10px;
     margin-left: 5px;
 }
 
@@ -160,7 +147,7 @@
 }
 .upload-attendance-title {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .upload-attendance-file-button {
@@ -170,7 +157,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
 .upload-attendance-file-button:hover {
@@ -179,9 +166,9 @@
 
 .upload-attendance-input {
     padding: 10px 20px;
-    margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
+    margin-bottom: 10px;
 }
 
 /*Attendance Report Management*/
@@ -199,10 +186,9 @@
 
 .attendance-report-management-select {
     padding: 10px;
-    margin: 0 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .attendance-report-management-button {
@@ -212,7 +198,8 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 7px;
 }
 
 .attendance-report-management-button:hover {
@@ -298,7 +285,7 @@
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
-    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .attendance-report-button:hover {
@@ -315,6 +302,7 @@
 
 .attendance-group-report-management-title {
     text-align: center;
+    margin-bottom: 10px;
 }
 
 .attendance-group-report-management-select {
@@ -322,7 +310,7 @@
     margin: 0 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .attendance-group-report-management-button {
@@ -332,7 +320,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .attendance-group-report-management-button:hover {

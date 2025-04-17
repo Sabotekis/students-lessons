@@ -3,19 +3,28 @@ import { useNavigate } from "react-router-dom";
 import './students.css';
 
 const AddStudent = () => {
-    const [student, setStudent] = useState({ name: "", surname: "", personal_code: "" });
+    const [student, setStudent] = useState({ name: "", surname: "", personalCode: "", phoneNumber: "", email: "" });
     const navigate = useNavigate();
 
     const handleAddStudent = () => {
     const personalCodeRegex = /^\d{6}-?\d{5}$/;
-    if (!student.name || !student.surname || !student.personal_code) {
-        alert("All fields are required");
+    if (!student.name || !student.surname || !student.personalCode || !student.phoneNumber || !student.email) {
+        alert("Visi lauki ir obligāti");
         return;
     }
-    if (!personalCodeRegex.test(student.personal_code)) {
-        alert("Personal code must be in the proper format");
+    if (!personalCodeRegex.test(student.personalCode)) {
+        alert("Personas kodam jābūt pareizā formātā");
         return;
     }
+    if (student.phoneNumber.length !== 8) {
+        alert("Tālruņa numuram jābūt 8 ciparu garam");
+        return;
+    }
+    if (!student.email.includes("@")) {
+        alert("E-pastam jābūt pareizā formātā");
+        return;
+    }
+    
     fetch("/api/students", {
         method: "POST",
         headers: {
@@ -35,12 +44,12 @@ const AddStudent = () => {
 
     return (
         <div className="add-student-container">
-            <h1 className="add-student-title">Add Student</h1>
+            <h1 className="add-student-title">Studentu pievienošana</h1>
             <div>
                 <input
                     className="add-student-input"
                     type="text"
-                    placeholder="Name"
+                    placeholder="Vārds"
                     value={student.name}
                     onChange={(e) => setStudent({ ...student, name: e.target.value })}
                     required
@@ -50,7 +59,7 @@ const AddStudent = () => {
                 <input
                     className="add-student-input"
                     type="text"
-                    placeholder="Surname"
+                    placeholder="Uzvārds"
                     value={student.surname}
                     onChange={(e) => setStudent({ ...student, surname: e.target.value })}
                     required
@@ -60,14 +69,34 @@ const AddStudent = () => {
                 <input
                     className="add-student-input"
                     type="text"
-                    placeholder="e.g. 123456-12345"
-                    value={student.personal_code}
-                    onChange={(e) => setStudent({ ...student, personal_code: e.target.value })}
+                    placeholder="Personas kods"
+                    value={student.personalCode}
+                    onChange={(e) => setStudent({ ...student, personalCode: e.target.value })}
                     required
                 />
             </div>
-            <button className="add-student-button" onClick={handleAddStudent}>Add Student</button>
-            <button className="add-student-button" onClick={handleBack}>Back</button>
+            <div>
+                <input
+                    className="add-student-input"
+                    type="text"
+                    placeholder="Tālruņa numurs"
+                    value={student.phoneNumber}
+                    onChange={(e) => setStudent({ ...student, phoneNumber: e.target.value })}
+                    required
+                />
+            </div>
+            <div>
+                <input
+                    className="add-student-input"
+                    type="text"
+                    placeholder="E-pasts"
+                    value={student.email}
+                    onChange={(e) => setStudent({ ...student, email: e.target.value })}
+                    required
+                />
+            </div>
+            <button className="add-student-button" onClick={handleAddStudent}>Pievienot studentu</button>
+            <button className="add-student-button" onClick={handleBack}>Atgriezties</button>
         </div>
     );
 };

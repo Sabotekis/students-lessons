@@ -5,14 +5,13 @@ const Group = require('../models/group.model');
 const fs = require('fs');
 const csvParser = require('csv-parser');
 const moment = require('moment');
-const GroupService = require('./GroupService');
 
 
 class AttendanceService {
     static async addAttendance({ attendanceData }) {
-        const { student, session, time_minute, academic_hours} = attendanceData;
+        const { student, session, timeMinute, academicHours} = attendanceData;
 
-        if (!student || !session || isNaN(time_minute) || isNaN(academic_hours)) {
+        if (!student || !session || isNaN(timeMinute) || isNaN(academicHours)) {
             throw new Error('Invalid attendance data');
         }
 
@@ -24,15 +23,15 @@ class AttendanceService {
         const attendance = new Attendance({
             student,
             session,
-            time_minute,
-            academic_hours,
+            timeMinute,
+            academicHours,
         });
         await attendance.save();
 
         const studentRecord = await Student.findById(student);
         if (studentRecord) {
             studentRecord.attendances.push(attendance._id);
-            studentRecord.total_academic_hours = Number(studentRecord.total_academic_hours || 0) + academic_hours;
+            studentRecord.totalAcademicHours = Number(studentRecord.totalAcademicHours || 0) + academicHours;
             await studentRecord.save();
         }
 
@@ -182,8 +181,8 @@ class AttendanceService {
                 attendanceData: {
                     student: student._id,
                     session: matchingSession._id,
-                    time_minute: timeInMinutes,
-                    academic_hours: academicHours,
+                    timeMinute: timeInMinutes,
+                    academicHours: academicHours,
                 },
             });
         }
@@ -192,7 +191,7 @@ class AttendanceService {
     static async getAttendanceReport({ groupId, month }) {
         const group = await Group.findById(groupId).populate('students').populate('sessions');
         if (!group) throw new Error('Group not found');
-    
+
         const plannedData = group.plannedData?.get(month) || { days: 0, hours: 0 };
     
         const startDate = moment(month, 'YYYY-MM').startOf('month').toDate();
@@ -202,7 +201,7 @@ class AttendanceService {
             const sessionDate = moment(session.date);
             return sessionDate.isBetween(startDate, endDate, 'day', '[]');
         });
-    
+        
         const daysInMonth = moment(month, 'YYYY-MM').daysInMonth();
     
         const attendances = await Attendance.find({
@@ -214,15 +213,15 @@ class AttendanceService {
         const report = group.students.map(student => {
             const studentAttendances = attendances.filter(a => a.student._id.equals(student._id));
             const dailyMinutes = Array(daysInMonth).fill(null);
-    
+
             sessionsInMonth.forEach(session => {
                 const sessionDay = moment(session.date).date() - 1;
                 const attendance = studentAttendances.find(a => a.session._id.equals(session._id));
-                dailyMinutes[sessionDay] = attendance ? attendance.academic_hours : 0;
+                dailyMinutes[sessionDay] = attendance ? attendance.academicHours : 0;
             });
     
             const totalDays = studentAttendances.length;
-            const totalHours = studentAttendances.reduce((sum, a) => sum + a.academic_hours, 0);
+            const totalHours = studentAttendances.reduce((sum, a) => sum + a.academicHours, 0);
     
             return {
                 name: `${student.name} ${student.surname}`,

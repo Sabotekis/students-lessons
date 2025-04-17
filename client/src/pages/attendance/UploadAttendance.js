@@ -11,7 +11,7 @@ const UploadFile = () => {
 
     const handleUploadAndAddAttendance = async () => {
         if (!file) {
-            alert('Please select a file first');
+            alert('Vispirms pievienojiet failu');
             return;
         }
 
@@ -27,7 +27,7 @@ const UploadFile = () => {
             const uploadData = await uploadResponse.json();
 
             if (!uploadResponse.ok) {
-                alert('Error uploading file: ' + uploadData.message);
+                alert('Kļūda augšupielādējot failu: ' + uploadData.message);
                 return;
             }
 
@@ -42,15 +42,14 @@ const UploadFile = () => {
             const attendanceData = await attendanceResponse.json();
 
             if (!attendanceResponse.ok) {
-                alert('Error adding attendance: ' + attendanceData.message);
+                alert('Kļūda, pievienojot apmeklējumu: ' + attendanceData.message);
                 return;
             }
 
-            alert('Attendance successfully uploaded and added');
             navigate('/attendance-management'); 
         } catch (error) {
             console.error('Error processing file:', error);
-            alert('An error occurred while processing the file');
+            alert('Apstrādājot failu, ir notikusi kļūda');
         }
     };
 
@@ -60,10 +59,12 @@ const UploadFile = () => {
 
     return (
         <div className='upload-attendance-container'>
-            <h1 className="upload-attendance-title">Upload Attendance CSV</h1>
-            <input className="upload-attendance-input" type="file" accept=".csv" onChange={handleFileChange} />
-            <button className="upload-attendance-file-button" onClick={handleUploadAndAddAttendance}>Add attendance</button>
-            <button className='upload-attendance-file-button' onClick={handleBack}>Back</button>
+            <h1 className="upload-attendance-title">Apmeklējuma CSV augšupielāde</h1>
+            <div>
+                <input className="upload-attendance-input" type="file" accept=".csv" onChange={handleFileChange} />
+            </div>
+            <button className="upload-attendance-file-button" onClick={handleUploadAndAddAttendance}>Pievienot apmeklējumu</button>
+            <button className='upload-attendance-file-button' onClick={handleBack}>Atgriezties</button>
         </div>
     );
 };

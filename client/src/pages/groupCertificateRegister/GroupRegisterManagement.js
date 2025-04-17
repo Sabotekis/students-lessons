@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./attendance.css";
+import './groupCertificate.css'
 
-const AttendanceGroupReportManagement = () => {
+const GroupRegisterManagement = () => {
     const [groups, setGroups] = useState([]);
     const [selectedGroup, setSelectedGroup] = useState("");
     const navigate = useNavigate();
@@ -14,25 +14,25 @@ const AttendanceGroupReportManagement = () => {
             .catch(error => console.error("Error fetching groups:", error));
     }, []);
 
-    const handleGenerateReport = () => {
+    const handleGenerateRegister = () => {
         if (!selectedGroup) {
-            alert("Izvēlieties grupu");
+            alert("Izvēlieties grupu.");
             return;
         }
 
-        navigate(`/attendance-group-report/${selectedGroup}`);
+        navigate(`/group-register/${selectedGroup}`);
     };
 
     const handleBack = () => {
-        navigate("/attendance-management");
+        navigate("/group-certificate-register");
     };
 
     return (
-        <div className="attendance-group-report-management-container">
-            <h1 className="attendance-group-report-management-title">Apmeklējuma grupas atskaite ģenerēšana</h1>
+        <div className="group-register-management-container">
+            <h1 className="group-register-management-title">Grupas reģistra pārvaldība</h1>
             <div>
                 <select
-                    className="attendance-group-report-management-select"
+                    className="group-register-management-select"
                     value={selectedGroup}
                     onChange={(e) => setSelectedGroup(e.target.value)}
                 >
@@ -44,14 +44,14 @@ const AttendanceGroupReportManagement = () => {
                     ))}
                 </select>
             </div>
-            <button className="attendance-group-report-management-button" onClick={handleGenerateReport}>
-                Ģenerēt atskaiti
+            <button className="group-register-management-button" onClick={handleGenerateRegister}>
+                Izveidot grupas reģistru
             </button>
-            <button className="attendance-group-report-management-button" onClick={handleBack}>
+            <button className="group-register-management-button" onClick={handleBack}>
                 Atgriezties
             </button>
         </div>
     );
 };
 
-export default AttendanceGroupReportManagement;
+export default GroupRegisterManagement;

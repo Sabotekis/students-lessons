@@ -31,20 +31,20 @@ const SessionHistory = () => {
 
     return (
         <div className="session-history-container">
-            <h1 className="session-history-title">Session History</h1>
-            <button className="session-history-back-button" onClick={handleBack}>Back</button>
-            {sessions.length === 0 && <div>No sessions found</div>}
+            <h1 className="session-history-title">Apmācību sesiju vēsture</h1>
+            {sessions.length === 0 && <div>Neviena sesija nav pabeigta</div>}
             <div className="session-history-grid">
                 {sessions.map(session => (
                     <div className="session-history-card" key={session._id}>
-                        <div><strong>Date:</strong> {new Date(session.date).toLocaleDateString()}</div>
-                        <div><strong>Group:</strong> {session.group.title}</div>
+                        <div><strong>Datums:</strong> {new Date(session.date).toLocaleDateString()}</div>
+                        <div><strong>Grupa:</strong> {session.group.title}</div>
                         <div>
-                            <button className="session-history-button" onClick={() => handleViewSession(session._id)}>View</button>
+                            <button className="session-history-button" onClick={() => handleViewSession(session._id)}>Apskatīt</button>
                         </div>
                     </div>
                 ))}
             </div>
+            <button className="session-history-back-button" onClick={handleBack}>Atgriezties</button>
         </div>
     );
 };

@@ -35,9 +35,9 @@
 
 .student-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 .student-card {
@@ -105,7 +105,7 @@
 
 .edit-student-title {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .edit-student-button {
@@ -115,7 +115,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 5px;
     margin-left: 5px;
 }
 
@@ -125,7 +125,7 @@
 
 .edit-student-input{
     padding: 10px;
-    margin: 10px 0;
+    margin: 5px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 20%;
@@ -142,7 +142,7 @@
 
 .add-student-title {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .add-student-button {
@@ -152,8 +152,8 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
-    margin-right: 10px;
+    margin-top: 5px;
+    margin-right: 5px;
 }
 
 .add-student-button:hover {
@@ -162,7 +162,7 @@
 
 .add-student-input {
     padding: 10px;
-    margin: 10px 0;
+    margin: 5px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 20%;
@@ -187,8 +187,8 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
-    margin-right: 10px;
+    margin-top: 10px;
+    margin-right: 5px;
 }
 
 .view-student-button:hover {
@@ -197,9 +197,9 @@
 
 .view-student-group-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 .view-student-group-card {

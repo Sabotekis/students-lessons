@@ -8,12 +8,7 @@ const GroupManagement = () => {
 
     useEffect(() => {
         fetch("/api/groups", {credentials: "include"})
-            .then(response => {
-                if (response.status === 401) {
-                    navigate("/login");
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => setGroups(data));
     }, [navigate]);
 
@@ -44,25 +39,27 @@ const GroupManagement = () => {
     
     return (
         <div className="group-container">
-            <h1 className="group-title">Grupu Parvaldība</h1>
+            <h1 className="group-title">Grupu parvaldība</h1>
             <div className="group-grid">
                 {groups.map(group => (
                     <div className="group-card" key={group._id}>
-                        <div><strong>Title:</strong> {group.title}</div>
-                        <div><strong>Start Date:</strong> {new Date(group.start_date).toLocaleDateString()}</div>
-                        <div><strong>End Date:</strong> {new Date(group.end_date).toLocaleDateString()}</div>
-                        <div><strong>Professor:</strong> {group.professor}</div>
-                        <div><strong>Academic Hours:</strong> {group.academic_hours}</div>
+                        <div><strong>Grupas registra numurs:</strong> {group.registerNumber}</div>
+                        <div><strong>Nosaukums:</strong> {group.title}</div>
+                        <div><strong>Sākuma datums:</strong> {new Date(group.startDate).toLocaleDateString("lv-LV")}</div>
+                        <div><strong>Beigu datums:</strong> {new Date(group.endDate).toLocaleDateString("lv-LV")}</div>
+                        <div><strong>Profesors:</strong> {group.professor}</div>
+                        <div><strong>Akadēmiskās stundas:</strong> {group.academicHours}</div>
+                        <div><strong>Minimālais stundu skaits:</strong> {group.minHours}</div>
                         <div>
-                            <button className="group-button" onClick={() => handleViewGroup(group._id)}>View</button>
-                            <button className="group-button" onClick={() => handleEditGroup(group._id)}>Edit</button>
-                            <button className="group-button" onClick={() => handleDeleteGroup(group._id)}>Delete</button>
-                            <button className="group-button" onClick={() => handleAddStudentToGroup(group._id)}>Add Student</button>
+                            <button className="group-button" onClick={() => handleViewGroup(group._id)}>Apskatīt</button>
+                            <button className="group-button" onClick={() => handleEditGroup(group._id)}>Rediģēt</button>
+                            <button className="group-button" onClick={() => handleDeleteGroup(group._id)}>Izdzēst</button>
+                            <button className="group-button" onClick={() => handleAddStudentToGroup(group._id)}>Pievienot studentu</button>
                         </div>
                     </div>
                 ))}
                 <div className="add-button-card" onClick={handleAddGroup}>
-                    <button className="group-button">Add Group</button>
+                    <button className="group-button">Pievienot grupu</button>
                 </div>
             </div>
         </div>

@@ -16,15 +16,6 @@ router.put('/:id/finish', async (req, res) => {
     }
 });
 
-router.get('/history', async (req, res) => {
-    try {
-        const sessions = await SessionService.getDeletedSessions();
-        res.status(200).json(sessions);
-    } catch (error) {
-        res.status(500).json({ status: "error", data: null, message: error.message });
-    }
-});
-
 router.get('/', async (req, res) => {
     try {
         const sessions = await SessionService.getAllSessions();
@@ -37,15 +28,6 @@ router.get('/', async (req, res) => {
 router.get('/finished', async (req, res) => {
     try {
         const sessions = await SessionService.getFinishedSessions();
-        res.status(200).json(sessions);
-    } catch (error) {
-        res.status(500).json({ status: "error", data: null, message: error.message });
-    }
-});
-
-router.get('/deleted', async (req, res) => {
-    try {
-        const sessions = await SessionService.getDeletedSessions();
         res.status(200).json(sessions);
     } catch (error) {
         res.status(500).json({ status: "error", data: null, message: error.message });

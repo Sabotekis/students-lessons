@@ -2,6 +2,7 @@ const Group = require('../models/group.model');
 const Student = require('../models/student.model');
 const Session = require('../models/session.model');
 const Attendance = require('../models/attendance.model');
+const Certificate = require('../models/certificate.model');
 
 class GroupService {
   static async getAllGroups({ includeDeleted = false } = {}) {
@@ -15,20 +16,23 @@ class GroupService {
   }
 
   static async createGroup({ groupData }) {
-    if (!groupData.academic_hours || groupData.academic_hours <= 0) {
+    if (!groupData.academicHours || groupData.academicHours <= 0) {
         throw new Error('Academic hours must be a positive number');
     }
+
+    const randomCertificateCounter = Math.floor(10000 + Math.random() * 90000); 
 
     const newGroup = new Group({
         ...groupData,
         plannedData: groupData.plannedData, 
+        certificateCounter: randomCertificateCounter,
     });
 
     return await newGroup.save();
   }
 
   static async updateGroup({id, groupData}) {
-    if (groupData.academic_hours && groupData.academic_hours <= 0) {
+    if (groupData.academicHours && groupData.academicHours <= 0) {
       throw new Error('Academic hours must be a positive number');
     }
     return await Group.findByIdAndUpdate(id, groupData, { new: true }).populate('students');
@@ -95,25 +99,46 @@ class GroupService {
     const attendances = await Attendance.find({
         session: { $in: group.sessions.map(session => session._id) },
     }).populate('student').populate('session');
-    
-    let certificateCounter = 81651;
+
+    const certificates = await Certificate.find({ group: groupId }).populate('student');
 
     return group.students.map(student => {
-        const studentAttendances = attendances.filter(a => a.student._id.equals(student._id));
-        const totalHours = studentAttendances.reduce((sum, attendance) => sum + attendance.academic_hours, 0);
-        const certificateNumber = totalHours >= 6 ? certificateCounter++ : "Nav";
-        
-        return {
-            name: `${student.name} ${student.surname}`,
-            totalHours,
-            status: totalHours >= 6 ? "Ieskaitīts" : "Neieskaitīts",
-            certificateType: totalHours >= 6 ? "NI" : "Nav",
-            certificateNumber,
-            period: `${new Date(group.start_date).toLocaleDateString('lv-LV')} - ${new Date(group.end_date).toLocaleDateString('lv-LV')}`,
-            issueDate: totalHours >= 6 ? `${new Date(group.end_date).toLocaleDateString('lv-LV')}` : "Nav",
-        };
+      const studentAttendances = attendances.filter(a => a.student._id.equals(student._id));
+      const totalHours = studentAttendances.reduce((sum, attendance) => sum + attendance.academicHours, 0);
+      const studentCertificate = certificates.find(cert => cert.student._id.equals(student._id));
+
+      return {
+        name: `${student.name} ${student.surname}`,
+        totalHours,
+        status: studentCertificate ? "Ieskaitīts" : "Neieskaitīts",
+        certificateType: studentCertificate ? "NI" : "Nav",
+        certificateNumber: studentCertificate ? studentCertificate.certificateNumber : "Nav",
+        period: `${new Date(group.startDate).toLocaleDateString('lv-LV')} - ${new Date(group.endDate).toLocaleDateString('lv-LV')}`,
+        issueDate: studentCertificate ? `${new Date(group.endDate).toLocaleDateString('lv-LV')}` : "Nav",
+      };
     });
   }
+  
+  static async generateGroupRegister({ groupId }) {
+    const group = await Group.findById(groupId).populate('students').populate('sessions');
+    if (!group) {
+        throw new Error("Group not found");
+    }
+    const certificates = await Certificate.find({ group: groupId }).populate('student');
+
+    return group.students.map(student => {
+        const studentCertificate = certificates.find(cert => cert.student._id.equals(student._id));
+
+        return {
+            name: `${student.name} ${student.surname}`,
+            personalCode: student.personalCode,
+            status: studentCertificate ? "Ieskaitīts" : "Neieskaitīts",
+            certificateType: studentCertificate ? "NI" : "Nav",
+            certificateNumber: studentCertificate ? studentCertificate.certificateNumber : "Nav",
+            issueDate: studentCertificate ? `${new Date(group.endDate).toLocaleDateString('lv-LV')}` : "Nav",
+        };
+    });
+}
 }
 
 module.exports = GroupService;

@@ -45,8 +45,8 @@ const AttendanceReport = () => {
         worksheet.addRow(["Grupa:", groupInfo.title || "N/A"]);
         worksheet.addRow([
             "Apmācības periods:",
-            groupInfo.start_date && groupInfo.end_date
-                ? `${new Date(groupInfo.start_date).toLocaleDateString()} - ${new Date(groupInfo.end_date).toLocaleDateString()}`
+            groupInfo.startDate && groupInfo.endDate
+                ? `${new Date(groupInfo.startDate).toLocaleDateString()} - ${new Date(groupInfo.endDate).toLocaleDateString()}`
                 : "N/A",
         ]);
         worksheet.addRow([]);
@@ -117,7 +117,7 @@ const AttendanceReport = () => {
     };
 
     if (!groupId || !month) {
-        return <div>Please select a group and month from the Attendance Report Management page.</div>;
+        return <div>Lūdzu, izvēlieties grupu un mēnesi apmeklējuma pārskatu pārvaldības lapā.</div>;
     }
 
     return (
@@ -127,15 +127,11 @@ const AttendanceReport = () => {
                 <tbody>
                     <tr>
                         <th>Grupa</th>
-                        <td>{groupInfo.title || "N/A"}</td>
+                        <td>{groupInfo.title}</td>
                     </tr>
                     <tr>
                         <th>Apmācības periods</th>
-                        <td>
-                            {groupInfo.start_date && groupInfo.end_date
-                                ? `${new Date(groupInfo.start_date).toLocaleDateString()} - ${new Date(groupInfo.end_date).toLocaleDateString()}`
-                                : "N/A"}
-                        </td>
+                        <td>{new Date(groupInfo.startDate).toLocaleDateString()} - {new Date(groupInfo.endDate).toLocaleDateString()}</td>
                     </tr>
                 </tbody>
             </table>
@@ -180,8 +176,8 @@ const AttendanceReport = () => {
                     ))}
                 </tbody>
             </table>
-            <button className="attendance-report-button" onClick={handleBack}>Back</button>
-            <button className="attendance-report-button" onClick={handleExportToExcel}>Export to Excel</button>
+            <button className="attendance-report-button" onClick={handleExportToExcel}>Eksportēšana uz Excel</button>
+            <button className="attendance-report-button" onClick={handleBack}>Atgriezties</button>
         </div>
     );
 };

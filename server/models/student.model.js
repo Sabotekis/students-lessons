@@ -3,13 +3,14 @@ const mongoose = require('mongoose');
 const studentSchema = new mongoose.Schema({
     name: { type: String, required: true },
     surname: { type: String, required: true },
-    personal_code: { type: String, required: true },
+    personalCode: { type: String, required: true },
+    phoneNumber: { type: String, required: true },
+    email: { type: String, required: true },
+    totalAcademicHours: { type: Number, default: 0 },
     groups: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Group' }],
     sessions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Session' }],
     attendances: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Attendance' }],
-    licence: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Licence' }],
-    licenceRegistration: [{ type: mongoose.Schema.Types.ObjectId, ref: 'LicenceRegistration' }],
-    total_academic_hours: { type: Number, default: 0 },
+    certificates: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Certificate' }],
     deleted: { type: Boolean, default: false }
 });
 

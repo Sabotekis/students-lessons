@@ -42,14 +42,12 @@ router.post('/upload-attendance', async (req, res) => {
 });
 
 router.get('/report/html/:groupId/:month', async (req, res) => {
-    const { groupId, month } = req.params;
-
     try {
+        const { groupId, month } = req.params;
         const report = await AttendanceService.getAttendanceReport({ groupId, month });
-        res.json(report);
+        res.status(200).json(report);
     } catch (error) {
-        console.error('Error fetching attendance report:', error.message);
-        res.status(404).json({ message: 'Attendance report not found' });
+        res.status(404).json({ status: "error", data: null, message: error.message  });
     }
 });
 

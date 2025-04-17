@@ -5,18 +5,12 @@ import './sessions.css';
 const EditSession = () => {
     const { id } = useParams();
     const [session, setSession] = useState({ date: "", group: "", students: [] });
-    const [error, setError] = useState("");
     const [groupStudents, setGroupStudents] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         fetch(`/api/sessions/${id}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
                 setSession({
                     ...data,
@@ -25,26 +19,15 @@ const EditSession = () => {
                     students: data.students.map(student => student._id)
                 });
             })
-            .catch(error => {
-                console.error('Error fetching session:', error);
-                setError('Error fetching session');
-            });
+            .catch(error => console.error('Error fetching session:', error));
     }, [id]);
 
     useEffect(() => {
         if (session.group) {
             fetch(`/api/groups/${session.group}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => setGroupStudents(data.students || []))
-                .catch(error => {
-                    console.error('Error fetching group students:', error);
-                    setError('Error fetching group students');
-                });
+                .catch(error => console.error('Error fetching group students:', error));
         }
     }, [session.group]);
 
@@ -60,10 +43,7 @@ const EditSession = () => {
         .then(() => {
             navigate("/session-management");
         })
-        .catch(error => {
-            console.error('Error updating session:', error);
-            setError('Error updating session');
-        });
+        .catch(error => console.error('Error updating session:', error));
     };
 
     const handleBack = () => {
@@ -88,33 +68,33 @@ const EditSession = () => {
 
     return (
         <div className="edit-session-container">
-            <h1 className="edit-session-title">Edit Session</h1>
-            {error && <div className="error">{error}</div>}
+            <h1 className="edit-session-title">Apmācību sesiju rediģēšana</h1>
             {groupStudents.length > 0 ? (
                 <div>
-                    <h2>Students:</h2>
                     <div className="edit-session-student-grid">
                         {groupStudents.map(student => (
                             <div className="edit-session-student-card" key={student._id}>
-                                <div><strong>Name:</strong> {student.name}</div>
-                                <div><strong>Surname:</strong> {student.surname}</div>
-                                <div><strong>Personal Code:</strong> {student.personal_code}</div>
+                                <div><strong>Vārds:</strong> {student.name}</div>
+                                <div><strong>Uzvārds:</strong> {student.surname}</div>
+                                <div><strong>Personas kods:</strong> {student.personalCode}</div>
+                                <div><strong>Telefona numurs:</strong> {student.phoneNumber}</div>
+                                <div><strong>E-pasts:</strong> {student.email}</div>
                                 {student.deleted ? (
-                                    <div>(This student is deleted)</div>
+                                    <div>(Šis students ir dzēsts)</div>
                                 ) : session.students.includes(student._id) ? (
-                                    <button className="edit-session-delete-button" onClick={() => handleRemoveStudentFromSession(student._id)}>Remove</button>
+                                    <button className="edit-session-delete-button" onClick={() => handleRemoveStudentFromSession(student._id)}>Izdzēst</button>
                                 ) : (
-                                    <button className="edit-session-add-button" onClick={() => handleAddStudentToSession(student._id)}>Add</button>
+                                    <button className="edit-session-add-button" onClick={() => handleAddStudentToSession(student._id)}>Pievienot</button>
                                 )}
                             </div>
                         ))}
                     </div>
                 </div>
             ) : (
-                <div>No students in this group</div>
+                <div>Šajā grupā nav studentu</div>
             )}
-            <button className="edit-session-button" onClick={handleUpdateSession}>Update Session</button>
-            <button className="edit-session-button" onClick={handleBack}>Back</button>
+            <button className="edit-session-button" onClick={handleUpdateSession}>Atjaunināt sesiju</button>
+            <button className="edit-session-button" onClick={handleBack}>Atgriezties</button>
         </div>
     );
 };
