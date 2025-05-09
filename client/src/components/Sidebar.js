@@ -11,6 +11,8 @@ import './sidebar.css';
 const Sidebar = () => {
     const [sidebar, setSidebar] = useState(false);
     const [username, setUsername] = useState(null);
+    const [sections, setSections] = useState({});
+    const [roleSections, setRoleSections] = useState({});
     const navigate = useNavigate();
     const sidebarRef = useRef(null);
 
@@ -36,12 +38,18 @@ const Sidebar = () => {
             .then(data => {
                 if (data.status === "success") {
                     setUsername(data.user.email);
+                    setSections(data.user.role.sections || {});
                 }
             })
             .catch(error => {
                 console.error('Error fetching user data:', error);
             });
         }
+        fetch('/api/roles/sections')
+            .then(res => res.json())
+            .then(data => setRoleSections(data))
+            .catch(err => console.error('Error fetching role sections:', err));
+
         const handleClickOutside = (event) => {
             if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
                 closeSidebar();
@@ -80,6 +88,11 @@ const Sidebar = () => {
                             onMouseLeave={(e) => (e.target.style.color = "white")}
                         />
                     </Link>
+                    {roleSections['Lomu pārvaldība'] && (
+                        <Link to="/role-management" className="nav-title-roles" onClick={closeSidebar}>
+                            Lomu pārvaldība
+                        </Link>
+                    )}
                     <Link to="/" className="nav-title">
                         Izglītojamo tiešsaistes nodarbībās pavadītā laika
                     </Link>
@@ -111,7 +124,7 @@ const Sidebar = () => {
                                 onMouseLeave={(e) => (e.target.style.color = "white")}
                             />
                         </Link>
-                        {SidebarData.map((item, index) => (
+                        {SidebarData.filter(item => sections[item.title] !== false).map((item, index) => (
                             <SubMenu item={item} key={index} closeSidebar={closeSidebar} />
                         ))}
                     </div>

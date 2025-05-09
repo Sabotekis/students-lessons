@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const CertificateService = require('../services/CertificateService');
+const checkPermission = require('../middleware/checkPermission');
 
 router.get('/', async (req, res) => {
     try {
@@ -12,7 +13,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', checkPermission('certificates.create'), async (req, res) => {
     try {
         const { student, group } = req.body;
         const certificate = await CertificateService.createCertificate({ student, group });
@@ -33,7 +34,7 @@ router.get('/eligible-students/:groupId', async (req, res) => {
     }
 });
 
-router.get('/:certificateId/download-pdf', async (req, res) => {
+router.get('/:certificateId/download-pdf', checkPermission('certificates.download'), async (req, res) => {
     try {
         const { certificateId } = req.params;
         const pdfBuffer = await CertificateService.generatePDF({certificateId});

@@ -1,5 +1,5 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 import Sidebar from "./components/Sidebar";
 import Home from "./pages/Home";
@@ -37,6 +37,28 @@ import GroupRegister from "./pages/groupCertificateRegister/GroupRegister";
 import CertificateRegister from "./pages/groupCertificateRegister/CertificateRegister";
 import GroupRegisterManagement from "./pages/groupCertificateRegister/GroupRegisterManagement";
 
+import RoleManagement from "./pages/role/RoleManagement";
+import RoleAssignment from "./pages/role/RoleAssignment";
+
+
+const ProtectedRoute = ({ element, requiredPermission }) => {
+    const navigate = useNavigate();
+    const [hasPermission, setHasPermission] = useState(false);
+
+    useEffect(() => {
+        fetch('/api/roles/permissions')
+            .then(res => res.json())
+            .then(permissions => {
+                if (permissions.includes(requiredPermission)) {
+                    setHasPermission(true);
+                } else {
+                    navigate('/'); 
+                }
+            });
+    }, [requiredPermission, navigate]);
+
+    return hasPermission ? element : null;
+};
 
 const ProtectedApp = () => {
     return (
@@ -44,33 +66,65 @@ const ProtectedApp = () => {
             <Sidebar />
             <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/role-management" element={<RoleManagement />} />
+                <Route
+                    path="/role-assignment"
+                    element={<ProtectedRoute element={<RoleAssignment />} requiredPermission="roles.assign" />}
+                />
                 <Route path="/student-management" element={<StudentManagement />} />
-                <Route path="/add-student" element={<AddStudent />} />
-                <Route path="/edit-student/:id" element={<EditStudent />} />
+                <Route
+                    path="/add-student"
+                    element={<ProtectedRoute element={<AddStudent />} requiredPermission="students.create" />}
+                />
+                <Route
+                    path="/edit-student/:id"
+                    element={<ProtectedRoute element={<EditStudent />} requiredPermission="students.update" />}
+                />
                 <Route path="/view-student/:id" element={<ViewStudent />} />
 
                 <Route path="/group-management" element={<GroupManagement />} />
-                <Route path="/add-group" element={<AddGroup />} />
-                <Route path="/edit-group/:id" element={<EditGroup />} />
+                <Route
+                    path="/add-group"
+                    element={<ProtectedRoute element={<AddGroup />} requiredPermission="groups.create" />}
+                />
+                <Route
+                    path="/edit-group/:id"
+                    element={<ProtectedRoute element={<EditGroup />} requiredPermission="groups.update" />}
+                />
                 <Route path="/view-group/:id" element={<ViewGroup />} />
 
                 <Route path="/session-management" element={<SessionManagement />} />
-                <Route path="/add-session" element={<AddSession />} />
-                <Route path="/edit-session/:id" element={<EditSession />} />
+                <Route
+                    path="/add-session"
+                    element={<ProtectedRoute element={<AddSession />} requiredPermission="sessions.create" />}
+                />
+                <Route
+                    path="/edit-session/:id"
+                    element={<ProtectedRoute element={<EditSession />} requiredPermission="sessions.update" />}
+                />
                 <Route path="/view-session/:id" element={<ViewSession />} />
                 <Route path="/session-history" element={<SessionHistory/>} />
 
                 <Route path="/attendance-management" element={<AttendanceManagement />} />
-                <Route path="/add-attendance" element={<AddAttendance />} />
+                <Route
+                    path="/add-attendance"
+                    element={<ProtectedRoute element={<AddAttendance />} requiredPermission="attendances.create" />}
+                />
                 <Route path="/view-attendance-history/:id" element={<ViewAttendanceHistory />} />
-                <Route path="/upload-attendance" element={<UploadAttendance />} />
+                <Route
+                    path="/upload-attendance"
+                    element={<ProtectedRoute element={<UploadAttendance />} requiredPermission="attendances.upload" />}
+                />
                 <Route path="/attendance-report-management" element={<AttendanceReportManagement />} />
                 <Route path="/attendance-report" element={<AttendanceReport />} />
                 <Route path="/attendance-group-report-management" element={<AttendanceGroupReportManagement />} />
                 <Route path="/attendance-group-report/:groupId" element={<AttendanceGroupReport />} />
                 
                 <Route path="/certificate-management" element={<CertificateManagement />} />
-                <Route path="/add-certificate" element={<AddCertificate />} />
+                <Route
+                    path="/add-certificate"
+                    element={<ProtectedRoute element={<AddCertificate />} requiredPermission="certificates.create" />}
+                />
 
                 <Route path="/group-certificate-register" element={<GroupCertificateRegister />} />
                 <Route path="/group-register/:groupId" element={<GroupRegister />} />

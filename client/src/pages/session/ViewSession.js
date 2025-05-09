@@ -6,13 +6,19 @@ const ViewSession = () => {
     const { id } = useParams();
     const [session, setSession] = useState(null);
     const navigate = useNavigate();
+    const [userPermissions, setUserPermissions] = useState([]);
 
     useEffect(() => {
         fetch(`/api/sessions/${id}`)
             .then(response => response.json())
             .then(data => setSession(data))
             .catch(error => console.error('Error fetching session:', error));
+        fetch('/api/roles/permissions')
+            .then(res => res.json())
+            .then(data => setUserPermissions(data));
     }, [id]);
+
+    const hasPermission = (permission) => userPermissions.includes(permission);
 
     const handleBack = () => {
         navigate("/session-management");
@@ -86,11 +92,11 @@ const ViewSession = () => {
             </div>
             {!session.finished && (
                 <>
-                    <button className="view-session-button" onClick={() => navigate(`/edit-session/${id}`)}>Rediģēt</button>
-                    <button className="view-session-button" onClick={() => {
+                    {hasPermission('sessions.update') && <button className="view-session-button" onClick={() => navigate(`/edit-session/${id}`)}>Rediģēt</button>}
+                    {hasPermission('sessions.delete') && <button className="view-session-button" onClick={() => {
                         fetch(`/api/sessions/${id}`, { method: "DELETE" })
                             .then(() => navigate("/session-management"));
-                    }}>Izdzēst</button>
+                    }}>Izdzēst</button>}
                 </>
             )}
             <button className="view-session-button" onClick={handleBack}>Atgriezties</button>

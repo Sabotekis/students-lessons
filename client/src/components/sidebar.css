@@ -24,7 +24,6 @@
 
 .nav-title {
     text-align: center;
-    margin-left: 200px;
     color: white;
     cursor: pointer;
     text-decoration: none;
@@ -135,4 +134,16 @@
 .dropdown-link:hover {
     background: green;
     cursor: pointer;
+}
+
+.nav-title-roles {
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 200ms ease-in-out;
+    font-size: 30px;
+}
+
+.nav-title-roles:hover {
+    color: #4CAF50;
 }

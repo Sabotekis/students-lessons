@@ -6,6 +6,8 @@ const groups = require('./groups');
 const sessions = require('./sessions');
 const attendance = require('./attendance');
 const certificates = require('./certificates');
+const roles = require('./roles');
+const users = require('./users');
 const router = express.Router();
 
 router
@@ -15,6 +17,8 @@ router
     .use('/groups', protected, groups)
     .use('/sessions', protected, sessions)
     .use('/attendance', protected, attendance)
-    .use('/certificates', protected, certificates);
+    .use('/certificates', protected, certificates)
+    .use('/roles', protected, roles)
+    .use('/users', protected, users);
 
 module.exports = router;

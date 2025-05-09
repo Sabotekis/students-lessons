@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const AttendanceManagement = () => {
     const [students, setStudents] = useState([]); 
     const navigate = useNavigate();
+    const [userPermissions, setUserPermissions] = useState([]);
 
     useEffect(() => {
         fetch("/api/students", { credentials: "include" })
@@ -14,7 +15,12 @@ const AttendanceManagement = () => {
                 console.error("Error fetching students:", error);
                 setStudents([]);
             });
+        fetch('/api/roles/permissions')
+            .then(res => res.json())
+            .then(data => setUserPermissions(data));
     }, [navigate]);
+
+    const hasPermission = (permission) => userPermissions.includes(permission);
 
     const handleAddAttendance = (studentId) => {
         navigate("/add-attendance", { state: { studentId } });
@@ -50,11 +56,11 @@ const AttendanceManagement = () => {
                         <div><strong>E-pasts:</strong> {student.email}</div>
                         <div><strong>Akadēmiskās stundas:</strong> {student.totalAcademicHours}</div>
                         <button className="attendance-button" onClick={() => handleViewAttendanceHistory(student._id)}>Apmeklējuma vēsturi</button>
-                        <button className="attendance-button" onClick={() => handleAddAttendance(student._id)}>Pievienot apmeklējumu</button>
+                        {hasPermission('attendances.create') && <button className="attendance-button" onClick={() => handleAddAttendance(student._id)}>Pievienot apmeklējumu</button>}
                     </div>
                 ))}
             </div>
-            <button className="attendance-button" onClick={handelUploadFile}>Apmeklējuma augšupielāde</button>
+            {hasPermission('attendances.upload') && <button className="attendance-button" onClick={handelUploadFile}>Apmeklējuma augšupielāde</button>}
             <button className="attendance-button" onClick={handleAttendanceReport}>Apmeklējuma atskaite</button>    
             <button className="attendance-button" onClick={handelAttendanceGroupReport}>Apmeklējuma grupas atskaite</button>
         </div>

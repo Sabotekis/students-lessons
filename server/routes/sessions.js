@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const SessionService = require('../services/SessionService');
+const checkPermission = require('../middleware/checkPermission');
 
-router.put('/:id/finish', async (req, res) => {
+router.put('/:id/finish', checkPermission('sessions.finish'), async (req, res) => {
     try {
         const session = await SessionService.getSessionById({ id: req.params.id });
         if (!session || session.deleted) {
@@ -46,7 +47,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', checkPermission('sessions.create'), async (req, res) => {
     try {
         const newSession = await SessionService.createSession({ sessionData: req.body });
         res.status(200).json(newSession);
@@ -55,7 +56,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', checkPermission('sessions.update'), async (req, res) => {
     try {
         const updatedSession = await SessionService.updateSession({ id: req.params.id, sessionData: req.body });
         res.status(200).json(updatedSession);
@@ -64,7 +65,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', checkPermission('sessions.delete'), async (req, res) => {
     try {
         const updatedSession = await SessionService.deleteSession({ id: req.params.id });
         res.status(200).json({ status: "success", data: updatedSession, message: 'Veiksmīgi atgriezti dati' });

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const StudentService = require('../services/StudentService');
+const checkPermission = require('../middleware/checkPermission');
 
 router.get('/', async (req, res) => {
     try {
@@ -23,7 +24,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', checkPermission('students.create'), async (req, res) => {
     try {
         const newStudent = await StudentService.createStudent({ studentData: req.body });
         res.status(200).json(newStudent);
@@ -32,7 +33,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', checkPermission('students.update'), async (req, res) => {
     try {
         const updatedStudent = await StudentService.updateStudent({ id: req.params.id, studentData: req.body });
         res.status(200).json(updatedStudent);
@@ -41,7 +42,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', checkPermission('students.delete'), async (req, res) => {
     try {
         await StudentService.deleteStudent({ id: req.params.id });
         res.status(200).json({ status: "success", data: null, message: 'Veiksmīgi atgriezti dati' });

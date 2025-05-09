@@ -5,6 +5,7 @@ import './students.css';
 const ViewStudent = () => {
     const { id } = useParams();
     const [student, setStudent] = useState(null);
+    const [userPermissions, setUserPermissions] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -12,7 +13,12 @@ const ViewStudent = () => {
             .then(response => response.json())
             .then(data => setStudent(data))
             .catch(error => console.error('Error fetching group:', error));
+        fetch('/api/roles/permissions')
+            .then(res => res.json())
+            .then(data => setUserPermissions(data));
     }, [id]);
+
+    const hasPermission = (permission) => userPermissions.includes(permission); 
 
     const handleEditStudent = () => {
         navigate(`/edit-student/${id}`);
@@ -76,8 +82,8 @@ const ViewStudent = () => {
                     </div>
                 )}
             </div>
-            <button className="view-student-button" onClick={handleEditStudent}>Rediģēt</button>
-            <button className="view-student-button" onClick={handleDeleteStudent}>Izdzēst</button>
+            {hasPermission('students.update') && <button className="view-student-button" onClick={handleEditStudent}>Rediģēt</button>}
+            {hasPermission('students.delete') && <button className="view-student-button" onClick={handleDeleteStudent}>Izdzēst</button>}
             <button className="view-student-button" onClick={handleBack}>Atgriezties</button>
         </div>
     );

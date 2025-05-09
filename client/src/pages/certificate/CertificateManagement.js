@@ -5,12 +5,18 @@ import { useNavigate } from 'react-router-dom';
 const CertificateManagement = () => {
     const [certificates, setCertificates] = useState([]);
     const navigate = useNavigate();
+    const [userPermissions, setUserPermissions] = useState([]);
 
     useEffect(() => {
         fetch('/api/certificates')
             .then((res) => res.json())
             .then((data) => setCertificates(data));
+        fetch('/api/roles/permissions')
+            .then(res => res.json())
+            .then(data => setUserPermissions(data));
     }, []);
+
+    const hasPermission = (permission) => userPermissions.includes(permission);
 
     const handleAddCertificate = () => {
         navigate('/add-certificate');
@@ -50,14 +56,18 @@ const CertificateManagement = () => {
                             <div><strong>Uzvārds</strong> {certificate.student.surname}</div>
                             <div><strong>Grupa:</strong> {certificate.group.title}</div>
                             <div><strong>Izsniegšanas datums:</strong> {new Date(certificate.issueData).toLocaleDateString()}</div>
-                            <div>
-                                <button className="certificate-management-button" onClick={() => handleDownloadPDF(certificate._id)}>Lejupielādēt PDF</button>
-                            </div>
+                            {hasPermission('certificates.download') && (
+                                <div>
+                                    <button className="certificate-management-button" onClick={() => handleDownloadPDF(certificate._id)}>Lejupielādēt PDF</button>
+                                </div>
+                            )}
                         </div>
                     ))}
-                    <div className="certificate-management-addbuttoncard">
-                            <button className="certificate-management-button" onClick={handleAddCertificate}>Pievienot apliecību</button>
-                    </div>
+                    {hasPermission('certificates.create') && (
+                        <div className="certificate-management-addbuttoncard">
+                                <button className="certificate-management-button" onClick={handleAddCertificate}>Pievienot apliecību</button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

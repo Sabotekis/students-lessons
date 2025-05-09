@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const GroupService = require('../services/GroupService');
+const checkPermission = require('../middleware/checkPermission');
 
 router.get('/', async (req, res) => {
     try {
@@ -23,7 +24,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', checkPermission('groups.create'), async (req, res) => {
     try {
         const newGroup = await GroupService.createGroup({groupData: req.body});
         res.status(200).json(newGroup);
@@ -32,7 +33,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', checkPermission('groups.update'), async (req, res) => {
     try {
         const updatedGroup = await GroupService.updateGroup({id: req.params.id, groupData: req.body});
         res.status(200).json(updatedGroup);
@@ -41,7 +42,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', checkPermission('groups.delete'), async (req, res) => {
     try {
         await GroupService.deleteGroup({id: req.params.id});
         res.status(200).json({ status: "success", data: null, message: 'Veiksmīgi atgriezti dati' });
@@ -50,7 +51,7 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.post('/:id/add-student', async (req, res) => {
+router.post('/:id/add-student', checkPermission('groups.addStudents'), async (req, res) => {
     try {
         const updatedGroup = await GroupService.addStudentToGroup({ groupId: req.params.id, studentId: req.body.studentId });
         res.status(200).json(updatedGroup);
@@ -59,7 +60,7 @@ router.post('/:id/add-student', async (req, res) => {
     }
 });
 
-router.post('/:id/remove-student', async (req, res) => {
+router.post('/:id/remove-student', checkPermission('groups.deleteStudents'), async (req, res) => {
     try {
         const updatedGroup = await GroupService.removeStudentFromGroup({ groupId: req.params.id, studentId: req.body.studentId });
         res.status(200).json(updatedGroup);

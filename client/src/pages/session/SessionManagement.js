@@ -5,13 +5,19 @@ import './sessions.css';
 const SessionManagement = () => {
     const [sessions, setSessions] = useState([]);
     const navigate = useNavigate();
-
+    const [userPermissions, setUserPermissions] = useState([]);
+    
     useEffect(() => {
         fetch("/api/sessions", { credentials: "include" })
             .then(response => response.json())
             .then(data => setSessions(data))
             .catch(error => console.error("Error fetching sessions:", error));
+        fetch('/api/roles/permissions')
+            .then(res => res.json())
+            .then(data => setUserPermissions(data));
     }, [navigate]);
+
+    const hasPermission = (permission) => userPermissions.includes(permission);
 
     const handleViewSession = (id) => {
         navigate(`/view-session/${id}`);
@@ -64,15 +70,17 @@ const SessionManagement = () => {
                         <div><strong>Grupa:</strong> {session.group.title}</div>
                         <div>
                             <button className="session-button" onClick={() => handleViewSession(session._id)}>Apskatīt</button>
-                            <button className="session-button" onClick={() => handleEditSession(session._id)}>Rediģēt</button>
-                            <button className="session-button" onClick={() => handleFinishSession(session._id)}>Pabeigt</button>    
-                            <button className="session-button" onClick={() => handleDeleteSession(session._id)}>Izdzēst</button>
+                            {hasPermission('sessions.update') && <button className="session-button" onClick={() => handleEditSession(session._id)}>Rediģēt</button>}
+                            {hasPermission('sessions.finish') && <button className="session-button" onClick={() => handleFinishSession(session._id)}>Pabeigt</button>}    
+                            {hasPermission('sessions.delete') && <button className="session-button" onClick={() => handleDeleteSession(session._id)}>Izdzēst</button>}
                         </div>
                     </div>
                 ))}
-                <div className="addbuttoncard">
-                    <button className="session-button" onClick={handleAddSession}>Pievienot sesiju</button>
-                </div>
+                {hasPermission("sessions.create") && (
+                    <div className="addbuttoncard">
+                        <button className="session-button" onClick={handleAddSession}>Pievienot sesiju</button>
+                    </div>
+                )}
             </div>
             <button className="session-history-management-button" onClick={handleSessionHistory}>Sesijas vēsture</button>
         </div>

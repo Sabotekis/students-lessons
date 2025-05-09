@@ -10,6 +10,7 @@ const StudentManagement = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const groupId = location.state?.groupId;
+    const [userPermissions, setUserPermissions] = useState([]);
 
     useEffect(() => {
         fetch("/api/students", {credentials: "include"})
@@ -21,8 +22,13 @@ const StudentManagement = () => {
                 .then(response => response.json())
                 .then(data => setGroupStudents(data.students));
         }
+        fetch('/api/roles/permissions')
+            .then(res => res.json())
+            .then(data => setUserPermissions(data));
     }, [groupId, navigate]);
 
+    const hasPermission = (permission) => userPermissions.includes(permission);
+    
     const handleAddStudent = () => {
         navigate("/add-student");
     };
@@ -132,15 +138,15 @@ const StudentManagement = () => {
                                 ) : (
                                     <>
                                         <button className="student-button" onClick={() => handleViewStudent(student._id)}>Apskatīt</button>
-                                        <button className="student-button" onClick={() => handleEditStudent(student._id)}>Rediģēt</button>
-                                        <button className="student-button" onClick={() => handleDeleteStudent(student._id)}>Izdzēst</button>
+                                        {hasPermission('students.update') && <button className="student-button" onClick={() => handleEditStudent(student._id)}>Rediģēt</button>}
+                                        {hasPermission('students.delete') && <button className="student-button" onClick={() => handleDeleteStudent(student._id)}>Izdzēst</button>}
                                     </>
                                 )}
                             </div>
                         </div>
                     ))
                 )}
-                {!groupId && (
+                {!groupId && hasPermission('students.create') && ( 
                     <div className="addbuttoncard">
                         <button className="student-button" onClick={handleAddStudent}>Pievienot studentu</button>
                     </div>

@@ -3,8 +3,9 @@ const router = express.Router();
 const AttendanceService = require('../services/AttendanceService');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
+const checkPermission = require('../middleware/checkPermission');
 
-router.post('/', async (req, res) => {
+router.post('/', checkPermission('attendances.create'), async (req, res) => {
     try {
         const attendance = await AttendanceService.addAttendance({ attendanceData: req.body });
         res.status(200).json(attendance);
@@ -31,7 +32,7 @@ router.post('/upload-csv', upload.single('file'), async (req, res) => {
     }
 });
 
-router.post('/upload-attendance', async (req, res) => {
+router.post('/upload-attendance', checkPermission('attendances.upload'), async (req, res) => {
     try {
         const { meetingTitle, startTime, presenters } = req.body;
         await AttendanceService.uploadAttendance({ meetingTitle, startTime, presenters });
