@@ -64,14 +64,18 @@ const RoleManagement = () => {
             });
         } else {
             const allSections = Object.keys(PermissionsData).reduce((acc, section) => {
-                acc[section] = false;
+                acc[section] = !!roleData.sections[section];
                 return acc;
             }, {});
     
             fetch('/api/roles', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name: newRoleName, sections: allSections, permissions: [] }),
+                body: JSON.stringify({ 
+                    name: newRoleName, 
+                    sections: allSections,
+                    permissions: roleData.permissions 
+                }),
             }).then(() => {
                 alert('Veiksmīgi izveidota jauna loma!');
                 setNewRoleName('');
