@@ -36,7 +36,7 @@ const SessionHistory = () => {
             <div className="session-history-grid">
                 {sessions.map(session => (
                     <div className="session-history-card" key={session._id}>
-                        <div><strong>Datums:</strong> {new Date(session.date).toLocaleDateString()}</div>
+                        <div><strong>Datums:</strong> {new Date(session.startDateTime).toLocaleString()} - {new Date(session.endDateTime).toLocaleString()}</div>
                         <div><strong>Grupa:</strong> {session.group.title}</div>
                         <div>
                             <button className="session-history-button" onClick={() => handleViewSession(session._id)}>Apskatīt</button>

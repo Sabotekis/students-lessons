@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import './sessions.css';
 
 const AddSession = () => {
-    const [session, setSession] = useState({ date: "", group: "", students: [] });
+    const [session, setSession] = useState({ startDateTime: "", endDateTime: "", group: "", students: [] });
     const [groups, setGroups] = useState([]);
     const [students, setStudents] = useState([]);
     const navigate = useNavigate();
@@ -27,8 +27,13 @@ const AddSession = () => {
     }, [session.group]);
 
     const handleAddSession = () => {
-        if (!session.date || !session.group) {
+        if (!session.startDateTime || !session.endDateTime || !session.group) {
             alert("All fields are required");
+            return;
+        }
+
+        if (new Date(session.startDateTime) > new Date(session.endDateTime)) {
+            alert("Sākuma datums un laiks nedrīkst būt pēc beigu datuma un laika");
             return;
         }
 
@@ -80,34 +85,35 @@ const AddSession = () => {
         }));
     };
 
-    const handleDateChange = (e) => {
-        const newDate = e.target.value;
-        setSession((prevSession) => {
-            const selectedGroup = groups.find(group => group._id === prevSession.group);
-            if (selectedGroup) {
-                const groupStartDate = new Date(selectedGroup.startDate);
-                const groupEndDate = new Date(selectedGroup.endDate);
-                const sessionDate = new Date(newDate);
+    // const handleDateChange = (e) => {
+    //     const newDate = e.target.value;
+    //     setSession((prevSession) => {
+    //         const selectedGroup = groups.find(group => group._id === prevSession.group);
+    //         if (selectedGroup) {
+    //             const groupStartDate = new Date(selectedGroup.startDate);
+    //             const groupEndDate = new Date(selectedGroup.endDate);
+    //             const sessionDate = new Date(newDate);
 
-                if (sessionDate < groupStartDate || sessionDate > groupEndDate) {
-                    return { ...prevSession, date: newDate, group: "", students: [] };
-                }
-            }
-            return { ...prevSession, date: newDate };
-        });
-    };
+    //             if (sessionDate < groupStartDate || sessionDate > groupEndDate) {
+    //                 return { ...prevSession, date: newDate, group: "", students: [] };
+    //             }
+    //         }
+    //         return { ...prevSession, date: newDate };
+    //     });
+    // };
 
     const filteredGroups = groups.filter(group => {
-        const sessionDate = new Date(session.date);
+        const sessionStart = new Date(session.startDateTime);
+        const sessionEnd = new Date(session.endDateTime);
         const groupStartDate = new Date(group.startDate);
         const groupEndDate = new Date(group.endDate);
-        return sessionDate >= groupStartDate && sessionDate <= groupEndDate;
+        return sessionStart >= groupStartDate && sessionEnd <= groupEndDate;
     });
 
     return (
         <div className="add-session-container">
             <h1 className="add-session-title">Apmācību sesiju pievienošana</h1>
-            <div>
+            {/* <div>
                 <input
                     className="add-session-input"
                     type="date"
@@ -115,6 +121,24 @@ const AddSession = () => {
                     value={session.date}
                     onChange={handleDateChange}
                     required
+                />
+            </div> */}
+            <div>
+                <input
+                    className="add-session-input"
+                    type="datetime-local"
+                    placeholder="Sākuma datums un laiks"
+                    value={session.startDateTime}
+                    onChange={e => setSession({ ...session, startDateTime: e.target.value })}
+                />
+            </div>
+            <div>
+                <input
+                    className="add-session-input"
+                    type="datetime-local"
+                    placeholder="Beigu datums un laiks"
+                    value={session.endDateTime}
+                    onChange={e => setSession({ ...session, endDateTime: e.target.value })}
                 />
             </div>
             <div>

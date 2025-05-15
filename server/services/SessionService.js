@@ -9,7 +9,7 @@ class SessionService {
                 path: 'group',
                 select: 'title startDate endDate professor'
             })
-            .select('date group finished');
+            .select('startDateTime endDateTime group finished');
     }
 
     static async getFinishedSessions() {
@@ -56,7 +56,7 @@ class SessionService {
             { _id: { $in: students } },
             { $push: { sessions: savedSession._id } }
         );
-
+        
         return savedSession;
     }
 

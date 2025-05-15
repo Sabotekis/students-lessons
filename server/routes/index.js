@@ -8,6 +8,7 @@ const attendance = require('./attendance');
 const certificates = require('./certificates');
 const roles = require('./roles');
 const users = require('./users');
+const google = require('./google');
 const router = express.Router();
 
 router
@@ -19,6 +20,7 @@ router
     .use('/attendance', protected, attendance)
     .use('/certificates', protected, certificates)
     .use('/roles', protected, roles)
-    .use('/users', protected, users);
+    .use('/users', protected, users)
+    .use('/google', protected, google);
 
 module.exports = router;

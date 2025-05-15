@@ -130,7 +130,7 @@ class AttendanceService {
         }
 
         const matchingSession = sessions.find(session => {
-            const sessionDateFormatted = moment(session.date).format('YYYY-MM-DD');
+            const sessionDateFormatted = moment(session.startDateTime).format('YYYY-MM-DD');
             return sessionDateFormatted === formattedStartTime && session.group.title === meetingTitle;
         });
 
@@ -198,7 +198,7 @@ class AttendanceService {
         const endDate = moment(month, 'YYYY-MM').endOf('month').toDate();
     
         const sessionsInMonth = group.sessions.filter(session => {
-            const sessionDate = moment(session.date);
+            const sessionDate = moment(session.startDateTime);
             return sessionDate.isBetween(startDate, endDate, 'day', '[]');
         });
         
@@ -215,7 +215,7 @@ class AttendanceService {
             const dailyMinutes = Array(daysInMonth).fill(null);
 
             sessionsInMonth.forEach(session => {
-                const sessionDay = moment(session.date).date() - 1;
+                const sessionDay = moment(session.startDateTime).date() - 1;
                 const attendance = studentAttendances.find(a => a.session._id.equals(session._id));
                 dailyMinutes[sessionDay] = attendance ? attendance.academicHours : 0;
             });

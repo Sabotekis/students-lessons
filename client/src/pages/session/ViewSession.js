@@ -32,7 +32,7 @@ const ViewSession = () => {
         <div className="view-session-container">
             <h1 className="view-session-title">Apmācību sesijas apskatīšana</h1>
             <div>
-                <strong>Datums:</strong> {new Date(session.date).toLocaleDateString()}
+                <strong>Datums:</strong> {new Date(session.startDateTime).toLocaleString()} - {new Date(session.endDateTime).toLocaleString()}
             </div>
             <div>
                 <strong>Grupa:</strong>

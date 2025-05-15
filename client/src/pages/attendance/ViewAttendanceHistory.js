@@ -27,7 +27,7 @@ const ViewAttendanceHistory = () => {
                 <div className="view-attendance-history-grid">
                     {attendances.map(attendance => (
                         <div className="view-attendance-history-card" key={attendance._id}>
-                            <div><strong>Sesijas datums:</strong> {new Date(attendance.session.date).toLocaleDateString()}</div>
+                            <div><strong>Sesijas datums:</strong> {new Date(attendance.session.startDateTime).toLocaleString()} - {new Date(attendance.session.endDateTime).toLocaleString()}</div>
                             <div><strong>Grupa:</strong> {attendance.session.group?.title || "N/A"}</div>
                             <div><strong>Laiks (minutēs):</strong> {attendance.timeMinute}</div>
                             <div><strong>Akadēmiskās stundas:</strong> {attendance.academicHours}</div>

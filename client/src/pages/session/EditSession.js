@@ -14,7 +14,8 @@ const EditSession = () => {
             .then(data => {
                 setSession({
                     ...data,
-                    date: data.date.slice(0, 10),
+                    startDateTime: data.startDateTime.slice(0, 10),
+                    endDateTime: data.endDateTime.slice(0, 10),
                     group: data.group?._id || "",
                     students: data.students.map(student => student._id)
                 });

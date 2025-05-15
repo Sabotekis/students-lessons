@@ -70,6 +70,7 @@
     border-radius: 5px;
     cursor: pointer;
     margin-top: 7px;
+    margin-right: 5px;
 }
 
 .session-history-management-button:hover {
