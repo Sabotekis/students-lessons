@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const routes = require('./routes');
 const app = express();
+const msalAuth = require('./routes/msalAuth');
 
 dotenv.config();
 
@@ -26,3 +27,4 @@ const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+app.use('/api/msal', msalAuth);
