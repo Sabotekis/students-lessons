@@ -9,6 +9,7 @@ const certificates = require('./certificates');
 const roles = require('./roles');
 const users = require('./users');
 const google = require('./google');
+const microsoft = require('./microsoft');
 const router = express.Router();
 
 router
@@ -21,6 +22,7 @@ router
     .use('/certificates', protected, certificates)
     .use('/roles', protected, roles)
     .use('/users', protected, users)
-    .use('/google', protected, google);
+    .use('/google', protected, google)
+    .use('/microsoft', protected, microsoft);
 
 module.exports = router;

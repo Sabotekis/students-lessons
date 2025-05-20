@@ -39,8 +39,6 @@ import GroupRegisterManagement from "./pages/groupCertificateRegister/GroupRegis
 
 import RoleManagement from "./pages/role/RoleManagement";
 import RoleAssignment from "./pages/role/RoleAssignment";
-import MsalRedirect from "./pages/MsalRedirect";
-
 
 
 const ProtectedRoute = ({ element, requiredPermission }) => {
@@ -68,7 +66,6 @@ const ProtectedApp = () => {
             <Sidebar />
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/msal" element={<MsalRedirect />} />
                 <Route path="/role-management" element={<RoleManagement />} />
                 <Route
                     path="/role-assignment"

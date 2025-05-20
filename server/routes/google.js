@@ -9,7 +9,6 @@ router.get('/', async (req, res) => {
 router.post('/create-tokens', async (req, res) => {  
     try {
         const tokens = await GoogleService.getTokens({ code: req.body.code });
-        console.log('Tokens:', tokens);
         res.status(200).json(tokens);
     } catch (error) {
         res.status(500).json({ status: "error", data: null, message: error.message });

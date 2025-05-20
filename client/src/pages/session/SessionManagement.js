@@ -2,13 +2,19 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import './sessions.css';
 import { useGoogleLogin } from '@react-oauth/google';
+import { useMsal } from "@azure/msal-react";
+import { loginRequest } from "../../msalConfig";
 
 const SessionManagement = () => {
     const [sessions, setSessions] = useState([]);
     const navigate = useNavigate();
     const [userPermissions, setUserPermissions] = useState([]);
-    const [signedIn, setSignedIn] = useState(() => {
+    const { instance } = useMsal();
+    const [signedInGoogle, setSignedInGoogle] = useState(() => {
         return localStorage.getItem('googleSignedIn') === 'true';
+    });
+    const [signedInMicrosoft, setSignedInMicrosoft] = useState(() => {
+        return localStorage.getItem('microsoftSignedIn') === 'true';
     });
 
     
@@ -76,7 +82,7 @@ const SessionManagement = () => {
             })
             .then(res => res.json())
             .then(data => {
-                setSignedIn(true);
+                setSignedInGoogle(true);
                 localStorage.setItem('googleSignedIn', 'true');            
             })
             .catch(error => console.log(error.message));
@@ -90,7 +96,7 @@ const SessionManagement = () => {
     });
 
     const handleGoogleLogout = () => {
-        setSignedIn(false);
+        setSignedInGoogle(false);
         localStorage.removeItem('googleSignedIn');
         alert("Iziet no Google");
     };
@@ -115,7 +121,46 @@ const SessionManagement = () => {
 
         alert("Sesijas sinhronizētas ar Google kalendāram");
     };
-   
+
+    const handleMicrosoftLogin = () => {
+        instance.loginPopup(loginRequest)
+            .then(response => {
+                setSignedInMicrosoft(true);
+                localStorage.setItem('microsoftSignedIn', 'true');
+                // Optionally send response.account info to your backend
+            })
+            .catch(e => {
+                console.error(e);
+            });
+    };
+
+    const handleMicrosoftLogout = () => {
+        instance.logoutPopup();
+        setSignedInMicrosoft(false);
+        localStorage.removeItem('microsoftSignedIn');
+    };
+
+    const handleAddSessionsToMicrosoftCalendar = async () => {
+        const accounts = instance.getAllAccounts();
+        if (!accounts.length) {
+            alert("Jums jāienāk ar Microsoft kontu!");
+            return;
+        }
+        const response = await instance.acquireTokenSilent({
+            ...loginRequest,
+            account: accounts[0],
+        });
+        const accessToken = response.accessToken;
+
+        await fetch('/api/microsoft/create-event', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ accessToken }),
+        });
+
+        alert("Sesijas sinhronizētas ar Microsoft kalendāru");
+    };
+
     return (
             <div className="session-container">
                 <h1 className="session-title">Apmācību sesiju pārvaldība</h1>
@@ -140,7 +185,7 @@ const SessionManagement = () => {
                 </div>
                 <button className="session-history-management-button" onClick={handleSessionHistory}>Sesijas vēsture</button>
                 {
-                    !signedIn ? (
+                    !signedInGoogle ? (
                         <button className="session-history-management-button" onClick={handleGoogleLogin}>
                             Ienākt ar Google
                         </button>
@@ -155,6 +200,22 @@ const SessionManagement = () => {
                         </>
                     )
                 }   
+                {
+                    !signedInMicrosoft ? (
+                        <button className="session-history-management-button" onClick={handleMicrosoftLogin}>
+                            Ienākt ar Microsoft
+                        </button>
+                    ) : (
+                        <>
+                            <button className="session-history-management-button" onClick={handleAddSessionsToMicrosoftCalendar}>
+                                Sinhronizē ar Microsoft kalendāru
+                            </button>
+                            <button className="session-history-management-button" onClick={handleMicrosoftLogout}>
+                                Iziet no Microsoft
+                            </button>
+                        </>
+                    )
+                }
             </div>
     );
 };
