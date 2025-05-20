@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import './students.css';
+import { useMsal } from "@azure/msal-react";
+import { InteractionType } from "@azure/msal-browser";
 
 const StudentManagement = () => {
     const [students, setStudents] = useState([]);
@@ -98,9 +100,21 @@ const StudentManagement = () => {
             return 0;
         });
 
+    const { instance } = useMsal();
+    
+    const handleMicrosoftLogin = () => {
+        instance.loginRedirect({
+        scopes: ["user.read", "openid", "profile", "email"],
+        redirectUri: "http://localhost:3000/msal"
+        });
+    };
+
     return (
         <div className="student-container">
             <h1 className="student-title">Studentu pārvaldība</h1>
+            <button className="session-history-management-button" onClick={handleMicrosoftLogin}>
+                Sign in with Microsoft
+            </button>
             <div>
                 <input 
                     className="student-search-input"
