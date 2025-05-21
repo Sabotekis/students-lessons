@@ -14,7 +14,6 @@ class GoogleService {
     static async getTokens({ code }) {
         const oauth2Client = this.getOAuth2Client();
         const { tokens } = await oauth2Client.getToken(code);
-        console.log('Tokens:', tokens);
         return tokens;
     }
 

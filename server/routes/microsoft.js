@@ -4,13 +4,13 @@ const MicrosoftService = require('../services/MicrosoftService');
 
 router.post('/create-event', async (req, res) => {
     const { accessToken } = req.body;
-    if (!accessToken) return res.status(400).json({ error: 'No access token' });
+    if (!accessToken) return res.status(400).json({ status: "error", data: null, message: error.message });
 
     try {
         await MicrosoftService.synchroniseEvents(accessToken);
-        res.json({ message: 'Events synchronized with Microsoft Calendar' });
+        res.status(200).json({ status: "success", data: null, message: "Veiksmīgi atgriezti dati" });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ status: "error", data: null, message: error.message });
     }
 });
 

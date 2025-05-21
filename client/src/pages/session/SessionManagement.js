@@ -127,7 +127,6 @@ const SessionManagement = () => {
             .then(response => {
                 setSignedInMicrosoft(true);
                 localStorage.setItem('microsoftSignedIn', 'true');
-                // Optionally send response.account info to your backend
             })
             .catch(e => {
                 console.error(e);

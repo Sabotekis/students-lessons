@@ -20,7 +20,7 @@ router.post('/create-event', async (req, res) => {
         const result = await GoogleService.synchroniseEvents();
         res.status(200).json(result);
     } catch (error) {
-        res.status(500).json({ status: "error", message: error.message });
+        res.status(500).json({ status: "error", data: null, message: error.message });
     }
 });
 
