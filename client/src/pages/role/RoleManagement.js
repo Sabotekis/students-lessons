@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './roles.css';
-import { PermissionsData } from '../../components/PermissionsData';
+import { getPermissionsData } from '../../components/PermissionsData';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const RoleManagement = () => {
     const [roles, setRoles] = useState([]);
@@ -10,6 +11,8 @@ const RoleManagement = () => {
     const [newRoleName, setNewRoleName] = useState('');
     const navigate = useNavigate();
     const [userPermissions, setUserPermissions] = useState([]);
+    const { t } = useTranslation();
+    const PermissionsData = getPermissionsData(t);
 
     useEffect(() => {
         fetch('/api/roles')
@@ -118,33 +121,60 @@ const RoleManagement = () => {
                 ))}
             </select>
             <div>
-                {Object.keys(PermissionsData).map(section => (
-                    <div key={section} className='role-management-section'>
-                        <label className='role-management-toggle'>
-                            <input
-                                type="checkbox"
-                                checked={roleData.sections[section] || false}
-                                disabled={!hasPermission(`roles.create`)}
-                                onChange={() => handleToggleSection(section)}
-                            />
-                            <span className='toggle-slider'></span>
-                            {section}
-                        </label>
-                        <div>
-                            {PermissionsData[section].map(permission => (
-                                <label key={permission.key} className='role-management-checkbox'>
-                                    <input
-                                        type="checkbox"
-                                        checked={roleData.permissions.includes(permission.key)}
-                                        disabled={!roleData.sections[section] || !hasPermission(`roles.create`)} 
-                                        onChange={() => handlePermissionChange(permission.key)}
-                                    />
-                                    {permission.label}
-                                </label>
-                            ))}
+                {Object.keys(PermissionsData).map(section => {
+                    const sectionPermissionKeys = PermissionsData[section].permissions.map(p => p.key);
+                    const allSelected = sectionPermissionKeys.every(key => roleData.permissions.includes(key));
+                    const someSelected = sectionPermissionKeys.some(key => roleData.permissions.includes(key));
+                    return (
+                        <div key={section} className='role-management-section'>
+                            <label className='role-management-toggle'>
+                                <input
+                                    type="checkbox"
+                                    checked={roleData.sections[section] || false}
+                                    disabled={!hasPermission(`roles.create`)}
+                                    onChange={() => handleToggleSection(section)}
+                                />
+                                <span className='toggle-slider'></span>
+                                {PermissionsData[section].label}
+                            </label>
+                            <div>
+                                {PermissionsData[section].permissions.map(permission => (
+                                    <label key={permission.key} className='role-management-checkbox'>
+                                        <input
+                                            type="checkbox"
+                                            checked={roleData.permissions.includes(permission.key)}
+                                            disabled={!roleData.sections[section] || !hasPermission(`roles.create`)} 
+                                            onChange={() => handlePermissionChange(permission.key)}
+                                        />
+                                        {permission.label}
+                                    </label>
+                                ))}
+                            </div>
+                            <label className='role-management-checkbox'>
+                                <input
+                                    type="checkbox"
+                                    disabled={!roleData.sections[section] || !hasPermission('roles.create')}
+                                    checked={allSelected}
+                                    indeterminate={someSelected && !allSelected ? "indeterminate" : undefined}
+                                    onChange={e => {
+                                        setRoleData(prev => {
+                                            let newPermissions;
+                                            if (e.target.checked) {
+                                                newPermissions = [
+                                                    ...prev.permissions,
+                                                    ...sectionPermissionKeys.filter(key => !prev.permissions.includes(key))
+                                                ];
+                                            } else {
+                                                newPermissions = prev.permissions.filter(key => !sectionPermissionKeys.includes(key));
+                                            }
+                                            return { ...prev, permissions: newPermissions };
+                                        });
+                                    }}
+                                />
+                                Pievienot visas
+                            </label>
                         </div>
-                    </div>
-                ))}
+                )})}
             </div>
             {hasPermission('roles.create') &&
                 <button className='role-management-button' onClick={handleSaveRole}>

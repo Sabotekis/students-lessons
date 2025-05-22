@@ -25,8 +25,8 @@ async function createAdminRole() {
   const allSections = {};
 
   for (const section in PermissionsData) {
-    allSections[section] = true; 
-    PermissionsData[section].forEach(permission => {
+    allSections[section] = true;
+    PermissionsData[section].permissions.forEach(permission => {
       allPermissions.push(permission.key);
     });
   }

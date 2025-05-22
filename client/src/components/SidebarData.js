@@ -1,26 +1,37 @@
-export const SidebarData = [
+export const getSidebarData = (t) => [
     {
-        title: "Studentu Parvaldība",
+        key: "student_management",
+        title: t("Student Management"),
         path: "/student-management",
     },
     {
-        title: "Grupu Parvaldība",
+        key: "group_management",
+        title: t("Group Management"),
         path: "/group-management",
     },
     {
-        title: "Apmacību Sessiju Parvaldība",
+        key: "session_management",
+        title: t("Session Management"),
         path: "/session-management",
     },
     {
-        title: "Apmeklejuma Uzskaite",
+        key: "attendance_management",
+        title: t("Attendance Management"),
         path: "/attendance-management",
     },
     {
-        title: "Apliecību Parvaldiba",
+        key: "certificate_management",
+        title: t("Certificate Management"),
         path: "/certificate-management",
     },
     {
-        title: "Grupu un Apliecību Reģistrs",
-        path: "/group-certificate-register",	
+        key: "group_and_certificate_register",
+        title: t("Group and Certificate Register"),
+        path: "/group-certificate-register",
     },
+    {
+        key: "role_management",
+        title: t("Role Management"),
+        path: "/role-management",
+    }
 ];

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './students.css';
+import { useTranslation } from "react-i18next";
 
 const AddStudent = () => {
+    const { t } = useTranslation();
     const [student, setStudent] = useState({ name: "", surname: "", personalCode: "", phoneNumber: "", email: "" });
     const navigate = useNavigate();
 
@@ -24,7 +26,7 @@ const AddStudent = () => {
             alert("E-pastam jābūt pareizā formātā");
             return;
         }
-        
+
         fetch("/api/students", {
             method: "POST",
             headers: {
@@ -32,10 +34,10 @@ const AddStudent = () => {
             },
             body: JSON.stringify(student)
         })
-        .then(response => response.json())
-        .then(() => {
-            navigate("/student-management");
-        });
+            .then(response => response.json())
+            .then(() => {
+                navigate("/student-management");
+            });
     };
 
     const handleBack = () => {
@@ -44,12 +46,12 @@ const AddStudent = () => {
 
     return (
         <div className="add-student-container">
-            <h1 className="add-student-title">Studentu pievienošana</h1>
+            <h1 className="add-student-title">{t("add_student")}</h1>
             <div>
                 <input
                     className="add-student-input"
                     type="text"
-                    placeholder="Vārds"
+                    placeholder={t("name")}
                     value={student.name}
                     onChange={(e) => setStudent({ ...student, name: e.target.value })}
                     required
@@ -59,7 +61,7 @@ const AddStudent = () => {
                 <input
                     className="add-student-input"
                     type="text"
-                    placeholder="Uzvārds"
+                    placeholder={t("surname")}
                     value={student.surname}
                     onChange={(e) => setStudent({ ...student, surname: e.target.value })}
                     required
@@ -95,8 +97,8 @@ const AddStudent = () => {
                     required
                 />
             </div>
-            <button className="add-student-button" onClick={handleAddStudent}>Pievienot studentu</button>
-            <button className="add-student-button" onClick={handleBack}>Atgriezties</button>
+            <button className="add-student-button" onClick={handleAddStudent}>{t("add_student")}</button>
+            <button className="add-student-button" onClick={handleBack}>{t("back")}</button>
         </div>
     );
 };

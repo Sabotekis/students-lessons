@@ -183,38 +183,44 @@ const SessionManagement = () => {
                     )}
                 </div>
                 <button className="session-history-management-button" onClick={handleSessionHistory}>Sesijas vēsture</button>
-                {
-                    !signedInGoogle ? (
-                        <button className="session-history-management-button" onClick={handleGoogleLogin}>
-                            Ienākt ar Google
-                        </button>
-                    ) : (
-                        <>
-                            <button className="session-history-management-button" onClick={handleAddSessionsToGoogleCalendar}>
-                                Sinhronizē ar Google kalendāru
+                {hasPermission('sessions.google') && <h3 className="calendar-title">Google kalendārs:</h3>}
+                {hasPermission('sessions.google') && <div>
+                    {
+                        !signedInGoogle ? (
+                            <button className="session-history-management-button" onClick={handleGoogleLogin}>
+                                Ienākt ar Google
                             </button>
-                            <button className="session-history-management-button" onClick={handleGoogleLogout}>
-                                Iziet no Google
+                        ) : (
+                            <>
+                                <button className="session-history-management-button" onClick={handleAddSessionsToGoogleCalendar}>
+                                    Sinhronizē ar Google kalendāru
+                                </button>
+                                <button className="session-history-management-button" onClick={handleGoogleLogout}>
+                                    Iziet no Google
+                                </button>
+                            </>
+                        )
+                    }
+                </div>}
+                {hasPermission('sessions.microsoft') && <h3 className="calendar-title">Microsoft kalendārs:</h3>}
+                {hasPermission('sessions.microsoft') && <div>
+                    {
+                        !signedInMicrosoft ? (
+                            <button className="session-history-management-button" onClick={handleMicrosoftLogin}>
+                                Ienākt ar Microsoft
                             </button>
-                        </>
-                    )
-                }   
-                {
-                    !signedInMicrosoft ? (
-                        <button className="session-history-management-button" onClick={handleMicrosoftLogin}>
-                            Ienākt ar Microsoft
-                        </button>
-                    ) : (
-                        <>
-                            <button className="session-history-management-button" onClick={handleAddSessionsToMicrosoftCalendar}>
-                                Sinhronizē ar Microsoft kalendāru
-                            </button>
-                            <button className="session-history-management-button" onClick={handleMicrosoftLogout}>
-                                Iziet no Microsoft
-                            </button>
-                        </>
-                    )
-                }
+                        ) : (
+                            <>
+                                <button className="session-history-management-button" onClick={handleAddSessionsToMicrosoftCalendar}>
+                                    Sinhronizē ar Microsoft kalendāru
+                                </button>
+                                <button className="session-history-management-button" onClick={handleMicrosoftLogout}>
+                                    Iziet no Microsoft
+                                </button>
+                            </>
+                        )
+                    }
+                </div>}
             </div>
     );
 };

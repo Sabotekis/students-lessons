@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const MicrosoftService = require('../services/MicrosoftService');
+const checkPermission = require('../middleware/checkPermission');
 
-router.post('/create-event', async (req, res) => {
+router.post('/create-event', checkPermission('sessions.microsoft'), async (req, res) => {
     const { accessToken } = req.body;
     if (!accessToken) return res.status(400).json({ status: "error", data: null, message: error.message });
 

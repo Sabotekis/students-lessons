@@ -77,6 +77,10 @@
     background-color: #45a049;
 }
 
+.calendar-title {
+    margin-top: 10px;
+}
+
 /*Session History*/
 .session-history-container {
     margin-top: 80px;

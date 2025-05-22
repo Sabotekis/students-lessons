@@ -1,20 +1,22 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
-import { SidebarData } from "./SidebarData";
+import { getSidebarData } from "./SidebarData";
 import SubMenu from "./SubMenu";
 import { IconContext } from "react-icons/lib";
 import Cookies from "js-cookie";
-import './sidebar.css';
+import "./sidebar.css";
+import { useTranslation } from "react-i18next";
+import ReactCountryFlag from "react-country-flag";
 
 const Sidebar = () => {
     const [sidebar, setSidebar] = useState(false);
     const [username, setUsername] = useState(null);
     const [sections, setSections] = useState({});
-    const [roleSections, setRoleSections] = useState({});
     const navigate = useNavigate();
     const sidebarRef = useRef(null);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const token = Cookies.get('token');
@@ -38,17 +40,17 @@ const Sidebar = () => {
             .then(data => {
                 if (data.status === "success") {
                     setUsername(data.user.email);
-                    setSections(data.user.role.sections || {});
+                    if (data.user.role && data.user.role.sections) {
+                        setSections(data.user.role.sections);
+                    } else {
+                        setSections({}); 
+                    }
                 }
             })
             .catch(error => {
                 console.error('Error fetching user data:', error);
             });
         }
-        fetch('/api/roles/sections')
-            .then(res => res.json())
-            .then(data => setRoleSections(data))
-            .catch(err => console.error('Error fetching role sections:', err));
 
         const handleClickOutside = (event) => {
             if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
@@ -77,6 +79,73 @@ const Sidebar = () => {
         window.location.reload();
     };
 
+    const LanguageSwitcher = () => {
+        const { i18n } = useTranslation();
+        const [open, setOpen] = useState(false);
+        const switcherRef = useRef(null);
+
+        const languages = [
+            { code: "en", label: "English", countryCode: "GB" },
+            { code: "lv", label: "Latviešu", countryCode: "LV" },
+        ];
+
+        const currentLang = languages.find(l => l.code === i18n.language) || languages[0];
+
+        useEffect(() => {
+            const handleClickOutside = (event) => {
+                if (switcherRef.current && !switcherRef.current.contains(event.target)) {
+                    setOpen(false);
+                }
+            };
+            if (open) {
+                document.addEventListener("mousedown", handleClickOutside);
+            }
+            return () => {
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
+        }, [open]);
+
+        return (
+            <div className="language-switcher" ref={switcherRef}>
+                <button
+                    className="language-switcher-button"
+                    onClick={() => setOpen(!open)}
+                >
+                    <ReactCountryFlag
+                        countryCode={currentLang.countryCode}
+                        svg
+                        className="language-switcher-flag"
+                        title={currentLang.label}
+                    />
+                    {currentLang.label}
+                    <span className="language-switcher-arrow">▼</span>
+                </button>
+                {open && (
+                    <div className="language-switcher-dropdown">
+                        {languages.map(lang => (
+                            <div
+                                key={lang.code}
+                                className={`language-switcher-option${i18n.language === lang.code ? " selected" : ""}`}
+                                onClick={() => {
+                                    i18n.changeLanguage(lang.code);
+                                    setOpen(false);
+                                }}
+                            >
+                                <ReactCountryFlag
+                                    countryCode={lang.countryCode}
+                                    svg
+                                    className="language-switcher-flag"
+                                    title={lang.label}
+                                />
+                                {lang.label}
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+        );
+    };
+
     return (
         <>
             <IconContext.Provider value={{ color: "#fff" }}>
@@ -88,13 +157,9 @@ const Sidebar = () => {
                             onMouseLeave={(e) => (e.target.style.color = "white")}
                         />
                     </Link>
-                    {roleSections['Lomu pārvaldība'] && (
-                        <Link to="/role-management" className="nav-title-roles" onClick={closeSidebar}>
-                            Lomu pārvaldība
-                        </Link>
-                    )}
+                    <LanguageSwitcher />
                     <Link to="/" className="nav-title">
-                        Izglītojamo tiešsaistes nodarbībās pavadītā laika
+                        {t("app_name")}
                     </Link>
                     {username ? (
                         <div className="user-actions">
@@ -103,7 +168,7 @@ const Sidebar = () => {
                                 className="logout-button"
                                 onClick={handleLogout}
                             >
-                                Iziet
+                                {t("logout")}
                             </button>
                         </div>
                     ) : (
@@ -111,7 +176,7 @@ const Sidebar = () => {
                             className="login-button"
                             onClick={handleLogin}
                         >
-                            Ienākt
+                            {t("login")}
                         </button>
                     )}
                 </div>
@@ -124,7 +189,7 @@ const Sidebar = () => {
                                 onMouseLeave={(e) => (e.target.style.color = "white")}
                             />
                         </Link>
-                        {SidebarData.filter(item => sections[item.title] !== false).map((item, index) => (
+                        {getSidebarData(t).filter(item => sections[item.key] === true).map((item, index) => (
                             <SubMenu item={item} key={index} closeSidebar={closeSidebar} />
                         ))}
                     </div>
