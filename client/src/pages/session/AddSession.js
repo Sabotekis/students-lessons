@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './sessions.css';
+import { useTranslation } from "react-i18next";
 
 const AddSession = () => {
     const [session, setSession] = useState({ startDateTime: "", endDateTime: "", group: "", students: [] });
     const [groups, setGroups] = useState([]);
     const [students, setStudents] = useState([]);
     const navigate = useNavigate();
+    const { t } = useTranslation();
     
     useEffect(() => {
         fetch("/api/groups")
@@ -85,23 +87,6 @@ const AddSession = () => {
         }));
     };
 
-    // const handleDateChange = (e) => {
-    //     const newDate = e.target.value;
-    //     setSession((prevSession) => {
-    //         const selectedGroup = groups.find(group => group._id === prevSession.group);
-    //         if (selectedGroup) {
-    //             const groupStartDate = new Date(selectedGroup.startDate);
-    //             const groupEndDate = new Date(selectedGroup.endDate);
-    //             const sessionDate = new Date(newDate);
-
-    //             if (sessionDate < groupStartDate || sessionDate > groupEndDate) {
-    //                 return { ...prevSession, date: newDate, group: "", students: [] };
-    //             }
-    //         }
-    //         return { ...prevSession, date: newDate };
-    //     });
-    // };
-
     const filteredGroups = groups.filter(group => {
         const sessionStart = new Date(session.startDateTime);
         const sessionEnd = new Date(session.endDateTime);
@@ -112,22 +97,12 @@ const AddSession = () => {
 
     return (
         <div className="add-session-container">
-            <h1 className="add-session-title">Apmācību sesiju pievienošana</h1>
-            {/* <div>
-                <input
-                    className="add-session-input"
-                    type="date"
-                    placeholder="Datums"
-                    value={session.date}
-                    onChange={handleDateChange}
-                    required
-                />
-            </div> */}
+            <h1 className="add-session-title">{t("add_session_title")}</h1>
             <div>
                 <input
                     className="add-session-input"
                     type="datetime-local"
-                    placeholder="Sākuma datums un laiks"
+                    placeholder={t("session_start_date")}
                     value={session.startDateTime}
                     onChange={e => setSession({ ...session, startDateTime: e.target.value })}
                 />
@@ -136,7 +111,7 @@ const AddSession = () => {
                 <input
                     className="add-session-input"
                     type="datetime-local"
-                    placeholder="Beigu datums un laiks"
+                    placeholder={t("session_end_date")}
                     value={session.endDateTime}
                     onChange={e => setSession({ ...session, endDateTime: e.target.value })}
                 />
@@ -148,7 +123,7 @@ const AddSession = () => {
                     onChange={(e) => setSession({ ...session, group: e.target.value })}
                     required
                 >
-                    <option value="">Izvēlies grupu</option>
+                    <option value="">{t("group_choose")}</option>
                     {filteredGroups.map(group => (
                         <option key={group._id} value={group._id}>{group.title}</option>
                     ))}
@@ -157,33 +132,33 @@ const AddSession = () => {
             {students.length > 0 ? (
                 <div>
                     {session.students.length !== students.length ? ( 
-                        <button className="add-session-add-button" onClick={handleAddAllStudentsToSession}>Pievienot visus</button>
+                        <button className="add-session-add-button" onClick={handleAddAllStudentsToSession}>{t("add_all_students")}</button>
                     ) : (
-                        <button className="add-session-delete-button" onClick={handleRemoveAllStudentsFromSession}>Noņemt visus</button>
+                        <button className="add-session-delete-button" onClick={handleRemoveAllStudentsFromSession}>{t("remove_all_students")}</button>
                     )}
-                    <h2>Studenti:</h2>
+                    <h2>{t("students")}:</h2>
                     <div className="add-session-student-grid">
                         {students.map(student => (
                             <div className="add-session-student-card" key={student._id}>
-                                <div><strong>Vārds:</strong> {student.name}</div>
-                                <div><strong>Uzvārds:</strong> {student.surname}</div>
-                                <div><strong>Personas kods:</strong> {student.personalCode}</div>
-                                <div><strong>Telefona numurs:</strong> {student.phoneNumber}</div>
-                                <div><strong>E-pasts:</strong> {student.email}</div>
+                                <div><strong>{t("student_name")}:</strong> {student.name}</div>
+                                <div><strong>{t("student_surname")}:</strong> {student.surname}</div>
+                                <div><strong>{t("student_personal_code")}:</strong> {student.personalCode}</div>
+                                <div><strong>{t("student_phone_number")}:</strong> {student.phoneNumber}</div>
+                                <div><strong>{t("student_email")}:</strong> {student.email}</div>
                                 {session.students.includes(student._id) ? (
-                                    <button className="add-session-delete-button" onClick={() => handleRemoveStudentFromSession(student._id)}>Izdzēst</button>
+                                    <button className="add-session-delete-button" onClick={() => handleRemoveStudentFromSession(student._id)}>{t("remove")}</button>
                                 ) : (
-                                    <button className="add-session-add-button" onClick={() => handleAddStudentToSession(student._id)}>Pievienot</button>
+                                    <button className="add-session-add-button" onClick={() => handleAddStudentToSession(student._id)}>{t("add")}</button>
                                 )}
                             </div>
                         ))}
                     </div>
                 </div>
             ):(
-                <div>Šajā grupā nav studentu vai grupa nav izvēlēta</div>
+                <div>{t("student_or_group_none")}</div>
             )}
-            <button className="add-session-button" onClick={handleAddSession}>Pievienot sesiju</button>
-            <button className="add-session-button" onClick={handleBack}>Atgriezties</button>
+            <button className="add-session-button" onClick={handleAddSession}>{t("add")}</button>
+            <button className="add-session-button" onClick={handleBack}>{t("back")}</button>
         </div>
     );
 };

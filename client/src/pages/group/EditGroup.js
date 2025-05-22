@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import './groups.css';
+import { useTranslation } from 'react-i18next';
 
 const EditGroup = () => {
     const { id } = useParams();
@@ -8,6 +9,7 @@ const EditGroup = () => {
     const [plannedMonths, setPlannedMonths] = useState([]);
     const [plannedData, setPlannedData] = useState({});
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetch(`/api/groups/${id}`)
@@ -119,12 +121,12 @@ const EditGroup = () => {
 
     return (
         <div className="edit-group-container">
-            <h1 className="edit-group-title">Grupas rediģēšana</h1>
+            <h1 className="edit-group-title">{t("edit_group_title")}</h1>
             <div>
                 <input
                     className="edit-group-input"
                     type="text"
-                    placeholder="Grupas reģistra numurs"
+                    placeholder={t("group_register_number")}
                     value={group.registerNumber}
                     onChange={(e) => setGroup({ ...group, registerNumber: e.target.value })}
                     required
@@ -134,7 +136,7 @@ const EditGroup = () => {
                 <input  
                     className="edit-group-input"
                     type="text"
-                    placeholder="Nosaukums"
+                    placeholder={t("group_name")}
                     value={group.title}
                     onChange={(e) => setGroup({ ...group, title: e.target.value })}
                     required
@@ -144,7 +146,7 @@ const EditGroup = () => {
                 <input
                     className="edit-group-input"
                     type="date"
-                    placeholder="Sākuma datums"
+                    placeholder={t("group_start_date")}
                     value={group.startDate}
                     onChange={(e) => setGroup({ ...group, startDate: e.target.value })}
                     required
@@ -154,7 +156,7 @@ const EditGroup = () => {
                 <input  
                     className="edit-group-input"
                     type="date"
-                    placeholder="Beigu datums"
+                    placeholder={t("group_end_date")}
                     value={group.endDate}
                     onChange={(e) => setGroup({ ...group, endDate: e.target.value })}
                     required
@@ -164,54 +166,54 @@ const EditGroup = () => {
                 <input  
                     className="edit-group-input"
                     type="text"
-                    placeholder="Profesors"
+                    placeholder={t("group_professor")}
                     value={group.professor}
                     onChange={(e) => setGroup({ ...group, professor: e.target.value })}
                     required
                 />
             </div>
             <div>
-                <strong>Akadēmiskās stundas: {group.academicHours} </strong>
+                <strong>{t("group_academic_hours")}: {group.academicHours} </strong>
             </div>
             <div>
-                Minimālais stundu skaits:
+                {t("group_min_hours")}:
                 <input
                     className="edit-group-input"
                     type="number"
-                    placeholder="Minimālais stundu skaits"
+                    placeholder={t("group_min_hours")}
                     value={group.minHours}
                     onChange={(e) => setGroup({ ...group, minHours: e.target.value })}
                     required
                 />
             </div>
-            <h3>Plānotie mēneši</h3>
+            <h3>{t("group_planned_months")}</h3>
             {plannedMonths.map(month => (
                 <div key={month}>
                     <h4>{month}</h4>
                     <div>
-                        Planotās dienas:
+                        {t("group_planned_days")}:
                         <input
                             className="edit-group-input"
                             type="number"
-                            placeholder="Plānotas dienas"
+                            placeholder={t("group_planned_days")}
                             value={plannedData[month]?.days || ""}
                             onChange={(e) => handlePlannedChange(month, "days", e.target.value)}
                         />
                     </div>
                     <div>
-                        Planotās stundas:
+                        {t("group_planned_hours")}:
                         <input
                             className="edit-group-input"
                             type="number"
-                            placeholder="Plānotas stundas"
+                            placeholder={t("group_planned_hours")}
                             value={plannedData[month]?.hours || ""}
                             onChange={(e) => handlePlannedChange(month, "hours", e.target.value)}
                         />
                     </div>
                 </div>
             ))}
-            <button className="edit-group-button" onClick={handleUpdateGroup}>Atjaunināt grupu</button>
-            <button className="edit-group-button" onClick={handleBack}>Atgriezties</button>
+            <button className="edit-group-button" onClick={handleUpdateGroup}>{t("update")}</button>
+            <button className="edit-group-button" onClick={handleBack}>{t("back")}</button>
         </div>
     );
 };

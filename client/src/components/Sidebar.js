@@ -8,7 +8,7 @@ import { IconContext } from "react-icons/lib";
 import Cookies from "js-cookie";
 import "./sidebar.css";
 import { useTranslation } from "react-i18next";
-import ReactCountryFlag from "react-country-flag";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const Sidebar = () => {
     const [sidebar, setSidebar] = useState(false);
@@ -79,73 +79,6 @@ const Sidebar = () => {
         window.location.reload();
     };
 
-    const LanguageSwitcher = () => {
-        const { i18n } = useTranslation();
-        const [open, setOpen] = useState(false);
-        const switcherRef = useRef(null);
-
-        const languages = [
-            { code: "en", label: "English", countryCode: "GB" },
-            { code: "lv", label: "Latviešu", countryCode: "LV" },
-        ];
-
-        const currentLang = languages.find(l => l.code === i18n.language) || languages[0];
-
-        useEffect(() => {
-            const handleClickOutside = (event) => {
-                if (switcherRef.current && !switcherRef.current.contains(event.target)) {
-                    setOpen(false);
-                }
-            };
-            if (open) {
-                document.addEventListener("mousedown", handleClickOutside);
-            }
-            return () => {
-                document.removeEventListener("mousedown", handleClickOutside);
-            };
-        }, [open]);
-
-        return (
-            <div className="language-switcher" ref={switcherRef}>
-                <button
-                    className="language-switcher-button"
-                    onClick={() => setOpen(!open)}
-                >
-                    <ReactCountryFlag
-                        countryCode={currentLang.countryCode}
-                        svg
-                        className="language-switcher-flag"
-                        title={currentLang.label}
-                    />
-                    {currentLang.label}
-                    <span className="language-switcher-arrow">▼</span>
-                </button>
-                {open && (
-                    <div className="language-switcher-dropdown">
-                        {languages.map(lang => (
-                            <div
-                                key={lang.code}
-                                className={`language-switcher-option${i18n.language === lang.code ? " selected" : ""}`}
-                                onClick={() => {
-                                    i18n.changeLanguage(lang.code);
-                                    setOpen(false);
-                                }}
-                            >
-                                <ReactCountryFlag
-                                    countryCode={lang.countryCode}
-                                    svg
-                                    className="language-switcher-flag"
-                                    title={lang.label}
-                                />
-                                {lang.label}
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div>
-        );
-    };
-
     return (
         <>
             <IconContext.Provider value={{ color: "#fff" }}>
@@ -157,7 +90,7 @@ const Sidebar = () => {
                             onMouseLeave={(e) => (e.target.style.color = "white")}
                         />
                     </Link>
-                    <LanguageSwitcher />
+                    <LanguageSwitcher variant="sidebar"/>
                     <Link to="/" className="nav-title">
                         {t("app_name")}
                     </Link>

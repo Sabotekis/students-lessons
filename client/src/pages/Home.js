@@ -1,6 +1,7 @@
-import React from "react";
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
+    const { t } = useTranslation();
     return (
         <div>
         <style>
@@ -19,7 +20,7 @@ const Home = () => {
         </style>
             <div className="container">
                 <p className="description">
-                    Šī vietne ir paredzēta studentu un grupu pārvaldībai. Varat pievienot, rediģēt un skatīt studentus un grupas, kā arī pārvaldīt dažādus citus ar studentu pārvaldību saistītus aspektus.                
+                    {t("app_description")}                
                 </p>
             </div>
         </div>

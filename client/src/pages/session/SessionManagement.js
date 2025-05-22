@@ -4,6 +4,7 @@ import './sessions.css';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../../msalConfig";
+import { useTranslation } from "react-i18next";
 
 const SessionManagement = () => {
     const [sessions, setSessions] = useState([]);
@@ -16,6 +17,7 @@ const SessionManagement = () => {
     const [signedInMicrosoft, setSignedInMicrosoft] = useState(() => {
         return localStorage.getItem('microsoftSignedIn') === 'true';
     });
+    const { t } = useTranslation();
 
     
     useEffect(() => {
@@ -162,60 +164,61 @@ const SessionManagement = () => {
 
     return (
             <div className="session-container">
-                <h1 className="session-title">Apmācību sesiju pārvaldība</h1>
+                <h1 className="session-title">{t("session_title")}</h1>
                 <div className="session-grid">
                     {sessions.map(session => (
                         <div className="session-card" key={session._id}>
-                            <div><strong>Datums:</strong> {new Date(session.startDateTime).toLocaleString()} - {new Date(session.endDateTime).toLocaleString()}</div>
-                            <div><strong>Grupa:</strong> {session.group.title}</div>
+                            <div><strong>{t("session_start_date")}:</strong> {new Date(session.startDateTime).toLocaleString()}</div>
+                            <div><strong>{t("session_end_date")}:</strong> {new Date(session.endDateTime).toLocaleString()}</div>
+                            <div><strong>{t("group_name")}:</strong> {session.group.title}</div>
                             <div>
-                                <button className="session-button" onClick={() => handleViewSession(session._id)}>Apskatīt</button>
-                                {hasPermission('sessions.update') && <button className="session-button" onClick={() => handleEditSession(session._id)}>Rediģēt</button>}
-                                {hasPermission('sessions.finish') && <button className="session-button" onClick={() => handleFinishSession(session._id)}>Pabeigt</button>}    
-                                {hasPermission('sessions.delete') && <button className="session-button" onClick={() => handleDeleteSession(session._id)}>Izdzēst</button>}
+                                <button className="session-button" onClick={() => handleViewSession(session._id)}>{t("view")}</button>
+                                {hasPermission('sessions.update') && <button className="session-button" onClick={() => handleEditSession(session._id)}>{t("edit")}</button>}
+                                {hasPermission('sessions.finish') && <button className="session-button" onClick={() => handleFinishSession(session._id)}>{t("session_finish")}</button>}    
+                                {hasPermission('sessions.delete') && <button className="session-button" onClick={() => handleDeleteSession(session._id)}>{t("delete")}</button>}
                             </div>
                         </div>
                     ))}
                     {hasPermission("sessions.create") && (
                         <div className="addbuttoncard">
-                            <button className="session-button" onClick={handleAddSession}>Pievienot sesiju</button>
+                            <button className="session-button" onClick={handleAddSession}>{t("session_add")}</button>
                         </div>
                     )}
                 </div>
-                <button className="session-history-management-button" onClick={handleSessionHistory}>Sesijas vēsture</button>
-                {hasPermission('sessions.google') && <h3 className="calendar-title">Google kalendārs:</h3>}
+                <button className="session-history-management-button" onClick={handleSessionHistory}>{t("session_history")}</button>
+                {hasPermission('sessions.google') && <h3 className="calendar-title">{t("google_calendar")}:</h3>}
                 {hasPermission('sessions.google') && <div>
                     {
                         !signedInGoogle ? (
                             <button className="session-history-management-button" onClick={handleGoogleLogin}>
-                                Ienākt ar Google
+                                {t("google_login")}
                             </button>
                         ) : (
                             <>
                                 <button className="session-history-management-button" onClick={handleAddSessionsToGoogleCalendar}>
-                                    Sinhronizē ar Google kalendāru
+                                    {t("sync_google_calendar")}
                                 </button>
                                 <button className="session-history-management-button" onClick={handleGoogleLogout}>
-                                    Iziet no Google
+                                    {t("google_logout")}
                                 </button>
                             </>
                         )
                     }
                 </div>}
-                {hasPermission('sessions.microsoft') && <h3 className="calendar-title">Microsoft kalendārs:</h3>}
+                {hasPermission('sessions.microsoft') && <h3 className="calendar-title">{t("microsoft_calendar")}:</h3>}
                 {hasPermission('sessions.microsoft') && <div>
                     {
                         !signedInMicrosoft ? (
                             <button className="session-history-management-button" onClick={handleMicrosoftLogin}>
-                                Ienākt ar Microsoft
+                                {t("microsoft_login")}
                             </button>
                         ) : (
                             <>
                                 <button className="session-history-management-button" onClick={handleAddSessionsToMicrosoftCalendar}>
-                                    Sinhronizē ar Microsoft kalendāru
+                                    {t("sync_microsoft_calendar")}
                                 </button>
                                 <button className="session-history-management-button" onClick={handleMicrosoftLogout}>
-                                    Iziet no Microsoft
+                                    {t("microsoft_logout")}
                                 </button>
                             </>
                         )

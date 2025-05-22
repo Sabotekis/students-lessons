@@ -148,14 +148,14 @@
     color: #4CAF50;
 }
 
-
-.language-switcher {
+/*Language switcher for Sidebar*/
+.language-switcher--sidebar {
     position: relative;
     display: inline-block;
     margin-left: 10px;
 }
 
-.language-switcher-button {
+.language-switcher-button--sidebar {
     background: rgba(21, 23, 28, 0);
     border: 1px solid #444;
     border-radius: 4px;
@@ -169,23 +169,23 @@
     transition: background 0.2s;
 }
 
-.language-switcher-button:hover,
-.language-switcher-button:focus {
+.language-switcher-button--sidebar:hover,
+.language-switcher-button--sidebar:focus {
     background: #252831;
 }
 
-.language-switcher-flag {
+.language-switcher-flag--sidebar {
     width: 1.5em !important;
     height: 1.5em !important;
     margin-right: 8px;
 }
 
-.language-switcher-arrow {
+.language-switcher-arrow--sidebar {
     margin-left: 8px;
     color: #fff;
 }
 
-.language-switcher-dropdown {
+.language-switcher-dropdown--sidebar {
     position: absolute;
     top: 100%;
     left: 0;
@@ -197,7 +197,7 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
-.language-switcher-option {
+.language-switcher-option--sidebar {
     padding: 6px 12px;
     cursor: pointer;
     display: flex;
@@ -208,8 +208,70 @@
     transition: background 0.2s;
 }
 
-.language-switcher-option.selected,
-.language-switcher-option:hover {
+.language-switcher-option--sidebar.selected,
+.language-switcher-option--sidebar:hover {
     background: #252831;
     color: #4CAF50;
+}
+
+/*Language switcher for Login*/
+.language-switcher--login {
+    position: relative;
+    display: inline-block;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.language-switcher-button--login {
+    background: lightgray;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    transition: background 0.2s;
+}
+
+.language-switcher-button--login:hover,
+.language-switcher-button--login:focus {
+    background: grey;
+}
+
+.language-switcher-flag--login {
+    width: 1.5em !important;
+    height: 1.5em !important;
+    margin-right: 8px;
+}
+
+.language-switcher-arrow--login {
+    margin-left: 8px;
+}
+
+.language-switcher-dropdown--login {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 1000;
+    min-width: 160px;
+}
+
+.language-switcher-option--login {
+    padding: 6px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    background: transparent;
+    font-size: 16px;
+    transition: background 0.2s;
+}
+
+.language-switcher-option--login.selected,
+.language-switcher-option--login:hover {
+    background: lightgray;
+    color: green;
 }

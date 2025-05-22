@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import './students.css';
+import { useTranslation } from 'react-i18next';
 
 const ViewStudent = () => {
     const { id } = useParams();
     const [student, setStudent] = useState(null);
     const [userPermissions, setUserPermissions] = useState([]);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetch(`/api/students/${id}`)
@@ -44,47 +46,47 @@ const ViewStudent = () => {
 
     return (
         <div className="view-student-container">
-            <h1 className="view-student-title">Studentu apskatīšana</h1>
+            <h1 className="view-student-title">{t("view_student_title")}</h1>
             <div>
-                <strong>Vārds:</strong> {student.name}
+                <strong>{t("student_name")}:</strong> {student.name}
             </div>
             <div>
-                <strong>Uzvārds:</strong> {student.surname}
+                <strong>{t("student_surname")}:</strong> {student.surname}
             </div>
             <div>
-                <strong>Personas kods:</strong> {student.personalCode}
+                <strong>{t("student_personal_code")}:</strong> {student.personalCode}
             </div>
             <div>
-                <strong>Tālruņa numurs:</strong> {student.phoneNumber}
+                <strong>{t("student_phone_number")}:</strong> {student.phoneNumber}
             </div>
             <div>
-                <strong>E-pasts:</strong> {student.email}
+                <strong>{t("student_email")}:</strong> {student.email}
             </div>
             <div>
-                <strong>Akadēmiskās stundas: {student.totalAcademicHours}</strong>
+                <strong>{t("student_academic_hours")}:</strong> {student.totalAcademicHours}
             </div>
             <div>
                 {student.groups.length === 0 ? (
                     <div></div>
                 ) : (
                     <div>
-                        <strong>Grupas:</strong>
+                        <strong>{t("groups")}:</strong>
                         <div className="view-student-group-grid">
                             {student.groups.map((group) => (
                                 <div className="view-student-group-card" key={group._id}>
-                                    <div><strong>Nosaukums:</strong> {group.title}</div>
-                                    <div><strong>Sākuma datums:</strong> {new Date(group.startDate).toLocaleDateString()}</div>
-                                    <div><strong>Beigu datums:</strong> {new Date(group.endDate).toLocaleDateString()}</div>
-                                    <div><strong>Profesors:</strong> {group.professor}</div>
+                                    <div><strong>{t("group_name")}:</strong> {group.title}</div>
+                                    <div><strong>{t("group_start_date")}:</strong> {new Date(group.startDate).toLocaleDateString()}</div>
+                                    <div><strong>{t("group_end_date")}:</strong> {new Date(group.endDate).toLocaleDateString()}</div>
+                                    <div><strong>{t("group_professor")}:</strong> {group.professor}</div>
                                 </div>
                             ))}
                         </div>
                     </div>
                 )}
             </div>
-            {hasPermission('students.update') && <button className="view-student-button" onClick={handleEditStudent}>Rediģēt</button>}
-            {hasPermission('students.delete') && <button className="view-student-button" onClick={handleDeleteStudent}>Izdzēst</button>}
-            <button className="view-student-button" onClick={handleBack}>Atgriezties</button>
+            {hasPermission('students.update') && <button className="view-student-button" onClick={handleEditStudent}>{t("edit")}</button>}
+            {hasPermission('students.delete') && <button className="view-student-button" onClick={handleDeleteStudent}>{t("delete")}</button>}
+            <button className="view-student-button" onClick={handleBack}>{t("back")}</button>
         </div>
     );
 };

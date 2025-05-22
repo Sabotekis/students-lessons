@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,6 +38,7 @@ const Login = () => {
 
   return (
     <div>
+      <LanguageSwitcher variant="login"/>
       <style>
         {`
           .login-form {
@@ -72,17 +76,17 @@ const Login = () => {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="E-pasts"
+          placeholder={t("email")}
           required
         />
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Parole"
+          placeholder={t("password")}
           required
         />
-        <button type="submit">Ienākt</button>
+        <button type="submit">{t("login")}</button>
       </form>
     </div>
   );

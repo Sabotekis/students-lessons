@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import './students.css';
+import { useTranslation } from 'react-i18next';
 
 const EditStudent = () => {
     const { id } = useParams();
     const [student, setStudent] = useState({ name: "", surname: "", personalCode: "", phoneNumber: "", email: "" });
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetch(`/api/students/${id}`)
@@ -52,12 +54,12 @@ const EditStudent = () => {
 
     return (
         <div className="edit-student-container">
-            <h1 className="edit-student-title">Studentu rediģēšana</h1>
+            <h1 className="edit-student-title">{t("edit_student_title")}</h1>
             <div>
                 <input
                     className="edit-student-input"
                     type="text"
-                    placeholder="Vārds"
+                    placeholder={t("student_name")}
                     value={student.name}
                     onChange={(e) => setStudent({ ...student, name: e.target.value })}
                     required
@@ -67,7 +69,7 @@ const EditStudent = () => {
                 <input
                     className="edit-student-input"
                     type="text"
-                    placeholder="Uzvārds"
+                    placeholder={t("student_surname")}
                     value={student.surname}
                     onChange={(e) => setStudent({ ...student, surname: e.target.value })}
                     required
@@ -77,7 +79,7 @@ const EditStudent = () => {
                 <input
                     className="edit-student-input"
                     type="text"
-                    placeholder="Personas kods"
+                    placeholder={t("student_personal_code")}
                     value={student.personalCode}
                     onChange={(e) => setStudent({ ...student, personalCode: e.target.value })}
                     required
@@ -87,7 +89,7 @@ const EditStudent = () => {
                 <input
                     className="edit-student-input"
                     type="text"
-                    placeholder="Tālruņa numurs"
+                    placeholder={t("student_phone_number")}
                     value={student.phoneNumber}
                     onChange={(e) => setStudent({ ...student, phoneNumber: e.target.value })}
                     required
@@ -97,14 +99,14 @@ const EditStudent = () => {
                 <input
                     className="edit-student-input"
                     type="text"
-                    placeholder="E-pasts"
+                    placeholder={t("student_email")}
                     value={student.email}
                     onChange={(e) => setStudent({ ...student, email: e.target.value })}
                     required
                 />
             </div>
-            <button className="edit-student-button" onClick={handleUpdateStudent}>Atjaunināt studentu</button>
-            <button className="edit-student-button" onClick={handleBack}>Atgriezties</button>
+            <button className="edit-student-button" onClick={handleUpdateStudent}>{t("update")}</button>
+            <button className="edit-student-button" onClick={handleBack}>{t("back")}</button>
         </div>
     );
 };

@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import './sessions.css';
+import { useTranslation } from "react-i18next";
 
 const ViewSession = () => {
     const { id } = useParams();
     const [session, setSession] = useState(null);
     const navigate = useNavigate();
     const [userPermissions, setUserPermissions] = useState([]);
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetch(`/api/sessions/${id}`)
@@ -30,27 +32,26 @@ const ViewSession = () => {
 
     return (
         <div className="view-session-container">
-            <h1 className="view-session-title">Apmācību sesijas apskatīšana</h1>
+            <h1 className="view-session-title">{t("view_session_title")}</h1>
+            <div><strong>{t("session_start_date")}:</strong> {new Date(session.startDateTime).toLocaleString()}</div>
+            <div><strong>{t("session_end_date")}:</strong> {new Date(session.endDateTime).toLocaleString()}</div>
             <div>
-                <strong>Datums:</strong> {new Date(session.startDateTime).toLocaleString()} - {new Date(session.endDateTime).toLocaleString()}
-            </div>
-            <div>
-                <strong>Grupa:</strong>
+                <strong>{t("group")}:</strong>
                 <div className="view-session-group-grid">
                     <div className="view-session-group-card">
-                        <div><strong>Grupas reģistra numurs</strong> {session.group.registerNumber}</div>
-                        <div><strong>Nosaukums:</strong> {session.group.title}</div>
-                        <div><strong>Sākuma datums:</strong> {new Date(session.group.startDate).toLocaleDateString()}</div>
-                        <div><strong>Beigu datums:</strong> {new Date(session.group.endDate).toLocaleDateString()}</div>
-                        <div><strong>Profesors:</strong> {session.group.professor}</div>
-                        <div><strong>Akadēmiskās stundas:</strong> {session.group.academicHours}</div>
-                        <div><strong>Minimālais stundu skaits:</strong> {session.group.minHours}</div>
+                        <div><strong>{t("group_register_number")}:</strong> {session.group.registerNumber}</div>
+                        <div><strong>{t("group_name")}:</strong> {session.group.title}</div>
+                        <div><strong>{t("group_start_date")}:</strong> {new Date(session.group.startDate).toLocaleDateString()}</div>
+                        <div><strong>{t("group_end_date")}:</strong> {new Date(session.group.endDate).toLocaleDateString()}</div>
+                        <div><strong>{t("group_professor")}:</strong> {session.group.professor}</div>
+                        <div><strong>{t("group_academic_hours")}:</strong> {session.group.academicHours}</div>
+                        <div><strong>{t("group_min_hours")}:</strong> {session.group.minHours}</div>
                         <div>
-                            <strong>Plānotas dienas un stundas:</strong>
+                            <strong>{t("group_planned_data")}:</strong>
                             <div className="view-group-planned-data">
                                 {Object.entries(session.group.plannedData).map(([month, data]) => (
                                     <div key={month}>
-                                        <strong>{month}:</strong> {data.days} dienas, {data.hours} stundas
+                                        <strong>{month}:</strong> {data.days} {t("days")}, {data.hours} {t("hours")}
                                     </div>
                                 ))}
                             </div>
@@ -63,7 +64,7 @@ const ViewSession = () => {
                     <div></div>
                 ) : (
                     <div>
-                        <strong>Studenti:</strong>
+                        <strong>{t("students")}:</strong>
                         <div className="view-session-student-grid">
                             {session.students.map(student => {
                                 const hasAttendance = session.attendances.some(attendance => 
@@ -75,13 +76,13 @@ const ViewSession = () => {
                                         className={`view-session-student-card ${hasAttendance ? 'attended' : 'not-attended'}`}
                                         key={student._id}
                                     >
-                                        <div><strong>Vārds:</strong> {student.name}</div>
-                                        <div><strong>Uzvārds:</strong> {student.surname}</div>
-                                        <div><strong>Personas kods:</strong> {student.personalCode}</div>
-                                        <div><strong>Telefona numurs:</strong> {student.phoneNumber}</div>
-                                        <div><strong>E-pasts</strong> {student.email}</div>
+                                        <div><strong>{t("student_name")}:</strong> {student.name}</div>
+                                        <div><strong>{t("student_surname")}:</strong> {student.surname}</div>
+                                        <div><strong>{t("student_personal_code")}:</strong> {student.personalCode}</div>
+                                        <div><strong>{t("student_phone_number")}:</strong> {student.phoneNumber}</div>
+                                        <div><strong>{t("student_email")}:</strong> {student.email}</div>
                                         {student.deleted && (
-                                            <div>(Šis students ir dzēsts)</div>
+                                            <div>({t("student_deleted")})</div>
                                         )}
                                     </div>
                                 );
@@ -92,14 +93,14 @@ const ViewSession = () => {
             </div>
             {!session.finished && (
                 <>
-                    {hasPermission('sessions.update') && <button className="view-session-button" onClick={() => navigate(`/edit-session/${id}`)}>Rediģēt</button>}
+                    {hasPermission('sessions.update') && <button className="view-session-button" onClick={() => navigate(`/edit-session/${id}`)}>{t("edit")}</button>}
                     {hasPermission('sessions.delete') && <button className="view-session-button" onClick={() => {
                         fetch(`/api/sessions/${id}`, { method: "DELETE" })
                             .then(() => navigate("/session-management"));
-                    }}>Izdzēst</button>}
+                    }}>{t("delete")}</button>}
                 </>
             )}
-            <button className="view-session-button" onClick={handleBack}>Atgriezties</button>
+            <button className="view-session-button" onClick={handleBack}>{t("back")}</button>
         </div>
     );
 };

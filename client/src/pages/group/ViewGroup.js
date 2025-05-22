@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import './groups.css';
+import { useTranslation } from 'react-i18next';
 
 const ViewGroup = () => {
     const { id } = useParams();
     const [group, setGroup] = useState(null);
     const [userPermissions, setUserPermissions] = useState([]);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetch(`/api/groups/${id}`)
@@ -66,34 +68,34 @@ const ViewGroup = () => {
 
     return (
         <div className="view-group-container">
-            <h1 className="view-group-title">Grupas apskatīšana</h1>
+            <h1 className="view-group-title">{t("view_group_title")}</h1>
             <div>
-                <strong>Grupas reģistra numurs:</strong> {group.registerNumber}
+                <strong>{t("group_register_number")}:</strong> {group.registerNumber}
             </div>
             <div>
-                <strong>Nosaukums:</strong> {group.title}
+                <strong>{t("group_name")}:</strong> {group.title}
             </div>
             <div>
-                <strong>Sākuma datums:</strong> {new Date(group.startDate).toLocaleDateString()}
+                <strong>{t("group_start_date")}:</strong> {new Date(group.startDate).toLocaleDateString()}
             </div>
             <div>
-                <strong>Beigu datums:</strong> {new Date(group.endDate).toLocaleDateString()}
+                <strong>{t("group_end_date")}:</strong> {new Date(group.endDate).toLocaleDateString()}
             </div>
             <div>
-                <strong>Profesors:</strong> {group.professor}
+                <strong>{t("group_professor")}:</strong> {group.professor}
             </div>
             <div>
-                <strong>Akadēmiskās stundas:</strong> {group.academicHours}
+                <strong>{t("group_academic_hours")}:</strong> {group.academicHours}
             </div>
             <div>
-                <strong>Minimālais stundu skaits:</strong> {group.minHours}
+                <strong>{t("group_min_hours")}:</strong> {group.minHours}
             </div>
             <div>
-                <strong>Plānotas dienas un stundas:</strong>
+                <strong>{t("group_planned_data")}:</strong>
                 <div className="view-group-planned-data">
                     {Object.entries(group.plannedData).map(([month, data]) => (
                         <div key={month}>
-                            <strong>{month}:</strong> {data.days} dienas, {data.hours} stundas
+                            <strong>{month}:</strong> {data.days} {t("days")}, {data.hours} {t("hours")}
                         </div>
                      ))}
                 </div>
@@ -103,26 +105,26 @@ const ViewGroup = () => {
                     <div></div>
                 ) : (
                     <div>
-                        <strong>Studenti:</strong>
+                        <strong>{t("students")}:</strong>
                         <div className="view-group-student-grid">
                             {group.students.map(student => (
                                 <div className="view-group-student-card" key={student._id}>
-                                    <div><strong>Vārds:</strong> {student.name}</div>
-                                    <div><strong>Uzvārds:</strong> {student.surname}</div>
-                                    <div><strong>Personas kods:</strong> {student.personalCode}</div>
-                                    <div><strong>Telefona numurs:</strong> {student.phoneNumber}</div>
-                                    <div><strong>E-pasts:</strong> {student.email}</div>
-                                    {hasPermission('groups.deleteStudents') && <button className="view-group-delete-button" onClick={() => handleDeleteStudentFromGroup(student._id)}>Nodzēst</button>}
+                                    <div><strong>{t("student_name")}:</strong> {student.name}</div>
+                                    <div><strong>{t("student_surname")}:</strong> {student.surname}</div>
+                                    <div><strong>{t("student_personal_code")}:</strong> {student.personalCode}</div>
+                                    <div><strong>{t("student_phone_number")}:</strong> {student.phoneNumber}</div>
+                                    <div><strong>{t("student_email")}:</strong> {student.email}</div>
+                                    {hasPermission('groups.deleteStudents') && <button className="view-group-delete-button" onClick={() => handleDeleteStudentFromGroup(student._id)}>{t("remove")}</button>}
                                 </div>
                             ))}
                         </div>
                     </div>
                 )}
             </div>
-            {hasPermission('groups.update') && <button className="view-group-button" onClick={handleEditGroup}>Rediģēt</button>}
-            {hasPermission('groups.delete') && <button className="view-group-button" onClick={handleDeleteGroup}>Izdzēst</button>}
-            <button className="view-group-button" onClick={handleBack}>Atgriezties</button>
-            {hasPermission('groups.addStudents') && <button className="view-group-button" onClick={() => handleAddStudentToGroup(group._id)}>Pievienot studentu</button>}
+            {hasPermission('groups.update') && <button className="view-group-button" onClick={handleEditGroup}>{t("edit")}</button>}
+            {hasPermission('groups.delete') && <button className="view-group-button" onClick={handleDeleteGroup}>{t("delete")}</button>}
+            <button className="view-group-button" onClick={handleBack}>{t("back")}</button>
+            {hasPermission('groups.addStudents') && <button className="view-group-button" onClick={() => handleAddStudentToGroup(group._id)}>{t("student_add")}</button>}
         </div>
     );
 };

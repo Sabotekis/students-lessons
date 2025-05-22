@@ -46,12 +46,12 @@ const AddStudent = () => {
 
     return (
         <div className="add-student-container">
-            <h1 className="add-student-title">{t("add_student")}</h1>
+            <h1 className="add-student-title">{t("add_student_title")}</h1>
             <div>
                 <input
                     className="add-student-input"
                     type="text"
-                    placeholder={t("name")}
+                    placeholder={t("student_name")}
                     value={student.name}
                     onChange={(e) => setStudent({ ...student, name: e.target.value })}
                     required
@@ -61,7 +61,7 @@ const AddStudent = () => {
                 <input
                     className="add-student-input"
                     type="text"
-                    placeholder={t("surname")}
+                    placeholder={t("student_surname")}
                     value={student.surname}
                     onChange={(e) => setStudent({ ...student, surname: e.target.value })}
                     required
@@ -71,7 +71,7 @@ const AddStudent = () => {
                 <input
                     className="add-student-input"
                     type="text"
-                    placeholder="Personas kods"
+                    placeholder={t("student_personal_code")}
                     value={student.personalCode}
                     onChange={(e) => setStudent({ ...student, personalCode: e.target.value })}
                     required
@@ -81,7 +81,7 @@ const AddStudent = () => {
                 <input
                     className="add-student-input"
                     type="text"
-                    placeholder="Tālruņa numurs"
+                    placeholder={t("student_phone_number")}
                     value={student.phoneNumber}
                     onChange={(e) => setStudent({ ...student, phoneNumber: e.target.value })}
                     required
@@ -91,13 +91,13 @@ const AddStudent = () => {
                 <input
                     className="add-student-input"
                     type="text"
-                    placeholder="E-pasts"
+                    placeholder={t("student_email")}
                     value={student.email}
                     onChange={(e) => setStudent({ ...student, email: e.target.value })}
                     required
                 />
             </div>
-            <button className="add-student-button" onClick={handleAddStudent}>{t("add_student")}</button>
+            <button className="add-student-button" onClick={handleAddStudent}>{t("add")}</button>
             <button className="add-student-button" onClick={handleBack}>{t("back")}</button>
         </div>
     );

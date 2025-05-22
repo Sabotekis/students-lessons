@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import './sessions.css';
+import { useTranslation } from "react-i18next";
 
 const EditSession = () => {
     const { id } = useParams();
     const [session, setSession] = useState({ date: "", group: "", students: [] });
     const [groupStudents, setGroupStudents] = useState([]);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetch(`/api/sessions/${id}`)
@@ -69,33 +71,33 @@ const EditSession = () => {
 
     return (
         <div className="edit-session-container">
-            <h1 className="edit-session-title">Apmācību sesiju rediģēšana</h1>
+            <h1 className="edit-session-title">{t("edit_session_title")}</h1>
             {groupStudents.length > 0 ? (
                 <div>
                     <div className="edit-session-student-grid">
                         {groupStudents.map(student => (
                             <div className="edit-session-student-card" key={student._id}>
-                                <div><strong>Vārds:</strong> {student.name}</div>
-                                <div><strong>Uzvārds:</strong> {student.surname}</div>
-                                <div><strong>Personas kods:</strong> {student.personalCode}</div>
-                                <div><strong>Telefona numurs:</strong> {student.phoneNumber}</div>
-                                <div><strong>E-pasts:</strong> {student.email}</div>
+                                <div><strong>{t("student_name")}:</strong> {student.name}</div>
+                                <div><strong>{t("student_surname")}:</strong> {student.surname}</div>
+                                <div><strong>{t("student_personal_code")}:</strong> {student.personalCode}</div>
+                                <div><strong>{t("student_phone_number")}:</strong> {student.phoneNumber}</div>
+                                <div><strong>{t("student_email")}:</strong> {student.email}</div>
                                 {student.deleted ? (
-                                    <div>(Šis students ir dzēsts)</div>
+                                    <div>({t("student_deleted")})</div>
                                 ) : session.students.includes(student._id) ? (
-                                    <button className="edit-session-delete-button" onClick={() => handleRemoveStudentFromSession(student._id)}>Izdzēst</button>
+                                    <button className="edit-session-delete-button" onClick={() => handleRemoveStudentFromSession(student._id)}>{t("remove")}</button>
                                 ) : (
-                                    <button className="edit-session-add-button" onClick={() => handleAddStudentToSession(student._id)}>Pievienot</button>
+                                    <button className="edit-session-add-button" onClick={() => handleAddStudentToSession(student._id)}>{t("add")}</button>
                                 )}
                             </div>
                         ))}
                     </div>
                 </div>
             ) : (
-                <div>Šajā grupā nav studentu</div>
+                <div>{t("student_none")}</div>
             )}
-            <button className="edit-session-button" onClick={handleUpdateSession}>Atjaunināt sesiju</button>
-            <button className="edit-session-button" onClick={handleBack}>Atgriezties</button>
+            <button className="edit-session-button" onClick={handleUpdateSession}>{t("update")}</button>
+            <button className="edit-session-button" onClick={handleBack}>{t("back")}</button>
         </div>
     );
 };
