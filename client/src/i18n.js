@@ -101,6 +101,9 @@ i18n
                     "session_history_title": "Apmācību sesiju vēsture",
                     "session_history_none": "Neviena sesija nav pabeigta",
 
+                    //Attendance Management + Add Attendance + Edit Attendance + View Attendance
+                    "attendance_title": "Apmeklējuma pārvaldība",
+
                 }
             },
             en: {
