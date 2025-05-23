@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./attendance.css";
+import { useTranslation } from "react-i18next";
 
 const AddAttendance = () => {
     const [filteredGroups, setFilteredGroups] = useState([]);
@@ -10,6 +11,7 @@ const AddAttendance = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { studentId } = location.state || {};
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (!studentId) return;
@@ -70,14 +72,14 @@ const AddAttendance = () => {
 
     return (
         <div className="add-attendance-container">
-            <h1 className="add-attendance-title">Apmeklējumu pievienošana</h1>
+            <h1 className="add-attendance-title">{t("add_attendance_title")}</h1>
             <div>
                 <select
                     className="add-attendance-select"
                     onChange={(e) => handleGroupChange(e.target.value)}
                     value={attendance.groupId}
                 >
-                    <option value="">Izvēlieties grupu</option>
+                    <option value="">{t("group_choose")}</option>
                     {filteredGroups.map(group => (
                         <option key={group._id} value={group._id}>
                             {group.title}
@@ -92,7 +94,7 @@ const AddAttendance = () => {
                     value={attendance.sessionId}
                     disabled={!attendance.groupId}
                 >
-                    <option value="">Izvēlieties sesiju</option>
+                    <option value="">{t("session_choose")}</option>
                     {filteredSessions.map(session => (
                         <option key={session._id} value={session._id}>
                             {new Date(session.date).toLocaleDateString()} - {session.group.title}
@@ -104,16 +106,16 @@ const AddAttendance = () => {
                 <input
                     className="add-attendance-input"
                     type="number"
-                    placeholder="Laiks (minūtes)"
+                    placeholder={t("time_minute")}
                     value={attendance.timeMinute}
                     onChange={(e) => handleMinutesChange(e.target.value)}
                 />
             </div>
             <div>
-                <strong>Akadēmiskās stundas: {attendance.academicHours}</strong>
+                <strong>{t("student_academic_hours")}: {attendance.academicHours}</strong>
             </div>
-            <button className="add-attendance-button" onClick={handleAddAttendance}>Pievienot apmeklējumu</button>
-            <button className="add-attendance-button" onClick={handleBack}>Atgriezties</button>
+            <button className="add-attendance-button" onClick={handleAddAttendance}>{t("add")}</button>
+            <button className="add-attendance-button" onClick={handleBack}>{t("back")}</button>
         </div>
     );
 };

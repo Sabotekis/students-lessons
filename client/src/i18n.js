@@ -12,7 +12,7 @@ i18n
                     //SidebarData + labels from PermissionsData
                     "Student Management": "Studentu pārvaldība",
                     "Group Management": "Grupu pārvaldība",
-                    "Session Management": "Sesiju pārvaldība",
+                    "Session Management": "Apmācību sesiju pārvaldība",
                     "Attendance Management": "Apmeklejuma pārvaldība",
                     "Certificate Management": "Apliecību pārvaldība",
                     "Group and Certificate Register": "Grupu un Apliecību reģistrs",
@@ -103,6 +103,15 @@ i18n
 
                     //Attendance Management + Add Attendance + Edit Attendance + View Attendance
                     "attendance_title": "Apmeklējuma pārvaldība",
+                    "attendance_history": "Apmeklējuma vēsture",
+                    "attendance_add": "Pievienot apmeklējumu",
+                    "attendance_upload": "Augšupielādēt apmeklējumu",
+                    "attendance_report": "Apmeklējuma atskaite",
+                    "attendance_group_report": "Apmeklējuma grupas atskaite",
+                    "add_attendance_title": "Apmeklējumu pievienošana",
+                    "session_choose": "Izvēlieties sesiju",
+                    "time_minute": "Laiks (minūtes)",
+                    "upload_attendance_title": "Apmeklējuma CSV augšupielāde",
 
                 }
             },
@@ -199,6 +208,18 @@ i18n
                     "group": "Group",
                     "session_history_title": "Session History",
                     "session_history_none": "No sessions finished",
+
+                    //Attendance Management + Add Attendance + Edit Attendance + View Attendance
+                    "attendance_title": "Attendance Management",
+                    "attendance_history": "Attendance History",
+                    "attendance_add": "Add Attendance",
+                    "attendance_upload": "Upload Attendance",
+                    "attendance_report": "Attendance Report",
+                    "attendance_group_report": "Attendance Group Report",
+                    "add_attendance_title": "Add Attendance",
+                    "session_choose": "Choose a session",
+                    "time_minute": "Time (minutes)",
+                    "upload_attendance_title": "Upload Attendance CSV",
                 }
             }
         },

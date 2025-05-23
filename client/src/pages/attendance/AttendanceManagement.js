@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./attendance.css";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const AttendanceManagement = () => {
     const [students, setStudents] = useState([]); 
     const navigate = useNavigate();
     const [userPermissions, setUserPermissions] = useState([]);
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetch("/api/students", { credentials: "include" })
@@ -44,25 +46,25 @@ const AttendanceManagement = () => {
 
     return (
         <div className="attendance-container">
-            <h1 className="attendance-title">Apmeklējuma uzskaite</h1>
+            <h1 className="attendance-title">{t("attendance_title")}</h1>
             <div className="attendance-student-grid">
-                {students.length === 0 && <h2 className="attendance-title">Nav atrasti studenti</h2>}
+                {students.length === 0 && <div>{t("student_none")}</div>}
                 {students.map(student => (
                     <div className="attendance-student-card" key={student._id}>
-                        <div><strong>Vārds:</strong> {student.name}</div>
-                        <div><strong>Uzvārds:</strong> {student.surname}</div>
-                        <div><strong>Personas kods:</strong> {student.personalCode}</div>
-                        <div><strong>Tālruņa numurs:</strong> {student.phoneNumber}</div>
-                        <div><strong>E-pasts:</strong> {student.email}</div>
-                        <div><strong>Akadēmiskās stundas:</strong> {student.totalAcademicHours}</div>
-                        <button className="attendance-button" onClick={() => handleViewAttendanceHistory(student._id)}>Apmeklējuma vēsturi</button>
-                        {hasPermission('attendances.create') && <button className="attendance-button" onClick={() => handleAddAttendance(student._id)}>Pievienot apmeklējumu</button>}
+                        <div><strong>{t("student_name")}:</strong> {student.name}</div>
+                        <div><strong>{t("student_surname")}:</strong> {student.surname}</div>
+                        <div><strong>{t("student_personal_code")}:</strong> {student.personalCode}</div>
+                        <div><strong>{t("student_phone_number")}:</strong> {student.phoneNumber}</div>
+                        <div><strong>{t("student_email")}:</strong> {student.email}</div>
+                        <div><strong>{t("student_academic_hours")}:</strong> {student.totalAcademicHours}</div>
+                        <button className="attendance-button" onClick={() => handleViewAttendanceHistory(student._id)}>{t("attendance_history")}</button>
+                        {hasPermission('attendances.create') && <button className="attendance-button" onClick={() => handleAddAttendance(student._id)}>{t("attendance_add")}</button>}
                     </div>
                 ))}
             </div>
-            {hasPermission('attendances.upload') && <button className="attendance-button" onClick={handelUploadFile}>Apmeklējuma augšupielāde</button>}
-            <button className="attendance-button" onClick={handleAttendanceReport}>Apmeklējuma atskaite</button>    
-            <button className="attendance-button" onClick={handelAttendanceGroupReport}>Apmeklējuma grupas atskaite</button>
+            {hasPermission('attendances.upload') && <button className="attendance-button" onClick={handelUploadFile}>{t("attendance_upload")}</button>}
+            <button className="attendance-button" onClick={handleAttendanceReport}>{t("attendance_report")}</button>    
+            <button className="attendance-button" onClick={handelAttendanceGroupReport}>{t("attendance_group_report")}</button>
         </div>
     );
 };

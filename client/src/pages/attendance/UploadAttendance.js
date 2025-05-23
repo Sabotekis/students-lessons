@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import './attendance.css';
+import { useTranslation } from 'react-i18next';
 
 const UploadFile = () => {
     const [file, setFile] = useState(null);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -59,12 +62,12 @@ const UploadFile = () => {
 
     return (
         <div className='upload-attendance-container'>
-            <h1 className="upload-attendance-title">Apmeklējuma CSV augšupielāde</h1>
+            <h1 className="upload-attendance-title">{t("upload_attendance_title")}</h1>
             <div>
                 <input className="upload-attendance-input" type="file" accept=".csv" onChange={handleFileChange} />
             </div>
-            <button className="upload-attendance-file-button" onClick={handleUploadAndAddAttendance}>Pievienot apmeklējumu</button>
-            <button className='upload-attendance-file-button' onClick={handleBack}>Atgriezties</button>
+            <button className="upload-attendance-file-button" onClick={handleUploadAndAddAttendance}>{t("add")}</button>
+            <button className='upload-attendance-file-button' onClick={handleBack}>{t("back")}</button>
         </div>
     );
 };
