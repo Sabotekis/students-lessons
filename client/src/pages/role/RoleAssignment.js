@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './roles.css';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const RoleAssignment = () => {
     const [roles, setRoles] = useState([]);
     const [users, setUsers] = useState([]);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetch('/api/roles')
@@ -33,18 +35,18 @@ const RoleAssignment = () => {
 
     return (
         <div className="role-assign-container">
-            <h1 className='role-assign-title'>Lomu piešķiršana</h1>
+            <h1 className='role-assign-title'>{t("role_assign_title")}</h1>
             <div>
                 {users.map(user => (
                     <div key={user._id}>
-                        <p><strong>Lietotājvārds:</strong> {user.username}</p>
-                        <p><strong>E-pasts:</strong> {user.email}</p>
+                        <p><strong>{t("role_username")}:</strong> {user.username}</p>
+                        <p><strong>{t("email")}:</strong> {user.email}</p>
                         <select
                             className='role-assign-select'
                             onChange={(e) => handleAssignRole(user._id, e.target.value)}
                             defaultValue={user.role?._id || ''}
                         >
-                            <option value="">Izvēlieties lomu</option>
+                            <option value="">{t("role_choose")}</option>
                             {roles.map(role => (
                                 <option key={role._id} value={role._id}>
                                     {role.name}
@@ -54,7 +56,7 @@ const RoleAssignment = () => {
                     </div>
                 ))}
             </div>
-            <button className="role-assign-button" onClick={handleBack}>Atgriezties</button>
+            <button className="role-assign-button" onClick={handleBack}>{t("back")}</button>
         </div>
     );
 };

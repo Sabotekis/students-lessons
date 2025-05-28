@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './certificate.css';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const CertificateManagement = () => {
     const [certificates, setCertificates] = useState([]);
     const navigate = useNavigate();
     const [userPermissions, setUserPermissions] = useState([]);
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetch('/api/certificates')
@@ -47,25 +49,25 @@ const CertificateManagement = () => {
 
     return (
         <div className="certificate-management-container">
-            <h1 className="certificate-management-title">Apliecību pārvaldība</h1>
+            <h1 className="certificate-management-title">{t("certificate_title")}</h1>
             <div>
                 <div className="certificate-management-grid">
                     {certificates.map((certificate) => (
                         <div className="certificate-management-card" key={certificate._id}>
-                            <div><strong>Vārds:</strong> {certificate.student.name} </div>
-                            <div><strong>Uzvārds</strong> {certificate.student.surname}</div>
-                            <div><strong>Grupa:</strong> {certificate.group.title}</div>
-                            <div><strong>Izsniegšanas datums:</strong> {new Date(certificate.issueData).toLocaleDateString()}</div>
+                            <div><strong>{t("student_name")}:</strong> {certificate.student.name} </div>
+                            <div><strong>{t("student_surname")}</strong> {certificate.student.surname}</div>
+                            <div><strong>{t("group")}:</strong> {certificate.group.title}</div>
+                            <div><strong>{t("issue_date")}:</strong> {new Date(certificate.issueData).toLocaleDateString()}</div>
                             {hasPermission('certificates.download') && (
                                 <div>
-                                    <button className="certificate-management-button" onClick={() => handleDownloadPDF(certificate._id)}>Lejupielādēt PDF</button>
+                                    <button className="certificate-management-button" onClick={() => handleDownloadPDF(certificate._id)}>{t("download_pdf")}</button>
                                 </div>
                             )}
                         </div>
                     ))}
                     {hasPermission('certificates.create') && (
                         <div className="certificate-management-addbuttoncard">
-                                <button className="certificate-management-button" onClick={handleAddCertificate}>Pievienot apliecību</button>
+                                <button className="certificate-management-button" onClick={handleAddCertificate}>{t("certificate_add")}</button>
                         </div>
                     )}
                 </div>

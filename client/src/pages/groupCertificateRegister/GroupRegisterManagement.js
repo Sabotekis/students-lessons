@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import './groupCertificate.css'
+import { useTranslation } from "react-i18next";
 
 const GroupRegisterManagement = () => {
     const [groups, setGroups] = useState([]);
     const [selectedGroup, setSelectedGroup] = useState("");
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetch("/api/groups")
@@ -29,14 +31,14 @@ const GroupRegisterManagement = () => {
 
     return (
         <div className="group-register-management-container">
-            <h1 className="group-register-management-title">Grupas reģistra pārvaldība</h1>
+            <h1 className="group-register-management-title">{t("group_register_management_title")}</h1>
             <div>
                 <select
                     className="group-register-management-select"
                     value={selectedGroup}
                     onChange={(e) => setSelectedGroup(e.target.value)}
                 >
-                    <option value="">Izvēlieties grupu</option>
+                    <option value="">{t("group_choose")}</option>
                     {groups.map(group => (
                         <option key={group._id} value={group._id}>
                             {group.title}
@@ -45,10 +47,10 @@ const GroupRegisterManagement = () => {
                 </select>
             </div>
             <button className="group-register-management-button" onClick={handleGenerateRegister}>
-                Izveidot grupas reģistru
+                {t("generate")}
             </button>
             <button className="group-register-management-button" onClick={handleBack}>
-                Atgriezties
+                {t("back")}
             </button>
         </div>
     );

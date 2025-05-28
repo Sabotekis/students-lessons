@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import './groupCertificate.css';
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 
 const CertificateRegister = () => {
     const [certificates, setCertificates] = useState([]);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetch("/api/certificates/register")
@@ -20,19 +22,19 @@ const CertificateRegister = () => {
 
     return (
         <div className="certificate-register-container">
-            <h1 className="certificate-register-title">Apliecību Reģistrs</h1>
+            <h1 className="certificate-register-title">{t("certificate_register")}</h1>
             <table className="certificate-register-table">
                 <thead>
                     <tr>
-                        <th>Nr.</th>
-                        <th>Izglītības dokumenta veids</th>
-                        <th>Izglītības dokumenta numurs</th>
-                        <th>Vārds Uzvārds</th>
-                        <th>Personas kods</th>
-                        <th>Apgūtā izglītības programma</th>
-                        <th>Mācību periods</th>
-                        <th>Grupas numurs</th>
-                        <th>Izsniegšanas datums</th>
+                        <th>{t("number")}</th>
+                        <th>{t("education_document_type")}</th>
+                        <th>{t("education_document_number")}</th>
+                        <th>{t("name_and_surname")}</th>
+                        <th>{t("student_personal_code")}</th>
+                        <th>{t("education_program")}</th>
+                        <th>{t("period_of_study")}</th>
+                        <th>{t("group_number")}</th>
+                        <th>{t("issue_date")}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,7 +54,7 @@ const CertificateRegister = () => {
                 </tbody>
                 </table>    
             <button className="certificate-register-button" onClick={handleBack}>
-                Atgriezties
+                {t("back")}
             </button>
         </div>
     );

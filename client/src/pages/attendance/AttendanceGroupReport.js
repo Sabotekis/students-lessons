@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ExcelJS from "exceljs";
 import "./attendance.css";
+import { useTranslation } from "react-i18next";
 
 const AttendanceGroupReport = () => {
     const { groupId } = useParams();
     const [reportData, setReportData] = useState([]);
     const [groupTitle, setGroupTitle] = useState("");
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (!groupId) return;
@@ -107,18 +109,18 @@ const AttendanceGroupReport = () => {
 
     return (
         <div className="attendance-group-report-container">
-            <h1 className="attendance-group-report-title">Apmeklējuma grupas atskaite</h1>
+            <h1 className="attendance-group-report-title">{t("attendance_group_report_title")}</h1>
             {reportData.length > 0 ? (
                 <table className="attendance-group-report-table">
                     <thead>
                         <tr>
-                            <th>Vārds Uzvārds</th>
-                            <th>Apgūto stundu skaits kopā</th>
-                            <th>Statuss</th>
-                            <th>Apliecības veids</th>
-                            <th>Apliecības numurs</th>
-                            <th>Mācību periods</th>
-                            <th>Izsniegšanas datums</th>
+                            <th>{t("name_and_surname")}</th>
+                            <th>{t("number_of_hours_studied")}</th>
+                            <th>{t("status")}</th>
+                            <th>{t("certificate_type")}</th>
+                            <th>{t("certificate_number")}</th>
+                            <th>{t("period_of_study")}</th>
+                            <th>{t("issue_date")}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -136,13 +138,13 @@ const AttendanceGroupReport = () => {
                     </tbody>
                 </table>
             ) : (
-                <p>Nav datu par šo grupu.</p>
+                <p>{t("data_none")}</p>
             )}
             <button className="attendance-group-report-button" onClick={handleExportToExcel}>
-                Eksportēšana uz Excel
+                {t("export_to_excel")}	
             </button>
             <button className="attendance-group-report-button" onClick={handleBack}>
-                Atgriezties
+                {t("back")}
             </button>
         </div>
     );

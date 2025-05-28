@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import './certificate.css';
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const AddCertificate = () => {
     const [certificates, setCertificates] = useState([]);
@@ -12,6 +13,7 @@ const AddCertificate = () => {
         issueData: '',
     });
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetch('/api/students') 
@@ -58,7 +60,7 @@ const AddCertificate = () => {
 
     return (
         <div className="add-certificate-container">
-            <h2 className="add-certificate-title">Apliecību pievienošana</h2>
+            <h2 className="add-certificate-title">{t("add_certificate_title")}</h2>
             <div>
                 <select
                     className="add-certificate-select"
@@ -66,7 +68,7 @@ const AddCertificate = () => {
                     value={newCertificate.group}
                     onChange={(e) => handleGroupChange(e.target.value)}
                 >
-                    <option value="">Izvēlieties grupu</option>
+                    <option value="">{t("group_choose")}</option>
                     {groups.map((group) => (
                         <option key={group._id} value={group._id}>
                             {group.title}
@@ -82,7 +84,7 @@ const AddCertificate = () => {
                     onChange={(e) => setNewCertificate({ ...newCertificate, student: e.target.value })}
                     disabled={!newCertificate.group}
                 >
-                    <option value="">Izvēlieties studentu</option>
+                    <option value="">{t("student_choose")}</option>
                     {students.map((student) => (
                         <option key={student.id || student._id} value={student.id || student._id}>
                             {student.name} {student.surname}
@@ -91,10 +93,10 @@ const AddCertificate = () => {
                 </select>
             </div>
             <button className="add-certificate-button" type="button" onClick={handleAddCertificate}>
-                Pievienot apliecību
+                {t("add")}
             </button>
             <button className="add-certificate-button" type="button" onClick={handleBack}>
-                Atgriezties
+                {t("back")}
             </button>
         </div>
     );

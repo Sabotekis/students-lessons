@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./attendance.css";
+import { useTranslation } from "react-i18next";
 
 const AttendanceReportManagement = () => {
     const [groups, setGroups] = useState([]);
@@ -8,6 +9,7 @@ const AttendanceReportManagement = () => {
     const [availableMonths, setAvailableMonths] = useState([]);
     const [selectedMonth, setSelectedMonth] = useState("");
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetch("/api/groups")
@@ -59,7 +61,7 @@ const AttendanceReportManagement = () => {
 
     return (
         <div className="attendance-report-management-container">
-            <h1>Apmeklējuma atskaite ģenerēšana</h1>
+            <h1>{t("attendance_report_management_title")}</h1>
             <div className="attendance-report-management-filters">
                 <div>
                     <select
@@ -67,7 +69,7 @@ const AttendanceReportManagement = () => {
                         value={selectedGroup}
                         onChange={(e) => handleGroupChange(e.target.value)}
                     >
-                        <option value="">Izvēlieties grupu</option>
+                        <option value="">{t("group_choose")}</option>
                         {groups.map(group => (
                             <option key={group._id} value={group._id}>
                                 {group.title}
@@ -82,19 +84,19 @@ const AttendanceReportManagement = () => {
                         onChange={(e) => setSelectedMonth(e.target.value)}
                         disabled={!availableMonths.length}
                     >
-                        <option value="">Izvēlieties mēnesi</option>
+                        <option value="">{t("month_choose")}</option>
                         {availableMonths.map(month => (
                             <option key={month} value={month}>
-                                {new Date(`${month}-01`).toLocaleString("lv", { month: "long", year: "numeric" })}
+                                {new Date(`${month}-01`).toLocaleDateString()}
                             </option>
                         ))}
                     </select>
                 </div>  
                 <button className="attendance-report-management-button" onClick={handleShowReport}>
-                    Ģenerēt atskaiti
+                    {t("generate")}
                 </button>
                 <button className="attendance-report-management-button" onClick={handleBack}>
-                    Atgriezties
+                    {t("back")}
                 </button>
             </div>
         </div>

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ExcelJS from "exceljs";
 import "./attendance.css";
+import { useTranslation } from "react-i18next";
 
 const AttendanceReport = () => {
     const location = useLocation();
@@ -12,6 +13,7 @@ const AttendanceReport = () => {
     const [plannedDays, setPlannedDays] = useState(0);
     const [plannedHours, setPlannedHours] = useState(0);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (!groupId || !month) return;
@@ -117,20 +119,20 @@ const AttendanceReport = () => {
     };
 
     if (!groupId || !month) {
-        return <div>Lūdzu, izvēlieties grupu un mēnesi apmeklējuma pārskatu pārvaldības lapā.</div>;
+        return <div>{t("attendance_report_none")}</div>;
     }
 
     return (
         <div className="attendance-report-container">
-            <h1>Apmeklējuma tabula</h1>
+            <h1>{t("attendance_report_title")}</h1>
             <table className="group-report-table">
                 <tbody>
                     <tr>
-                        <th>Grupa</th>
+                        <th>{t("group")}</th>
                         <td>{groupInfo.title}</td>
                     </tr>
                     <tr>
-                        <th>Apmācības periods</th>
+                        <th>{t("period")}</th>
                         <td>{new Date(groupInfo.startDate).toLocaleDateString()} - {new Date(groupInfo.endDate).toLocaleDateString()}</td>
                     </tr>
                 </tbody>
@@ -138,13 +140,13 @@ const AttendanceReport = () => {
             <table className="attendance-report-table">
                 <thead>
                     <tr>
-                        <th>Nr.</th>
-                        <th>Apmācāmā vārds, uzvārds</th>
+                        <th>{t("number")}</th>
+                        <th>{t("student_name_and_surname")}</th>
                         <th colSpan={daysInMonth}>
-                            {new Date(`${month}-01`).toLocaleDateString("lv", { month: "long", year: "numeric" })}
+                            {new Date(`${month}-01`).toLocaleDateString()}
                         </th>
-                        <th colSpan="2">Plānotais apmācības ilgums</th>
-                        <th colSpan="2">Faktiskais apmācību ilgums</th>
+                        <th colSpan="2">{t("planned_studying_duration")}</th>
+                        <th colSpan="2">{t("real_studying_duration")}</th>
                     </tr>
                     <tr>
                         <th></th>
@@ -152,10 +154,10 @@ const AttendanceReport = () => {
                         {Array.from({ length: daysInMonth }, (_, i) => (
                             <th key={i + 1}>{i + 1}</th>
                         ))}
-                        <th>Dienas</th>
-                        <th>Stundas</th>
-                        <th>Dienas</th>
-                        <th>Stundas</th>
+                        <th>{t("days")}</th>
+                        <th>{t("hours")}</th>
+                        <th>{t("days")}</th>
+                        <th>{t("hours")}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -176,8 +178,8 @@ const AttendanceReport = () => {
                     ))}
                 </tbody>
             </table>
-            <button className="attendance-report-button" onClick={handleExportToExcel}>Eksportēšana uz Excel</button>
-            <button className="attendance-report-button" onClick={handleBack}>Atgriezties</button>
+            <button className="attendance-report-button" onClick={handleExportToExcel}>{t("export_to_excel")}</button>
+            <button className="attendance-report-button" onClick={handleBack}>{t("back")}</button>
         </div>
     );
 };

@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./attendance.css";
+import { useTranslation } from "react-i18next";
 
 const AttendanceGroupReportManagement = () => {
     const [groups, setGroups] = useState([]);
     const [selectedGroup, setSelectedGroup] = useState("");
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetch("/api/groups")
@@ -29,14 +31,14 @@ const AttendanceGroupReportManagement = () => {
 
     return (
         <div className="attendance-group-report-management-container">
-            <h1 className="attendance-group-report-management-title">Apmeklējuma grupas atskaite ģenerēšana</h1>
+            <h1 className="attendance-group-report-management-title">{t("attendance_group_report_management_title")}</h1>
             <div>
                 <select
                     className="attendance-group-report-management-select"
                     value={selectedGroup}
                     onChange={(e) => setSelectedGroup(e.target.value)}
                 >
-                    <option value="">Izvēlieties grupu</option>
+                    <option value="">{t("group_choose")}</option>
                     {groups.map(group => (
                         <option key={group._id} value={group._id}>
                             {group.title}
@@ -45,10 +47,10 @@ const AttendanceGroupReportManagement = () => {
                 </select>
             </div>
             <button className="attendance-group-report-management-button" onClick={handleGenerateReport}>
-                Ģenerēt atskaiti
+                {t("generate")}
             </button>
             <button className="attendance-group-report-management-button" onClick={handleBack}>
-                Atgriezties
+                {t("back")}
             </button>
         </div>
     );

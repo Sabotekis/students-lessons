@@ -97,12 +97,12 @@ const RoleManagement = () => {
 
     return (
         <div className="role-management-container">
-            <h1 className="role-management-title">Lomu pārvaldība</h1>
+            <h1 className="role-management-title">{t("role_management_title")}</h1>
             {selectedRole === null && hasPermission('roles.create') && (
                 <input
                     className="role-management-input"
                     type="text"
-                    placeholder="Ievadiet jaunu lomas nosaukumu"
+                    placeholder={t("new_role_name")}
                     value={newRoleName}
                     onChange={(e) => setNewRoleName(e.target.value)}
                 />
@@ -115,7 +115,7 @@ const RoleManagement = () => {
                     setRoleData(role ? { sections: role.sections, permissions: role.permissions } : { sections: {}, permissions: [] });
                 }}
             >
-                <option value="">Izvēlieties lomu</option>
+                <option value="">{t("role_choose")}</option>
                 {roles.map(role => (
                     <option key={role._id} value={role._id}>{role.name}</option>
                 ))}
@@ -178,11 +178,11 @@ const RoleManagement = () => {
             </div>
             {hasPermission('roles.create') &&
                 <button className='role-management-button' onClick={handleSaveRole}>
-                    {selectedRole ? 'Saglabāt' : 'Pievienot jaunu'}
+                    {selectedRole ? `${t("update")}` : `${t("add")}`}
                 </button>
             }
-            {hasPermission('roles.assign') && <button className='role-management-button' onClick={handleRoleAssign}>Piešķirt lomus</button>}
-            <button className='role-management-button' onClick={handleBack}>Atgriezties</button>
+            {hasPermission('roles.assign') && <button className='role-management-button' onClick={handleRoleAssign}>{t("role_add")}</button>}
+            <button className='role-management-button' onClick={handleBack}>{t("back")}</button>
         </div>
     );
 };

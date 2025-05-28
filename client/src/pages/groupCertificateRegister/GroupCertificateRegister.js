@@ -1,10 +1,11 @@
-import React from "react";
 import './groupCertificate.css';
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 
 const GroupCertificateRegister = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleGroupRegister = () => {
         navigate("/group-register-management");
@@ -16,12 +17,12 @@ const GroupCertificateRegister = () => {
 
     return (
         <div className="group-certificate-register-container">
-            <h1 className="group-certificate-register-title">Grupu un Apliecību Reģistrs</h1>
+            <h1 className="group-certificate-register-title">{t("group_and_certificate_register_title")}</h1>
             <button className="group-certificate-register-button" onClick={handleGroupRegister}>
-                Grupu reģistrs
+                {t("group_register")}
             </button>
             <button className="group-certificate-register-button" onClick={handleCertificateRegister}>
-                Apliecību reģistrs
+                {t("certificate_register")}
             </button>
         </div>
     );

@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import './groupCertificate.css';
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 
 const GroupRegister = () => {
@@ -8,6 +9,7 @@ const GroupRegister = () => {
     const [registerData, setRegisterData] = useState([]);
     const [groupInfo, setGroupInfo] = useState({});
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetch(`/api/groups/${groupId}/register`)
@@ -26,23 +28,23 @@ const GroupRegister = () => {
 
     return (
         <div className="group-register-container">
-            <h1 className="group-register-title">Grupu Reģistrs</h1>
+            <h1 className="group-register-title">{t("group_register")}</h1>
             <table className="group-register-table">
                 <tbody>
                     <tr>
-                        <th>Grupas Reģistrācijas Nr.</th>
+                        <th>{t("group_register_no")}</th>
                         <td>{groupInfo.registerNumber}</td>
                     </tr>
                     <tr>
-                        <th>Grupas nosaukums</th>
+                        <th>{t("group_register_name")}</th>
                         <td>{groupInfo.title}</td>
                     </tr>
                     <tr>
-                        <th>Akademiskas stundas</th>
+                        <th>{t("group_academic_hours")}</th>
                         <td>{groupInfo.academicHours}</td>
                     </tr>
                     <tr>
-                        <th>Apguves Periods</th>
+                        <th>{t("period_of_study")}</th>
                         <td>{new Date(groupInfo.startDate).toLocaleDateString("lv-LV")} - {new Date(groupInfo.endDate).toLocaleDateString("lv-LV")}</td>
                     </tr>
                 </tbody>
@@ -50,12 +52,12 @@ const GroupRegister = () => {
             <table className="group-register-main-table">
                 <thead>
                     <tr>
-                        <th>Vārds Uzvārds</th>
-                        <th>Personas Kods</th>
-                        <th>Ieskaitīts/Neieskaitīts</th>
-                        <th>Izglītības dokumenta veids</th>
-                        <th>Izglītības dokumenta numurs</th>
-                        <th>Izglītības dokumenta sagatavošanas datums</th>
+                        <th>{t("name_and_surname")}</th>
+                        <th>{t("student_personal_code")}</th>
+                        <th>{t("included/not_included")}</th>
+                        <th>{t("education_document_type")}</th>
+                        <th>{t("education_document_number")}</th>
+                        <th>{t("education_document_issue_date")}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,7 +74,7 @@ const GroupRegister = () => {
                 </tbody>
             </table>
             <button className="group-register-button" onClick={handleBack}>
-                Atgriezties
+                {t("back")}
             </button>
         </div>
     );
