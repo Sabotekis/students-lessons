@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ExcelJS from "exceljs";
-import "./attendance.css";
+import { Container, Row, Col, Button, Table, Alert } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
 
 const AttendanceReport = () => {
@@ -119,68 +119,112 @@ const AttendanceReport = () => {
     };
 
     if (!groupId || !month) {
-        return <div>{t("attendance_report_none")}</div>;
+        return (
+            <Container fluid className="mt-4">
+                <Row>
+                    <Col xs={12}>
+                        <Alert variant="warning" className="text-center">
+                            {t("attendance_report_none")}
+                        </Alert>
+                    </Col>
+                </Row>
+            </Container>
+        );    
     }
 
     return (
-        <div className="attendance-report-container">
-            <h1>{t("attendance_report_title")}</h1>
-            <table className="group-report-table">
-                <tbody>
-                    <tr>
-                        <th>{t("group")}</th>
-                        <td>{groupInfo.title}</td>
-                    </tr>
-                    <tr>
-                        <th>{t("period")}</th>
-                        <td>{new Date(groupInfo.startDate).toLocaleDateString()} - {new Date(groupInfo.endDate).toLocaleDateString()}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table className="attendance-report-table">
-                <thead>
-                    <tr>
-                        <th>{t("number")}</th>
-                        <th>{t("student_name_and_surname")}</th>
-                        <th colSpan={daysInMonth}>
-                            {new Date(`${month}-01`).toLocaleDateString()}
-                        </th>
-                        <th colSpan="2">{t("planned_studying_duration")}</th>
-                        <th colSpan="2">{t("real_studying_duration")}</th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        {Array.from({ length: daysInMonth }, (_, i) => (
-                            <th key={i + 1}>{i + 1}</th>
-                        ))}
-                        <th>{t("days")}</th>
-                        <th>{t("hours")}</th>
-                        <th>{t("days")}</th>
-                        <th>{t("hours")}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {reportData.map((row, index) => (
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{row.name}</td>
-                            {Array.from({ length: daysInMonth }, (_, i) => (
-                                <td key={i + 1}>
-                                    {row.dailyMinutes[i] === null ? "" : row.dailyMinutes[i]}
-                                </td>
-                            ))}
-                            <td>{plannedDays}</td>
-                            <td>{plannedHours}</td>
-                            <td>{row.actualDays}</td>
-                            <td>{row.actualHours}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <button className="attendance-report-button" onClick={handleExportToExcel}>{t("export_to_excel")}</button>
-            <button className="attendance-report-button" onClick={handleBack}>{t("back")}</button>
-        </div>
+        <Container fluid className="mt-4">
+            <Row>
+                <Col xs={12}>
+                    <h1 className="text-center mb-4">{t("attendance_report_title")}</h1>
+                </Col>
+            </Row>
+
+            <Row className="mb-4">
+                <Col xs={12}>
+                    <div className="table-responsive" style={{ maxWidth: '500px' }}>
+                        <Table striped bordered size="sm" className="mb-0">
+                            <tbody>
+                                <tr>
+                                    <th>{t("group")}:</th>
+                                    <td>{groupInfo.title}</td>
+                                </tr>
+                                <tr>
+                                    <th>{t("period")}:</th>
+                                    <td>
+                                        {groupInfo.startDate && groupInfo.endDate 
+                                            ? `${new Date(groupInfo.startDate).toLocaleDateString()} - ${new Date(groupInfo.endDate).toLocaleDateString()}`
+                                            : 'N/A'
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                    </div>
+                </Col>
+            </Row>
+
+            <Row>
+                <Col xs={12}>
+                    <div className="table-responsive">
+                        <Table striped bordered hover size="sm">
+                            <thead className="table-dark">
+                                <tr>
+                                    <th rowSpan="2">{t("number")}</th>
+                                    <th rowSpan="2">{t("name_and_surname")}</th>
+                                    <th colSpan={daysInMonth} className="text-center">
+                                        {new Date(`${month}-01`).toLocaleDateString("lv", { month: "long", year: "numeric" })}
+                                    </th>
+                                    <th colSpan="2" className="text-center">{t("planned_studying_duration")}</th>
+                                    <th colSpan="2" className="text-center">{t("real_studying_duration")}</th>
+                                </tr>
+                                <tr>
+                                    {Array.from({ length: daysInMonth }, (_, i) => (
+                                        <th key={i + 1} className="text-center" style={{ minWidth: '30px' }}>
+                                            {i + 1}
+                                        </th>
+                                    ))}
+                                    <th className="text-center">{t("days")}</th>
+                                    <th className="text-center">{t("hours")}</th>
+                                    <th className="text-center">{t("days")}</th>
+                                    <th className="text-center">{t("hours")}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {reportData.map((row, index) => (
+                                    <tr key={index}>
+                                        <td className="text-center">{index + 1}</td>
+                                        <td>{row.name}</td>
+                                        {Array.from({ length: daysInMonth }, (_, i) => (
+                                            <td key={i + 1} className="text-center">
+                                                {row.dailyMinutes[i] === null ? "" : row.dailyMinutes[i]}
+                                            </td>
+                                        ))}
+                                        <td className="text-center">{plannedDays}</td>
+                                        <td className="text-center">{plannedHours}</td>
+                                        <td className="text-center">{row.actualDays}</td>
+                                        <td className="text-center">{row.actualHours}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    </div>
+                </Col>
+            </Row>
+            
+            <Row className="mb-3">
+                <Col xs={12} className="text-center">
+                    <div className="d-grid gap-2 d-md-block">
+                        <Button variant="success" onClick={handleExportToExcel} className="me-2">
+                            {t("export_to_excel")}
+                        </Button>
+                        <Button variant="danger" onClick={handleBack} className="me-2">
+                            {t("back")}
+                        </Button>
+                    </div>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import './roles.css';
+import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -34,30 +34,47 @@ const RoleAssignment = () => {
     };
 
     return (
-        <div className="role-assign-container">
-            <h1 className='role-assign-title'>{t("role_assign_title")}</h1>
-            <div>
+        <Container fluid className="mt-4">
+            <Row>
+                <Col xs={12}>
+                    <h1 className="text-center mb-4">{t("role_assign_title")}</h1>
+                </Col>
+            </Row>
+
+            <Row className="g-3">
                 {users.map(user => (
-                    <div key={user._id}>
-                        <p><strong>{t("role_username")}:</strong> {user.username}</p>
-                        <p><strong>{t("email")}:</strong> {user.email}</p>
-                        <select
-                            className='role-assign-select'
-                            onChange={(e) => handleAssignRole(user._id, e.target.value)}
-                            defaultValue={user.role?._id || ''}
-                        >
-                            <option value="">{t("role_choose")}</option>
-                            {roles.map(role => (
-                                <option key={role._id} value={role._id}>
-                                    {role.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    <Col xs={12} sm={6} lg={4} xl={3} key={user._id}>
+                        <Card className="h-100">
+                            <Card.Body>
+                                <Card.Title className="text-center"><strong>{t("role_username")}:</strong> {user.username}</Card.Title>
+                                <Card.Title className='text-center'><strong>{t("email")}:</strong> {user.email}</Card.Title>
+                                <Form.Group className="mb-3">
+                                    <Form.Select
+                                        defaultValue={user.role?._id || ''}
+                                        onChange={(e) => handleAssignRole(user._id, e.target.value)}
+                                    >
+                                        <option value="">{t("role_choose")}</option>
+                                        {roles.map(role => (
+                                            <option key={role._id} value={role._id}>
+                                                {role.name}
+                                            </option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group>
+                            </Card.Body>
+                        </Card>
+                    </Col>
                 ))}
-            </div>
-            <button className="role-assign-button" onClick={handleBack}>{t("back")}</button>
-        </div>
+            </Row>
+            
+            <Row className="mt-3">
+                <Col xs={12} className="text-center">
+                    <Button variant="danger" onClick={handleBack}>
+                        {t("back")}
+                    </Button>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

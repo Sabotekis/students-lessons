@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import './roles.css';
+import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { getPermissionsData } from '../../components/PermissionsData';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -96,94 +96,135 @@ const RoleManagement = () => {
     }
 
     return (
-        <div className="role-management-container">
-            <h1 className="role-management-title">{t("role_management_title")}</h1>
-            {selectedRole === null && hasPermission('roles.create') && (
-                <input
-                    className="role-management-input"
-                    type="text"
-                    placeholder={t("new_role_name")}
-                    value={newRoleName}
-                    onChange={(e) => setNewRoleName(e.target.value)}
-                />
-            )}
-            <select
-                className="role-management-select"
-                onChange={(e) => {
-                    const role = roles.find(r => r._id === e.target.value);
-                    setSelectedRole(role || null);
-                    setRoleData(role ? { sections: role.sections, permissions: role.permissions } : { sections: {}, permissions: [] });
-                }}
-            >
-                <option value="">{t("role_choose")}</option>
-                {roles.map(role => (
-                    <option key={role._id} value={role._id}>{role.name}</option>
-                ))}
-            </select>
-            <div>
-                {Object.keys(PermissionsData).map(section => {
-                    const sectionPermissionKeys = PermissionsData[section].permissions.map(p => p.key);
-                    const allSelected = sectionPermissionKeys.every(key => roleData.permissions.includes(key));
-                    const someSelected = sectionPermissionKeys.some(key => roleData.permissions.includes(key));
-                    return (
-                        <div key={section} className='role-management-section'>
-                            <label className='role-management-toggle'>
-                                <input
-                                    type="checkbox"
-                                    checked={roleData.sections[section] || false}
-                                    disabled={!hasPermission(`roles.create`)}
-                                    onChange={() => handleToggleSection(section)}
-                                />
-                                <span className='toggle-slider'></span>
-                                {PermissionsData[section].label}
-                            </label>
-                            <div>
-                                {PermissionsData[section].permissions.map(permission => (
-                                    <label key={permission.key} className='role-management-checkbox'>
-                                        <input
-                                            type="checkbox"
-                                            checked={roleData.permissions.includes(permission.key)}
-                                            disabled={!roleData.sections[section] || !hasPermission(`roles.create`)} 
-                                            onChange={() => handlePermissionChange(permission.key)}
-                                        />
-                                        {permission.label}
-                                    </label>
-                                ))}
-                            </div>
-                            <label className='role-management-checkbox'>
-                                <input
-                                    type="checkbox"
-                                    disabled={!roleData.sections[section] || !hasPermission('roles.create')}
-                                    checked={allSelected}
-                                    indeterminate={someSelected && !allSelected ? "indeterminate" : undefined}
-                                    onChange={e => {
-                                        setRoleData(prev => {
-                                            let newPermissions;
-                                            if (e.target.checked) {
-                                                newPermissions = [
-                                                    ...prev.permissions,
-                                                    ...sectionPermissionKeys.filter(key => !prev.permissions.includes(key))
-                                                ];
-                                            } else {
-                                                newPermissions = prev.permissions.filter(key => !sectionPermissionKeys.includes(key));
-                                            }
-                                            return { ...prev, permissions: newPermissions };
-                                        });
+        <Container fluid className="mt-4">
+            <Row>
+                <Col xs={12}>
+                    <h1 className="text-center mb-4">{t("role_management_title")}</h1>
+                </Col>
+            </Row>
+
+            <Row className="justify-content-center">
+                <Col xs={12} lg={10} xl={8}>
+                    <Card>
+                        <Card.Body>
+                            {selectedRole === null && hasPermission('roles.create') && (
+                                <Form.Group className="mb-3">
+                                    <Form.Label>{t("new_role_name")}</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder={t("new_role_name")}
+                                        value={newRoleName}
+                                        onChange={(e) => setNewRoleName(e.target.value)}
+                                    />
+                                </Form.Group>
+                            )}
+
+                            <Form.Group className="mb-4">
+                                <Form.Label>{t("role_choose")}</Form.Label>
+                                <Form.Select
+                                    onChange={(e) => {
+                                        const role = roles.find(r => r._id === e.target.value);
+                                        setSelectedRole(role || null);
+                                        setRoleData(role ? { sections: role.sections, permissions: role.permissions } : { sections: {}, permissions: [] });
                                     }}
-                                />
-                                Pievienot visas
-                            </label>
-                        </div>
-                )})}
-            </div>
-            {hasPermission('roles.create') &&
-                <button className='role-management-button' onClick={handleSaveRole}>
-                    {selectedRole ? `${t("update")}` : `${t("add")}`}
-                </button>
-            }
-            {hasPermission('roles.assign') && <button className='role-management-button' onClick={handleRoleAssign}>{t("role_add")}</button>}
-            <button className='role-management-button' onClick={handleBack}>{t("back")}</button>
-        </div>
+                                >
+                                    <option value="">{t("role_choose")}</option>
+                                    {roles.map(role => (
+                                        <option key={role._id} value={role._id}>{role.name}</option>
+                                    ))}
+                                </Form.Select>
+                            </Form.Group>
+
+                            <div>
+                                {Object.keys(PermissionsData).map(section => {
+                                    const sectionPermissionKeys = PermissionsData[section].permissions.map(p => p.key);
+                                    const allSelected = sectionPermissionKeys.every(key => roleData.permissions.includes(key));
+                                    const someSelected = sectionPermissionKeys.some(key => roleData.permissions.includes(key));
+                                    return (
+                                        <Card key={section} className="mb-3">
+                                            <Card.Header>
+                                                <Form.Check
+                                                    type="switch"
+                                                    id={`section-${section}`}
+                                                    label={PermissionsData[section].label}
+                                                    checked={roleData.sections[section] || false}
+                                                    disabled={!hasPermission(`roles.create`)}
+                                                    onChange={() => handleToggleSection(section)}
+                                                />
+                                            </Card.Header>
+                                            <Card.Body>
+                                                <Row className="g-2">
+                                                    {PermissionsData[section].permissions.map(permission => (
+                                                        <Col xs={12} sm={6} md={4} key={permission.key}>
+                                                            <Form.Check
+                                                                type="checkbox"
+                                                                id={`permission-${permission.key}`}
+                                                                label={permission.label}
+                                                                checked={roleData.permissions.includes(permission.key)}
+                                                                disabled={!roleData.sections[section] || !hasPermission(`roles.create`)}
+                                                                onChange={() => handlePermissionChange(permission.key)}
+                                                            />
+                                                        </Col>
+                                                    ))}
+                                                </Row>
+                                                <hr />
+                                                <Form.Check
+                                                    type="checkbox"
+                                                    id={`select-all-${section}`}
+                                                    label="Pievienot visas"
+                                                    disabled={!roleData.sections[section] || !hasPermission('roles.create')}
+                                                    checked={allSelected}
+                                                    ref={checkbox => {
+                                                        if (checkbox) checkbox.indeterminate = someSelected && !allSelected;
+                                                    }}
+                                                    onChange={e => {
+                                                        setRoleData(prev => {
+                                                            let newPermissions;
+                                                            if (e.target.checked) {
+                                                                newPermissions = [
+                                                                    ...prev.permissions,
+                                                                    ...sectionPermissionKeys.filter(key => !prev.permissions.includes(key))
+                                                                ];
+                                                            } else {
+                                                                newPermissions = prev.permissions.filter(key => !sectionPermissionKeys.includes(key));
+                                                            }
+                                                            return { ...prev, permissions: newPermissions };
+                                                        });
+                                                    }}
+                                                />
+                                            </Card.Body>
+                                        </Card>
+                                    );
+                                })}
+                            </div>
+
+                            {hasPermission('roles.create') && (
+                                <div className="d-grid">
+                                    <Button variant="success" onClick={handleSaveRole}>
+                                        {selectedRole ? t("update") : t("add")}
+                                    </Button>
+                                </div>
+                            )}
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+
+            <Row className="mt-2">
+                <Col xs={12} className="text-center">
+                    <div className="d-grid gap-2 d-md-block">
+                        {hasPermission('roles.assign') && (
+                            <Button variant="success" onClick={handleRoleAssign} className="me-2">
+                                {t("role_add")}
+                            </Button>
+                        )}
+                        <Button variant="danger" onClick={handleBack} className="me-2">
+                            {t("back")}
+                        </Button>
+                    </div>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

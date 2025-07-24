@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./attendance.css";
+import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
 
 const AttendanceReportManagement = () => {
@@ -60,46 +60,63 @@ const AttendanceReportManagement = () => {
     };
 
     return (
-        <div className="attendance-report-management-container">
-            <h1>{t("attendance_report_management_title")}</h1>
-            <div className="attendance-report-management-filters">
-                <div>
-                    <select
-                        className="attendance-report-management-select"
-                        value={selectedGroup}
-                        onChange={(e) => handleGroupChange(e.target.value)}
-                    >
-                        <option value="">{t("group_choose")}</option>
-                        {groups.map(group => (
-                            <option key={group._id} value={group._id}>
-                                {group.title}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <select
-                        className="attendance-report-management-select"
-                        value={selectedMonth}
-                        onChange={(e) => setSelectedMonth(e.target.value)}
-                        disabled={!availableMonths.length}
-                    >
-                        <option value="">{t("month_choose")}</option>
-                        {availableMonths.map(month => (
-                            <option key={month} value={month}>
-                                {new Date(`${month}-01`).toLocaleDateString()}
-                            </option>
-                        ))}
-                    </select>
-                </div>  
-                <button className="attendance-report-management-button" onClick={handleShowReport}>
-                    {t("generate")}
-                </button>
-                <button className="attendance-report-management-button" onClick={handleBack}>
-                    {t("back")}
-                </button>
-            </div>
-        </div>
+        <Container fluid className="mt-4">
+            <Row>
+                <Col xs={12}>
+                    <h1 className="text-center mb-4">{t("attendance_report_management_title")}</h1>
+                </Col>
+            </Row>
+
+            <Row className="justify-content-center">
+                <Col xs={12} md={8} lg={6}>
+                    <Card>
+                        <Card.Body>
+                            <Form>
+                                <Form.Group className="mb-3">
+                                    <Form.Select 
+                                        value={selectedGroup} 
+                                        onChange={(e) => handleGroupChange(e.target.value)}
+                                        required
+                                    >
+                                        <option value="">{t("group_choose")}</option>
+                                        {groups.map(group => (
+                                            <option key={group._id} value={group._id}>
+                                                {group.title}
+                                            </option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group>
+
+                                <Form.Group className="mb-3">
+                                    <Form.Select 
+                                        value={selectedMonth} 
+                                        onChange={(e) => setSelectedMonth(e.target.value)}
+                                        disabled={!availableMonths.length}
+                                        required
+                                    >
+                                        <option value="">{t("month_choose")}</option>
+                                        {availableMonths.map(month => (
+                                            <option key={month} value={month}>
+                                                {new Date(`${month}-01`).toLocaleDateString()}
+                                            </option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group>
+
+                                <div className="d-grid gap-2 d-md-flex justify-content-md-center">
+                                    <Button variant="success" onClick={handleShowReport}>
+                                        {t("generate")}
+                                    </Button>
+                                    <Button variant="danger" onClick={handleBack}>
+                                        {t("back")}
+                                    </Button>
+                                </div>
+                            </Form>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

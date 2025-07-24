@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import './students.css';
 import { useTranslation } from 'react-i18next';
+import { Container, Row, Col, Card, Button,  } from 'react-bootstrap';
 
 const ViewStudent = () => {
     const { id } = useParams();
@@ -45,49 +45,95 @@ const ViewStudent = () => {
     }
 
     return (
-        <div className="view-student-container">
-            <h1 className="view-student-title">{t("view_student_title")}</h1>
-            <div>
-                <strong>{t("student_name")}:</strong> {student.name}
-            </div>
-            <div>
-                <strong>{t("student_surname")}:</strong> {student.surname}
-            </div>
-            <div>
-                <strong>{t("student_personal_code")}:</strong> {student.personalCode}
-            </div>
-            <div>
-                <strong>{t("student_phone_number")}:</strong> {student.phoneNumber}
-            </div>
-            <div>
-                <strong>{t("student_email")}:</strong> {student.email}
-            </div>
-            <div>
-                <strong>{t("student_academic_hours")}:</strong> {student.totalAcademicHours}
-            </div>
-            <div>
-                {student.groups.length === 0 ? (
-                    <div></div>
-                ) : (
-                    <div>
-                        <strong>{t("groups")}:</strong>
-                        <div className="view-student-group-grid">
-                            {student.groups.map((group) => (
-                                <div className="view-student-group-card" key={group._id}>
-                                    <div><strong>{t("group_name")}:</strong> {group.title}</div>
-                                    <div><strong>{t("group_start_date")}:</strong> {new Date(group.startDate).toLocaleDateString()}</div>
-                                    <div><strong>{t("group_end_date")}:</strong> {new Date(group.endDate).toLocaleDateString()}</div>
-                                    <div><strong>{t("group_professor")}:</strong> {group.professor}</div>
-                                </div>
-                            ))}
-                        </div>
+        <Container fluid className="mt-4">
+            <Row >
+                <Col xs={12}>
+                    <div className="text-center mb-4">
+                        <h1>{t("view_student_title")}</h1>
                     </div>
-                )}
-            </div>
-            {hasPermission('students.update') && <button className="view-student-button" onClick={handleEditStudent}>{t("edit")}</button>}
-            {hasPermission('students.delete') && <button className="view-student-button" onClick={handleDeleteStudent}>{t("delete")}</button>}
-            <button className="view-student-button" onClick={handleBack}>{t("back")}</button>
-        </div>
+                </Col>
+            </Row>
+
+            {student && (
+                <>
+                    <Row className="d-flex justify-content-center mb-2">
+                        <Col xs={12} lg={3} className="text-center">
+                            <Card>
+                                <Card.Body>
+                                    <Row>
+                                        <Col xs={12} className="mb-3">
+                                            <strong>{t("student_name")}:</strong> {student.name}
+                                        </Col>
+                                        <Col xs={12} className="mb-3">
+                                            <strong>{t("student_surname")}:</strong> {student.surname}
+                                        </Col>
+                                        <Col xs={12} className="mb-3">
+                                            <strong>{t("student_personal_code")}:</strong> {student.personalCode}
+                                        </Col>
+                                        <Col xs={12} className="mb-3">
+                                            <strong>{t("student_phone_number")}:</strong> {student.phoneNumber}
+                                        </Col>
+                                        <Col xs={12} className="mb-3">
+                                            <strong>{t("student_email")}:</strong> {student.email}
+                                        </Col>
+                                        <Col xs={12} className="mb-3">
+                                            <strong>{t("student_academic_hours")}:</strong> {student.totalAcademicHours}
+                                        </Col>
+                                    </Row>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <Col xs={12}>
+                            {student.groups.length === 0 ? (
+                                <div></div>
+                            ) : (
+                                <div className="text-center mb-4">
+                                    <h3><strong>{t("groups")}:</strong></h3>
+                                </div>
+                            )}
+                        </Col>
+                    </Row>
+
+                    <Row className="g-3">
+                        {student.groups.map((group) => (
+                            <Col xs={12} sm={6} lg={4} key={group._id}>
+                                <Card className="h-100">
+                                    <Card.Body>
+                                        <Row>
+                                            <Col xs={12} className="mb-3">
+                                                <strong>{t("group_name")}:</strong> {group.title}
+                                            </Col>
+                                            <Col xs={12} className="mb-3">
+                                                <strong>{t("group_start_date")}:</strong> {new Date(group.startDate).toLocaleDateString()}
+                                            </Col>
+                                            <Col xs={12} className="mb-3">
+                                                <strong>{t("group_end_date")}:</strong> {new Date(group.endDate).toLocaleDateString()}
+                                            </Col>
+                                            <Col xs={12} className="mb-3">
+                                                <strong>{t("group_professor")}:</strong> {group.professor}
+                                            </Col>
+                                        </Row>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        ))}
+                    </Row>
+
+                    <Row className="mt-3">
+                        <Col xs={12} className="text-center">
+                            <div className="d-grid gap-2 d-md-block">
+                                {hasPermission('students.update') && <Button variant="success" onClick={handleEditStudent} className="me-2">{t("edit")}</Button>}
+                                {hasPermission('students.delete') && <Button variant="danger" onClick={handleDeleteStudent} className="me-2">{t("delete")}</Button>}
+                                <Button variant="danger" onClick={handleBack} className="me-2">{t("back")}</Button>
+                            </div>
+                        </Col>
+                    </Row>
+                </>
+            )}
+        </Container>
     );
 };
 

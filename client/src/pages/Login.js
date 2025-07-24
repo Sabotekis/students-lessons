@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
 import LanguageSwitcher from '../components/LanguageSwitcher';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -31,64 +33,61 @@ const Login = () => {
       navigate('/');
       window.location.reload();
     } catch (error) {
-      alert("Nederīgs e-pasts vai parole");
+      setShowAlert(true);
       console.error("Login error:", error);
     }
   };
 
   return (
-    <div>
-      <LanguageSwitcher variant="login"/>
-      <style>
-        {`
-          .login-form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 100px;
-          }
-
-          .login-form input {
-            margin: 10px 0;
-            padding: 10px;
-            width: 300px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-          }
-
-          .login-form button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-          }
-
-          .login-form button:hover {
-            background-color: #45a049;
-          }
-        `}
-      </style>
-      <form className="login-form" onSubmit={handleSubmit}>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder={t("email")}
-          required
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder={t("password")}
-          required
-        />
-        <button type="submit">{t("login")}</button>
-      </form>
-    </div>
+    <Container fluid className="min-vh-100 d-flex align-items-center justify-content-center bg-light">
+      <Row className="w-100 justify-content-center">
+        <Col xs={12} md={6} lg={4}>
+          <div className="position-absolute top-0 end-0 m-3">
+            <LanguageSwitcher variant="login"/>
+          </div>
+          
+          <Card className="shadow">
+            <Card.Body className="p-4">
+              {showAlert && (
+                <Alert variant="danger" dismissible onClose={() => setShowAlert(false)}>
+                  {t("invalid_credentials") || "Nederīgs e-pasts vai parole"}
+                </Alert>
+              )}
+              
+              <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3">
+                  <Form.Label>{t("email")}</Form.Label>
+                  <Form.Control
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder={t("email")}
+                    required
+                  />
+                </Form.Group>
+                
+                <Form.Group className="mb-3">
+                  <Form.Label>{t("password")}</Form.Label>
+                  <Form.Control
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder={t("password")}
+                    required
+                  />
+                </Form.Group>
+                
+                <div className="d-grid">
+                  <Button variant="success" type="submit" size="lg">
+                    {t("login")}
+                  </Button>
+                </div>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

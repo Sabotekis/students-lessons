@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import './groups.css';
+import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const AddGroup = () => {
@@ -51,7 +51,6 @@ const AddGroup = () => {
             return updatedPlannedData;
         });
     };
-
 
     const handleAddGroup = () => {
         if (!newGroup.registerNumber || !newGroup.title || !newGroup.startDate || !newGroup.endDate || !newGroup.professor || !newGroup.minHours) {
@@ -107,101 +106,140 @@ const AddGroup = () => {
     };
 
     return (
-        <div className="add-group-container">
-            <h1 className="add-group-title">{t("add_group_title")}</h1>
-            <div>
-                <input
-                    className="add-group-input"
-                    type="text"
-                    placeholder={t("group_register_number")}
-                    value={newGroup.registerNumber}
-                    onChange={(e) => setNewGroup({ ...newGroup, registerNumber: e.target.value })}
-                    required
-                />
-            </div>
-            <div>
-                <input  
-                    className="add-group-input"
-                    type="text"
-                    placeholder={t("group_name")}
-                    value={newGroup.title}
-                    onChange={(e) => setNewGroup({ ...newGroup, title: e.target.value })}
-                    required
-                />
-            </div>
-            <div>
-                <input
-                    className="add-group-input"
-                    type="date"
-                    placeholder={t("group_start_date")}
-                    value={newGroup.startDate}
-                    onChange={(e) => setNewGroup({ ...newGroup, startDate: e.target.value })}
-                    required
-                />
-            </div>
-            <div>
-                <input  
-                    className="add-group-input"
-                    type="date"
-                    placeholder={t("group_end_date")}
-                    value={newGroup.endDate}
-                    onChange={(e) => setNewGroup({ ...newGroup, endDate: e.target.value })}
-                    required
-                />
-            </div>
-            <div>
-                <input  
-                    className="add-group-input"
-                    type="text"
-                    placeholder={t("group_professor")}
-                    value={newGroup.professor}
-                    onChange={(e) => setNewGroup({ ...newGroup, professor: e.target.value })}
-                    required
-                />
-            </div>
-            <div>
-                <strong>{t("group_academic_hours")}: {newGroup.academicHours} </strong>
-            </div>
-            <div>
-                {t("group_min_hours")}:
-                <input
-                    className="add-group-input"
-                    type="number"
-                    placeholder={t("group_min_hours")}
-                    value={newGroup.minHours}
-                    onChange={(e) => setNewGroup({ ...newGroup, minHours: e.target.value })}
-                    required
-                />
-            </div>
-            <h3>{t("group_planned_months")}</h3>
-            {plannedMonths.map(month => (
-                <div key={month}>
-                    <h4>{month}</h4>
-                    <div>
-                        {t("group_planned_days")}:
-                        <input
-                            className="add-group-input"
-                            type="number"
-                            placeholder={t("group_planned_days")}
-                            value={plannedData[month]?.days || ""}
-                            onChange={(e) => handlePlannedChange(month, "days", e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        {t("group_planned_hours")}:
-                        <input
-                            className="add-group-input"
-                            type="number"
-                            placeholder={t("group_planned_hours")}
-                            value={plannedData[month]?.hours || ""}
-                            onChange={(e) => handlePlannedChange(month, "hours", e.target.value)}
-                        />
-                    </div>
-                </div>
-            ))}
-            <button className="add-group-button" onClick={handleAddGroup}>{t("add")}</button>
-            <button className="add-group-button" onClick={handleBack}>{t("back")}</button>
-        </div>
+        <Container fluid className="mt-4">
+            <Row className="justify-content-center">
+                <Col xs={12} md={10} lg={8}>
+                    <Card>
+                        <Card.Header className="text-center">
+                            <h3>{t("add_group_title")}</h3>
+                        </Card.Header>
+                        <Card.Body>
+                            <Form>
+                                <Row>
+                                    <Col xs={12} md={6} className="mb-3">
+                                        <Form.Group>
+                                            <Form.Label><strong>{t("group_register_number")}</strong></Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                value={newGroup.registerNumber}
+                                                onChange={(e) => setNewGroup({ ...newGroup, registerNumber: e.target.value })}
+                                                required
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col xs={12} md={6} className="mb-3">
+                                        <Form.Group>
+                                            <Form.Label><strong>{t("group_name")}</strong></Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                value={newGroup.title}
+                                                onChange={(e) => setNewGroup({ ...newGroup, title: e.target.value })}
+                                                required
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col xs={12} md={6} className="mb-3">
+                                        <Form.Group>
+                                            <Form.Label><strong>{t("group_start_date")}</strong></Form.Label>
+                                            <Form.Control
+                                                type="date"
+                                                value={newGroup.startDate}
+                                                onChange={(e) => setNewGroup({ ...newGroup, startDate: e.target.value })}
+                                                required
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col xs={12} md={6} className="mb-3">
+                                        <Form.Group>
+                                            <Form.Label><strong>{t("group_end_date")}</strong></Form.Label>
+                                            <Form.Control
+                                                type="date"
+                                                value={newGroup.endDate}
+                                                onChange={(e) => setNewGroup({ ...newGroup, endDate: e.target.value })}
+                                                required
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col xs={12} md={6} className="mb-3">
+                                        <Form.Group>
+                                            <Form.Label><strong>{t("group_professor")}</strong></Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                value={newGroup.professor}
+                                                onChange={(e) => setNewGroup({ ...newGroup, professor: e.target.value })}
+                                                required
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col xs={12} md={6} className="mb-3">
+                                        <Form.Group>
+                                            <Form.Label><strong>{t("group_min_hours")}</strong></Form.Label>
+                                            <Form.Control
+                                                type="number"
+                                                value={newGroup.minHours}
+                                                onChange={(e) => setNewGroup({ ...newGroup, minHours: e.target.value })}
+                                                required
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col xs={12} className="mb-3">
+                                        <div className="text-center">
+                                            <strong>{t("group_academic_hours")}: </strong> {newGroup.academicHours}
+                                        </div>
+                                    </Col>
+                                </Row>
+
+                                {plannedMonths.length > 0 && (
+                                    <>
+                                        <h5 className="mb-3">{t("group_planned_months")}</h5>
+                                        {plannedMonths.map(month => (
+                                            <Card key={month} className="mb-3">
+                                                <Card.Header>
+                                                    <h6>{month}</h6>
+                                                </Card.Header>
+                                                <Card.Body>
+                                                    <Row>
+                                                        <Col xs={12} md={6} className="mb-3">
+                                                            <Form.Group>
+                                                                <Form.Label>{t("group_planned_days")}</Form.Label>
+                                                                <Form.Control
+                                                                    type="number"
+                                                                    value={plannedData[month]?.days || ""}
+                                                                    onChange={(e) => handlePlannedChange(month, "days", e.target.value)}
+                                                                />
+                                                            </Form.Group>
+                                                        </Col>
+                                                        <Col xs={12} md={6} className="mb-3">
+                                                            <Form.Group>
+                                                                <Form.Label>{t("group_planned_hours")}</Form.Label>
+                                                                <Form.Control
+                                                                    type="number"
+                                                                    value={plannedData[month]?.hours || ""}
+                                                                    onChange={(e) => handlePlannedChange(month, "hours", e.target.value)}
+                                                                />
+                                                            </Form.Group>
+                                                        </Col>
+                                                    </Row>
+                                                </Card.Body>
+                                            </Card>
+                                        ))}
+                                    </>
+                                )}
+
+                                <div className="d-grid gap-2 d-md-flex justify-content-center">
+                                    <Button variant="success" onClick={handleAddGroup}>
+                                        {t("add")}
+                                    </Button>
+                                    <Button variant="danger" onClick={handleBack}>
+                                        {t("back")}
+                                    </Button>
+                                </div>
+                            </Form>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

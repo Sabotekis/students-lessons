@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import './groups.css';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const ViewGroup = () => {
@@ -63,69 +63,121 @@ const ViewGroup = () => {
     };
 
     if (!group) {
-        return <div className="view-group-container"><div>Loading...</div></div>;
+        return <div>Loading...</div>;
     }
 
     return (
-        <div className="view-group-container">
-            <h1 className="view-group-title">{t("view_group_title")}</h1>
-            <div>
-                <strong>{t("group_register_number")}:</strong> {group.registerNumber}
-            </div>
-            <div>
-                <strong>{t("group_name")}:</strong> {group.title}
-            </div>
-            <div>
-                <strong>{t("group_start_date")}:</strong> {new Date(group.startDate).toLocaleDateString()}
-            </div>
-            <div>
-                <strong>{t("group_end_date")}:</strong> {new Date(group.endDate).toLocaleDateString()}
-            </div>
-            <div>
-                <strong>{t("group_professor")}:</strong> {group.professor}
-            </div>
-            <div>
-                <strong>{t("group_academic_hours")}:</strong> {group.academicHours}
-            </div>
-            <div>
-                <strong>{t("group_min_hours")}:</strong> {group.minHours}
-            </div>
-            <div>
-                <strong>{t("group_planned_data")}:</strong>
-                <div className="view-group-planned-data">
-                    {Object.entries(group.plannedData).map(([month, data]) => (
-                        <div key={month}>
-                            <strong>{month}:</strong> {data.days} {t("days")}, {data.hours} {t("hours")}
-                        </div>
-                     ))}
-                </div>
-            </div>
-            <div>
-                {group.students.length === 0 ? (
-                    <div></div>
-                ) : (
-                    <div>
-                        <strong>{t("students")}:</strong>
-                        <div className="view-group-student-grid">
-                            {group.students.map(student => (
-                                <div className="view-group-student-card" key={student._id}>
-                                    <div><strong>{t("student_name")}:</strong> {student.name}</div>
-                                    <div><strong>{t("student_surname")}:</strong> {student.surname}</div>
-                                    <div><strong>{t("student_personal_code")}:</strong> {student.personalCode}</div>
-                                    <div><strong>{t("student_phone_number")}:</strong> {student.phoneNumber}</div>
-                                    <div><strong>{t("student_email")}:</strong> {student.email}</div>
-                                    {hasPermission('groups.deleteStudents') && <button className="view-group-delete-button" onClick={() => handleDeleteStudentFromGroup(student._id)}>{t("remove")}</button>}
-                                </div>
-                            ))}
-                        </div>
+        <Container fluid className="mt-4">
+            <Row>
+                <Col xs={12}>
+                    <div className="text-center mb-4">
+                        <h1>{t("view_group_title")}</h1>
                     </div>
-                )}
-            </div>
-            {hasPermission('groups.update') && <button className="view-group-button" onClick={handleEditGroup}>{t("edit")}</button>}
-            {hasPermission('groups.delete') && <button className="view-group-button" onClick={handleDeleteGroup}>{t("delete")}</button>}
-            <button className="view-group-button" onClick={handleBack}>{t("back")}</button>
-            {hasPermission('groups.addStudents') && <button className="view-group-button" onClick={() => handleAddStudentToGroup(group._id)}>{t("student_add")}</button>}
-        </div>
+                </Col>
+            </Row>
+
+            <Row className="d-flex justify-content-center mb-2">
+                <Col xs={12} lg={6} className="text-center">
+                    <Card>
+                        <Card.Body>
+                            <Row>
+                                <Col xs={12} className="mb-3">
+                                    <strong>{t("group_register_number")}:</strong> {group.registerNumber}
+                                </Col>
+                                <Col xs={12} className="mb-3">
+                                    <strong>{t("group_name")}:</strong> {group.title}
+                                </Col>
+                                <Col xs={12} className="mb-3">
+                                    <strong>{t("group_start_date")}:</strong> {new Date(group.startDate).toLocaleDateString()}
+                                </Col>
+                                <Col xs={12} className="mb-3">
+                                    <strong>{t("group_end_date")}:</strong> {new Date(group.endDate).toLocaleDateString()}
+                                </Col>
+                                <Col xs={12} className="mb-3">
+                                    <strong>{t("group_professor")}:</strong> {group.professor}
+                                </Col>
+                                <Col xs={12} className="mb-3">
+                                    <strong>{t("group_academic_hours")}:</strong> {group.academicHours}
+                                </Col>
+                                <Col xs={12} className="mb-3">
+                                    <strong>{t("group_min_hours")}:</strong> {group.minHours}
+                                </Col>
+                                <Col xs={12} className="mb-3">
+                                    <strong>{t("group_planned_data")}:</strong>
+                                    <div className="mt-2">
+                                        {Object.entries(group.plannedData).map(([month, data]) => (
+                                            <div key={month} className="mb-1">
+                                                <strong>{month}:</strong> {data.days} {t("days")}, {data.hours} {t("hours")}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </Col>
+                            </Row>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+
+            <Row>
+                <Col xs={12}>
+                    {group.students.length === 0 ? (
+                        <div></div>
+                    ) : (
+                        <div className="text-center mb-4">
+                            <h3><strong>{t("students")}:</strong></h3>
+                        </div>
+                    )}
+                </Col>
+            </Row>
+
+            <Row className="g-3 mb-4">
+                {group.students.map(student => (
+                    <Col xs={12} sm={6} lg={4} xl={3} key={student._id}>
+                        <Card className="h-100">
+                            <Card.Body>
+                                <Card.Text><strong>{t("student_name")}:</strong> {student.name}</Card.Text>
+                                <Card.Text><strong>{t("student_surname")}:</strong> {student.surname}</Card.Text>
+                                <Card.Text><strong>{t("student_personal_code")}:</strong> {student.personalCode}</Card.Text>
+                                <Card.Text><strong>{t("student_phone_number")}:</strong> {student.phoneNumber}</Card.Text>
+                                <Card.Text><strong>{t("student_email")}:</strong> {student.email}</Card.Text>
+                            </Card.Body>
+                            <Card.Footer>
+                                {hasPermission('groups.deleteStudents') && (
+                                    <Button variant="danger" onClick={() => handleDeleteStudentFromGroup(student._id)} className="w-100">
+                                        {t("remove")}
+                                    </Button>
+                                )}
+                            </Card.Footer>
+                        </Card>
+                    </Col>
+                ))}
+            </Row>
+
+            <Row className="mt-3">
+                <Col xs={12} className="text-center">
+                    <div className="d-grid gap-2 d-md-block">
+                        {hasPermission('groups.update') && (
+                            <Button variant="success" onClick={handleEditGroup} className="me-2">
+                                {t("edit")}
+                            </Button>
+                        )}
+                        {hasPermission('groups.addStudents') && (
+                            <Button variant="success" onClick={() => handleAddStudentToGroup(group._id)} className="me-2">
+                                {t("student_add")}
+                            </Button>
+                        )}
+                        <Button variant="danger" onClick={handleBack} className="me-2">
+                            {t("back")}
+                        </Button>
+                        {hasPermission('groups.delete') && (
+                            <Button variant="danger" onClick={handleDeleteGroup} className="me-2">
+                                {t("delete")}
+                            </Button>
+                        )}
+                    </div>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

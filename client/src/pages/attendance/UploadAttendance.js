@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import './attendance.css';
-import { useTranslation } from 'react-i18next';
+import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
+import { useTranslation } from "react-i18next";
 
 const UploadFile = () => {
     const [file, setFile] = useState(null);
@@ -61,14 +61,41 @@ const UploadFile = () => {
     };
 
     return (
-        <div className='upload-attendance-container'>
-            <h1 className="upload-attendance-title">{t("upload_attendance_title")}</h1>
-            <div>
-                <input className="upload-attendance-input" type="file" accept=".csv" onChange={handleFileChange} />
-            </div>
-            <button className="upload-attendance-file-button" onClick={handleUploadAndAddAttendance}>{t("add")}</button>
-            <button className='upload-attendance-file-button' onClick={handleBack}>{t("back")}</button>
-        </div>
+        <Container fluid className="mt-4">
+            <Row>
+                <Col xs={12}>
+                    <h1 className="text-center mb-4">{t("upload_attendance_title")}</h1>
+                </Col>
+            </Row>
+
+            <Row className="justify-content-center">
+                <Col xs={12} md={8} lg={6}>
+                    <Card>
+                        <Card.Body>
+                            <Form>
+                                <Form.Group className="mb-3">
+                                    <Form.Control
+                                        type="file"
+                                        accept=".csv"
+                                        onChange={handleFileChange}
+                                        required
+                                    />
+                                </Form.Group>
+
+                                <div className="d-grid gap-2 d-md-flex justify-content-md-center">
+                                    <Button variant="success" onClick={handleUploadAndAddAttendance} className="me-2">
+                                        {t("add")}
+                                    </Button>
+                                    <Button variant="danger" onClick={handleBack} className="me-2">
+                                        {t("back")}
+                                    </Button>  
+                                </div>
+                            </Form>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

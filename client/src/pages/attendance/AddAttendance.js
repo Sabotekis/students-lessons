@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./attendance.css";
+import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
 
 const AddAttendance = () => {
@@ -70,53 +70,81 @@ const AddAttendance = () => {
         navigate("/attendance-management");
     };
 
+
     return (
-        <div className="add-attendance-container">
-            <h1 className="add-attendance-title">{t("add_attendance_title")}</h1>
-            <div>
-                <select
-                    className="add-attendance-select"
-                    onChange={(e) => handleGroupChange(e.target.value)}
-                    value={attendance.groupId}
-                >
-                    <option value="">{t("group_choose")}</option>
-                    {filteredGroups.map(group => (
-                        <option key={group._id} value={group._id}>
-                            {group.title}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            <div>
-                <select
-                    className="add-attendance-select"
-                    onChange={(e) => setAttendance({ ...attendance, sessionId: e.target.value })}
-                    value={attendance.sessionId}
-                    disabled={!attendance.groupId}
-                >
-                    <option value="">{t("session_choose")}</option>
-                    {filteredSessions.map(session => (
-                        <option key={session._id} value={session._id}>
-                            {new Date(session.date).toLocaleDateString()} - {session.group.title}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            <div>
-                <input
-                    className="add-attendance-input"
-                    type="number"
-                    placeholder={t("time_minute")}
-                    value={attendance.timeMinute}
-                    onChange={(e) => handleMinutesChange(e.target.value)}
-                />
-            </div>
-            <div>
-                <strong>{t("student_academic_hours")}: {attendance.academicHours}</strong>
-            </div>
-            <button className="add-attendance-button" onClick={handleAddAttendance}>{t("add")}</button>
-            <button className="add-attendance-button" onClick={handleBack}>{t("back")}</button>
-        </div>
+        <Container fluid className="mt-4">
+            <Row>
+                <Col xs={12}>
+                    <h1 className="text-center mb-4">
+                        {t("add_attendance_title")}
+                    </h1>
+                </Col>
+            </Row>
+
+            <Row className="justify-content-center">
+                <Col xs={12} md={8} lg={6}>
+                    <Card>
+                        <Card.Body>
+                            <Form>
+                                <Form.Group className="mb-3">
+                                    <Form.Select 
+                                        value={attendance.groupId} 
+                                        onChange={(e) => handleGroupChange(e.target.value)}
+                                        required
+                                    >
+                                        <option value="">{t("group_choose")}</option>
+                                        {filteredGroups.map(group => (
+                                            <option key={group._id} value={group._id}>
+                                                {group.title}
+                                            </option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group>
+
+                                <Form.Group className="mb-3">
+                                    <Form.Select 
+                                        value={attendance.sessionId} 
+                                        disabled={!attendance.groupId}
+                                        onChange={(e) => setAttendance({ ...attendance, sessionId: e.target.value })}
+                                        required
+                                    >
+                                        <option value="">{t("session_choose")}</option>
+                                        {filteredSessions.map(session => (
+                                            <option key={session._id} value={session._id}>
+                                                {new Date(session.startDateTime).toLocaleDateString()} - {session.group.title}
+                                            </option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group>
+
+                                <Form.Group className="mb-3">
+                                    <input
+                                        className="add-attendance-input"
+                                        type="number"
+                                        placeholder={t("time_minute")}
+                                        value={attendance.timeMinute}
+                                        onChange={(e) => handleMinutesChange(e.target.value)}
+                                    />
+                                </Form.Group>
+
+                                <div className="mb-3">
+                                    <strong>{t("student_academic_hours")}: {attendance.academicHours}</strong>
+                                </div>
+
+                                <div className="d-grid gap-2 d-md-flex justify-content-md-center">
+                                    <Button variant="success" onClick={handleAddAttendance} className="me-2">
+                                        {t("attendance_add")}
+                                    </Button>
+                                    <Button variant="danger" onClick={handleBack} className="me-2">
+                                        {t("back")}
+                                    </Button>
+                                </div>
+                            </Form>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

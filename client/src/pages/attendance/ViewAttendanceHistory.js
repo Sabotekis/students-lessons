@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "./attendance.css";
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
 
 const ViewAttendanceHistory = () => {
@@ -21,25 +21,45 @@ const ViewAttendanceHistory = () => {
     };
 
     return (
-        <div className="view-attendance-container">
-            <h1 className="view-attendance-title">{t("attendance_history_title")}</h1>
-            {attendances.length === 0 ? (
-                <div>{t("attendance_none")}</div>
-            ) : (
-                <div className="view-attendance-history-grid">
-                    {attendances.map(attendance => (
-                        <div className="view-attendance-history-card" key={attendance._id}>
-                            <div><strong>{t("session_start_date")}:</strong> {new Date(attendance.session.startDateTime).toLocaleString()}</div> 
-                            <div><strong>{t("session_end_date")}</strong> {new Date(attendance.session.endDateTime).toLocaleString()}</div>
-                            <div><strong>{t("group")}:</strong> {attendance.session.group?.title || "N/A"}</div>
-                            <div><strong>{t("time_minute")}:</strong> {attendance.timeMinute}</div>
-                            <div><strong>{t("group_academic_hours")}:</strong> {attendance.academicHours}</div>
-                        </div>
-                    ))}
-                </div>
-            )}
-            <button className="view-attendance-button" onClick={handleBack}>{t("back")}</button>
-        </div>
+        <Container fluid className="mt-4">
+            <Row>
+                <Col xs={12}>
+                    <h1 className="text-center mb-4">
+                        {t("attendance_history_title")}
+                    </h1>
+                </Col>
+            </Row>
+
+            <Row className="g-3">
+                {attendances.length === 0 ? (
+                    <Col xs={12}>
+                        <div className="text-center p-4">{t("no_attendance_records")}</div>
+                    </Col>
+                ) : (
+                    attendances.map(attendance => (
+                        <Col xs={12} sm={6} lg={4} xl={3} key={attendance._id}>
+                            <Card className="text-center h-100">
+                                <Card.Body>
+                                    <Card.Text><strong>{t("session_start_date")}:</strong> {new Date(attendance.session.startDateTime).toLocaleString()}</Card.Text> 
+                                    <Card.Text><strong>{t("session_end_date")}</strong> {new Date(attendance.session.endDateTime).toLocaleString()}</Card.Text>
+                                    <Card.Text><strong>{t("group")}:</strong> {attendance.session.group?.title || "N/A"}</Card.Text>
+                                    <Card.Text><strong>{t("time_minute")}:</strong> {attendance.timeMinute}</Card.Text>
+                                    <Card.Text><strong>{t("group_academic_hours")}:</strong> {attendance.academicHours}</Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    ))
+                )}
+            </Row>
+
+            <Row className="mt-3">
+                <Col xs={12} className="text-center">
+                    <Button variant="danger" onClick={handleBack}>
+                        {t("back")}
+                    </Button>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

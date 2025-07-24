@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import './students.css';
+import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const StudentManagement = () => {
@@ -101,60 +101,99 @@ const StudentManagement = () => {
         });
 
     return (
-        <div className="student-container">
-            <h1 className="student-title">{t("student_title")}</h1>
-            <div>
-                <input 
-                    className="student-search-input"
-                    type="text"
-                    placeholder={t("student_search")}
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <select className="student-search-select" value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
-                    <option value="name">{t("student_name")}</option>
-                    <option value="surname">{t("student_surname")}</option>
-                    <option value="personalCode">{t("student_personal_code")}</option>
-                    <option value="phoneNumber">{t("student_phone_number")}</option>
-                    <option value="email">{t("student_email")}</option>
-                </select>
-                { groupId && <button className="backbutton" onClick={handleBack}>
-                    {t("back")}
-                </button>}
-            </div>
-            <div className="student-grid">
+        <Container fluid className="mt-4">
+            <Row>
+                <Col xs={12}>
+                    <h1 className="text-center mb-4">{t("student_title")}</h1>
+                </Col>
+            </Row>
+            
+            <Row className="mb-1">
+                <Col xs={12} md={6} lg={4} className="mb-1">
+                    <Form.Control
+                        type="text"
+                        placeholder={t("student_search")}
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </Col>
+                <Col xs={12} md={4} lg={3} className="mb-1">
+                    <Form.Select value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
+                        <option value="name">{t("student_name")}</option>
+                        <option value="surname">{t("student_surname")}</option>
+                        <option value="personalCode">{t("student_personal_code")}</option>
+                        <option value="phoneNumber">{t("student_phone_number")}</option>
+                        <option value="email">{t("student_email")}</option>
+                    </Form.Select>
+                </Col>
+                {groupId && (
+                    <Col xs={12} md={2} lg={2} className="mb-1">
+                        <Button variant="danger" onClick={handleBack} className="w-100">
+                            {t("back")}
+                        </Button>
+                    </Col>
+                )}
+            </Row>
+
+            <Row className="g-3">
                 {groupId && filteredStudents.length === 0 ? (
-                    <div>{t("student_none")}</div>
+                    <Col xs={12}>
+                        <div className="text-center p-4">{t("student_none")}</div>
+                    </Col>
                 ) : (
                     filteredStudents.map(student => (
-                        <div className="student-card" key={student._id}>
-                            <div><strong>{t("student_name")}:</strong> {student.name}</div>
-                            <div><strong>{t("student_surname")}:</strong> {student.surname}</div>
-                            <div><strong>{t("student_personal_code")}:</strong> {student.personalCode}</div>
-                            <div><strong>{t("student_phone_number")}:</strong> {student.phoneNumber}</div>
-                            <div><strong>{t("student_email")}:</strong> {student.email}</div>
-                            <div><strong>{t("student_academic_hours")}: {student.totalAcademicHours}</strong></div>
-                            <div>
-                                {groupId ? (
-                                    <button className="student-button" onClick={() => handleAddStudentToGroup(student._id)}>{t("student_add")}</button>
-                                ) : (
-                                    <>
-                                        <button className="student-button" onClick={() => handleViewStudent(student._id)}>{t("view")}</button>
-                                        {hasPermission('students.update') && <button className="student-button" onClick={() => handleEditStudent(student._id)}>{t("edit")}</button>}
-                                        {hasPermission('students.delete') && <button className="student-button" onClick={() => handleDeleteStudent(student._id)}>{t("delete")}</button>}
-                                    </>
-                                )}
-                            </div>
-                        </div>
+                        <Col xs={12} sm={6} lg={4} xl={3} key={student._id}>
+                            <Card className="text-center h-100">
+                                <Card.Body>
+                                    <Card.Text><strong>{t("student_name")}:</strong> {student.name}</Card.Text>
+                                    <Card.Text><strong>{t("student_surname")}:</strong> {student.surname}</Card.Text>
+                                    <Card.Text><strong>{t("student_personal_code")}:</strong> {student.personalCode}</Card.Text>
+                                    <Card.Text><strong>{t("student_phone_number")}:</strong> {student.phoneNumber}</Card.Text>
+                                    <Card.Text><strong>{t("student_email")}:</strong> {student.email}</Card.Text>
+                                    <Card.Text><strong>{t("student_academic_hours")}:</strong> {student.totalAcademicHours}</Card.Text>
+                                </Card.Body>
+                                <Card.Footer>
+                                    <div className="d-grid gap-2">
+                                        {groupId ? (
+                                            <Button variant="success" onClick={() => handleAddStudentToGroup(student._id)}>
+                                                {t("student_add")}
+                                            </Button>
+                                        ) : (
+                                            <>
+                                                <Button variant="success" onClick={() => handleViewStudent(student._id)}>
+                                                    {t("view")}
+                                                </Button>
+                                                {hasPermission('students.update') && (
+                                                    <Button variant="success" onClick={() => handleEditStudent(student._id)}>
+                                                        {t("edit")}
+                                                    </Button>
+                                                )}
+                                                {hasPermission('students.delete') && (
+                                                    <Button variant="danger" onClick={() => handleDeleteStudent(student._id)}>
+                                                        {t("delete")}
+                                                    </Button>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
+                                </Card.Footer>
+                            </Card>
+                        </Col>
                     ))
                 )}
-                {!groupId && hasPermission('students.create') && ( 
-                    <div className="addbuttoncard">
-                        <button className="student-button" onClick={handleAddStudent}>{t("student_add")}</button>
-                    </div>
+                {!groupId && hasPermission('students.create') && (
+                    <Col xs={12} sm={6} lg={4} xl={3}>
+                        <Card className="h-100">
+                            <Card.Body className="d-flex align-items-center justify-content-center text-center">
+                                <Button variant="success" size="lg" onClick={handleAddStudent}>
+                                    {t("student_add")}
+                                </Button>
+                            </Card.Body>
+                        </Card>
+                    </Col>
                 )}
-            </div>
-        </div>
+            </Row>
+        </Container>
     );
 };
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import './certificate.css';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -48,31 +48,62 @@ const CertificateManagement = () => {
     };
 
     return (
-        <div className="certificate-management-container">
-            <h1 className="certificate-management-title">{t("certificate_title")}</h1>
-            <div>
-                <div className="certificate-management-grid">
-                    {certificates.map((certificate) => (
-                        <div className="certificate-management-card" key={certificate._id}>
-                            <div><strong>{t("student_name")}:</strong> {certificate.student.name} </div>
-                            <div><strong>{t("student_surname")}</strong> {certificate.student.surname}</div>
-                            <div><strong>{t("group")}:</strong> {certificate.group.title}</div>
-                            <div><strong>{t("issue_date")}:</strong> {new Date(certificate.issueData).toLocaleDateString()}</div>
-                            {hasPermission('certificates.download') && (
-                                <div>
-                                    <button className="certificate-management-button" onClick={() => handleDownloadPDF(certificate._id)}>{t("download_pdf")}</button>
-                                </div>
-                            )}
-                        </div>
-                    ))}
-                    {hasPermission('certificates.create') && (
-                        <div className="certificate-management-addbuttoncard">
-                                <button className="certificate-management-button" onClick={handleAddCertificate}>{t("certificate_add")}</button>
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
+        //             {certificates.map((certificate) => (
+        //                 <div className="certificate-management-card" key={certificate._id}>
+        //                     <div><strong>{t("student_name")}:</strong> {certificate.student.name} </div>
+        //                     <div><strong>{t("student_surname")}</strong> {certificate.student.surname}</div>
+        //                     <div><strong>{t("group")}:</strong> {certificate.group.title}</div>
+        //                     <div><strong>{t("issue_date")}:</strong> {new Date(certificate.issueData).toLocaleDateString()}</div>
+        //                     {hasPermission('certificates.download') && (
+        //                         <div>
+        //                             <button className="certificate-management-button" onClick={() => handleDownloadPDF(certificate._id)}>{t("download_pdf")}</button>
+        //                         </div>
+        //                     )}
+        //                 </div>
+        //             ))}
+        //             {hasPermission('certificates.create') && (
+        //                 <div className="certificate-management-addbuttoncard">
+        //                         <button className="certificate-management-button" onClick={handleAddCertificate}>{t("certificate_add")}</button>
+        //                 </div>
+        //             )}
+
+
+        <Container fluid className="mt-4">
+            <Row>
+                <Col xs={12}>
+                    <h1 className="text-center mb-4">{t("certificate_title")}</h1>
+                </Col>
+            </Row>
+
+            <Row className="g-3">
+                {certificates.map(certificate => (
+                    <Col xs={12} sm={6} lg={4} xl={3} key={certificate._id}>
+                        <Card className="text-center h-100">
+                            <Card.Body>
+                                <Card.Text><strong>{t("student_name")}:</strong> {certificate.student.name}</Card.Text>
+                                <Card.Text><strong>{t("student_surname")}:</strong> {certificate.student.surname}</Card.Text>
+                                <Card.Text><strong>{t("group")}:</strong> {certificate.group.title}</Card.Text>
+                                <Card.Text><strong>{t("issue_date")}:</strong> {new Date(certificate.issueData).toLocaleDateString()}</Card.Text>
+                                {hasPermission('certificates.download') && (
+                                    <Button variant="success" onClick={() => handleDownloadPDF(certificate._id)}>{t("download_pdf")}</Button>
+                                )}
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                ))}
+                {hasPermission('certificates.create') && (
+                    <Col xs={12} sm={6} lg={4} xl={3}>
+                        <Card className="h-100">
+                            <Card.Body className="d-flex align-items-center justify-content-center text-center">
+                                <Button variant="success" size="lg" onClick={handleAddCertificate}>
+                                    {t("certificate_add")}
+                                </Button>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                )}
+            </Row>
+        </Container>
     );
 };
 

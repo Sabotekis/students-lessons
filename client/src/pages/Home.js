@@ -1,29 +1,16 @@
 import { useTranslation } from 'react-i18next';
+import { Container, Row, Col} from 'react-bootstrap';
 
 const Home = () => {
     const { t } = useTranslation();
     return (
-        <div>
-        <style>
-            {`
-                .container {
-                    margin-top: 80px;
-                    padding: 20px;
-                    text-align: center;
-                }
-
-
-                .description {
-                    margin-bottom: 20px;
-                }
-            `}
-        </style>
-            <div className="container">
-                <p className="description">
-                    {t("app_description")}                
-                </p>
-            </div>
-        </div>
+        <Container fluid className="mt-4">
+            <Row className="justify-content-center align-items-center text-center">
+                <Col xs={12} md={10} lg={8}>
+                    {t("app_description")} 
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

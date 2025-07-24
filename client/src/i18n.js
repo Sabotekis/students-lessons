@@ -35,7 +35,7 @@ i18n
                     "finish": "Pabeigt",
 
                     //Sidebar + Login
-                    "app_name": "Izglītojamo tiešsaistes nodarbībās pavadītā laika",
+                    "app_name": "Tiešsaistes nodarbības skolēniem",
                     "logout": "Iziet",
                     "login": "Ienākt",
                     "email": "E-pasts",
@@ -200,7 +200,7 @@ i18n
                     "finish": "Finish",
 
                     //Sidebar + Login
-                    "app_name": "Time spent by students in online lessons",
+                    "app_name": "Online student lessons",
                     "logout": "Logout",
                     "login": "Login",
                     "email": "Email",

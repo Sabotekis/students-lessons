@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import './sessions.css';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
 
 const ViewSession = () => {
@@ -27,81 +27,147 @@ const ViewSession = () => {
     };
 
     if (!session) {
-        return <div className="view-session-container"><div>Loading...</div></div>;
+        return (
+            <Container fluid className="mt-4">
+                <div className="text-center">Loading...</div>
+            </Container>
+        );
     }
 
     return (
-        <div className="view-session-container">
-            <h1 className="view-session-title">{t("view_session_title")}</h1>
-            <div><strong>{t("session_start_date")}:</strong> {new Date(session.startDateTime).toLocaleString()}</div>
-            <div><strong>{t("session_end_date")}:</strong> {new Date(session.endDateTime).toLocaleString()}</div>
-            <div>
-                <strong>{t("group")}:</strong>
-                <div className="view-session-group-grid">
-                    <div className="view-session-group-card">
-                        <div><strong>{t("group_register_number")}:</strong> {session.group.registerNumber}</div>
-                        <div><strong>{t("group_name")}:</strong> {session.group.title}</div>
-                        <div><strong>{t("group_start_date")}:</strong> {new Date(session.group.startDate).toLocaleDateString()}</div>
-                        <div><strong>{t("group_end_date")}:</strong> {new Date(session.group.endDate).toLocaleDateString()}</div>
-                        <div><strong>{t("group_professor")}:</strong> {session.group.professor}</div>
-                        <div><strong>{t("group_academic_hours")}:</strong> {session.group.academicHours}</div>
-                        <div><strong>{t("group_min_hours")}:</strong> {session.group.minHours}</div>
-                        <div>
-                            <strong>{t("group_planned_data")}:</strong>
-                            <div className="view-group-planned-data">
-                                {Object.entries(session.group.plannedData).map(([month, data]) => (
-                                    <div key={month}>
-                                        <strong>{month}:</strong> {data.days} {t("days")}, {data.hours} {t("hours")}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+        <Container fluid className="mt-4">
+            <Row>
+                <Col xs={12}>
+                    <div className="text-center mb-4">
+                        <h1>{t("view_session_title")}</h1>
                     </div>
-                </div>
-            </div>
-            <div>
-                {session.students.length === 0 ? ( 
-                    <div></div>
-                ) : (
-                    <div>
-                        <strong>{t("students")}:</strong>
-                        <div className="view-session-student-grid">
-                            {session.students.map(student => {
-                                const hasAttendance = session.attendances.some(attendance => 
-                                    attendance.student && attendance.student._id === student._id
-                                );
+                </Col>
+            </Row>
 
-                                return (
-                                    <div
-                                        className={`view-session-student-card ${hasAttendance ? 'attended' : 'not-attended'}`}
-                                        key={student._id}
-                                    >
-                                        <div><strong>{t("student_name")}:</strong> {student.name}</div>
-                                        <div><strong>{t("student_surname")}:</strong> {student.surname}</div>
-                                        <div><strong>{t("student_personal_code")}:</strong> {student.personalCode}</div>
-                                        <div><strong>{t("student_phone_number")}:</strong> {student.phoneNumber}</div>
-                                        <div><strong>{t("student_email")}:</strong> {student.email}</div>
-                                        {student.deleted && (
-                                            <div>({t("student_deleted")})</div>
-                                        )}
+            <Row className="mb-4">
+                <Col xs={12}>
+                    <Card>
+                        <Card.Body>
+                            <div className="mb-2">
+                                <strong>{t("session_start_date")}:</strong> {new Date(session.startDateTime).toLocaleString()}
+                            </div>
+                            <div className="mb-2">
+                                <strong>{t("session_end_date")}:</strong> {new Date(session.endDateTime).toLocaleString()}
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+
+            <Row className="mb-4">
+                <Col xs={12}>
+                    <Card>
+                        <Card.Header>
+                            <h5 className="mb-0">{t("group")}</h5>
+                        </Card.Header>
+                        <Card.Body>
+                            <Row>
+                                <Col xs={12} md={6} className="mb-2">
+                                    <strong>{t("group_register_number")}:</strong> {session.group.registerNumber}
+                                </Col>
+                                <Col xs={12} md={6} className="mb-2">
+                                    <strong>{t("group_name")}:</strong> {session.group.title}
+                                </Col>
+                                <Col xs={12} md={6} className="mb-2">
+                                    <strong>{t("group_start_date")}:</strong> {new Date(session.group.startDate).toLocaleDateString()}
+                                </Col>
+                                <Col xs={12} md={6} className="mb-2">
+                                    <strong>{t("group_end_date")}:</strong> {new Date(session.group.endDate).toLocaleDateString()}
+                                </Col>
+                                <Col xs={12} md={6} className="mb-2">
+                                    <strong>{t("group_professor")}:</strong> {session.group.professor}
+                                </Col>
+                                <Col xs={12} md={6} className="mb-2">
+                                    <strong>{t("group_academic_hours")}:</strong> {session.group.academicHours}
+                                </Col>
+                                <Col xs={12} md={6} className="mb-2">
+                                    <strong>{t("group_min_hours")}:</strong> {session.group.minHours}
+                                </Col>
+                                <Col xs={12} >
+                                    <strong>{t("group_planned_data")}:</strong>
+                                    <div className="mt-1">
+                                        {Object.entries(session.group.plannedData).map(([month, data]) => (
+                                            <div key={month} className="mb-1">
+                                                <strong>{month}:</strong> {data.days} {t("days")}, {data.hours} {t("hours")}
+                                            </div>
+                                        ))}
                                     </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                )}
-            </div>
-            {!session.finished && (
+                                </Col>
+                            </Row>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+
+            {session.students.length > 0 && (
                 <>
-                    {hasPermission('sessions.update') && <button className="view-session-button" onClick={() => navigate(`/edit-session/${id}`)}>{t("edit")}</button>}
-                    {hasPermission('sessions.delete') && <button className="view-session-button" onClick={() => {
-                        fetch(`/api/sessions/${id}`, { method: "DELETE" })
-                            .then(() => navigate("/session-management"));
-                    }}>{t("delete")}</button>}
+                    <Row>
+                        <Col xs={12}>
+                            <div className="text-center mb-4">
+                                <h3><strong>{t("students")}:</strong></h3>
+                            </div>
+                        </Col>
+                    </Row>
+
+                    <Row className="g-3 mb-4">
+                        {session.students.map(student => {
+                            const hasAttendance = session.attendances.some(attendance => 
+                                attendance.student && attendance.student._id === student._id
+                            );
+
+                            return (
+                                <Col xs={12} sm={6} lg={4} xl={3} key={student._id}>
+                                    <Card className={`h-100 ${hasAttendance ? 'border-success' : 'border-danger'}`}>
+                                        <Card.Body>
+                                            <Card.Text><strong>{t("student_name")}:</strong> {student.name}</Card.Text>
+                                            <Card.Text><strong>{t("student_surname")}:</strong> {student.surname}</Card.Text>
+                                            <Card.Text><strong>{t("student_personal_code")}:</strong> {student.personalCode}</Card.Text>
+                                            <Card.Text><strong>{t("student_phone_number")}:</strong> {student.phoneNumber}</Card.Text>
+                                            <Card.Text><strong>{t("student_email")}:</strong> {student.email}</Card.Text>
+                                            {student.deleted && (
+                                                <Card.Text className="text-muted">({t("student_deleted")})</Card.Text>
+                                            )}
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                            );
+                        })}
+                    </Row>
                 </>
             )}
-            <button className="view-session-button" onClick={handleBack}>{t("back")}</button>
-        </div>
+
+            <Row className="mt-3">
+                <Col xs={12} className="text-center">
+                    <div className="d-grid gap-2 d-md-block">
+                        {!session.finished && (
+                            <>
+                                {hasPermission('sessions.update') && (
+                                    <Button variant="success" onClick={() => navigate(`/edit-session/${id}`)} className="me-2">
+                                        {t("edit")}
+                                    </Button>
+                                )}
+                                {hasPermission('sessions.delete') && (
+                                    <Button variant="danger" onClick={() => {
+                                        fetch(`/api/sessions/${id}`, { method: "DELETE" })
+                                            .then(() => navigate("/session-management"));
+                                    }} className="me-2">
+                                        {t("delete")}
+                                    </Button>
+                                )}
+                            </>
+                        )}
+                        <Button variant="danger" onClick={handleBack} className="me-2">
+                            {t("back")}
+                        </Button>
+                    </div>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

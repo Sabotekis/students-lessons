@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import './sessions.css';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../../msalConfig";
@@ -19,12 +19,17 @@ const SessionManagement = () => {
     });
     const { t } = useTranslation();
 
-    
     useEffect(() => {
         fetch("/api/sessions", { credentials: "include" })
             .then(response => response.json())
-            .then(data => setSessions(data))
-            .catch(error => console.error("Error fetching sessions:", error));
+            .then(data => {
+                console.log('Sessions data:', data); // Debug log
+                setSessions(Array.isArray(data) ? data : []);
+            })
+            .catch(error => {
+                console.error("Error fetching sessions:", error);
+                setSessions([]);
+            });
         fetch('/api/roles/permissions')
             .then(res => res.json())
             .then(data => setUserPermissions(data));
@@ -57,7 +62,7 @@ const SessionManagement = () => {
         .then(() => {
             fetch("/api/sessions", { credentials: "include" })
                 .then(response => response.json())
-                .then(data => setSessions(data));
+                .then(data => setSessions(Array.isArray(data) ? data : []));
         })
         .catch(error => console.error("Error finishing session:", error));
     };
@@ -69,7 +74,7 @@ const SessionManagement = () => {
         .then(() => {
             fetch("/api/sessions", { credentials: "include" })
                 .then(response => response.json())
-                .then(data => setSessions(data));
+                .then(data => setSessions(Array.isArray(data) ? data : []));
         });
     };
 
@@ -108,7 +113,7 @@ const SessionManagement = () => {
         const sessions = await response.json();
 
         const events = sessions.map(session => ({
-            summary: session.group.title,
+            summary: session.group?.title || 'Unknown Group',
             description: "",
             location: "Riga, Latvia",
             startDateTime: session.startDateTime,
@@ -163,68 +168,124 @@ const SessionManagement = () => {
     };
 
     return (
-            <div className="session-container">
-                <h1 className="session-title">{t("session_title")}</h1>
-                <div className="session-grid">
-                    {sessions.map(session => (
-                        <div className="session-card" key={session._id}>
-                            <div><strong>{t("session_start_date")}:</strong> {new Date(session.startDateTime).toLocaleString()}</div>
-                            <div><strong>{t("session_end_date")}:</strong> {new Date(session.endDateTime).toLocaleString()}</div>
-                            <div><strong>{t("group_name")}:</strong> {session.group.title}</div>
-                            <div>
-                                <button className="session-button" onClick={() => handleViewSession(session._id)}>{t("view")}</button>
-                                {hasPermission('sessions.update') && <button className="session-button" onClick={() => handleEditSession(session._id)}>{t("edit")}</button>}
-                                {hasPermission('sessions.finish') && <button className="session-button" onClick={() => handleFinishSession(session._id)}>{t("session_finish")}</button>}    
-                                {hasPermission('sessions.delete') && <button className="session-button" onClick={() => handleDeleteSession(session._id)}>{t("delete")}</button>}
-                            </div>
-                        </div>
-                    ))}
-                    {hasPermission("sessions.create") && (
-                        <div className="addbuttoncard">
-                            <button className="session-button" onClick={handleAddSession}>{t("session_add")}</button>
-                        </div>
-                    )}
-                </div>
-                <button className="session-history-management-button" onClick={handleSessionHistory}>{t("session_history")}</button>
-                {hasPermission('sessions.google') && <h3 className="calendar-title">{t("google_calendar")}:</h3>}
-                {hasPermission('sessions.google') && <div>
-                    {
-                        !signedInGoogle ? (
-                            <button className="session-history-management-button" onClick={handleGoogleLogin}>
-                                {t("google_login")}
-                            </button>
-                        ) : (
-                            <>
-                                <button className="session-history-management-button" onClick={handleAddSessionsToGoogleCalendar}>
-                                    {t("sync_google_calendar")}
-                                </button>
-                                <button className="session-history-management-button" onClick={handleGoogleLogout}>
-                                    {t("google_logout")}
-                                </button>
-                            </>
-                        )
-                    }
-                </div>}
-                {hasPermission('sessions.microsoft') && <h3 className="calendar-title">{t("microsoft_calendar")}:</h3>}
-                {hasPermission('sessions.microsoft') && <div>
-                    {
-                        !signedInMicrosoft ? (
-                            <button className="session-history-management-button" onClick={handleMicrosoftLogin}>
-                                {t("microsoft_login")}
-                            </button>
-                        ) : (
-                            <>
-                                <button className="session-history-management-button" onClick={handleAddSessionsToMicrosoftCalendar}>
-                                    {t("sync_microsoft_calendar")}
-                                </button>
-                                <button className="session-history-management-button" onClick={handleMicrosoftLogout}>
-                                    {t("microsoft_logout")}
-                                </button>
-                            </>
-                        )
-                    }
-                </div>}
-            </div>
+        <Container fluid className="mt-4">
+            <Row>
+                <Col xs={12}>
+                    <h1 className="text-center mb-4">{t("session_title")}</h1>
+                </Col>
+            </Row>
+
+            <Row className="g-3 mb-4">
+                {sessions.map(session => (
+                    <Col xs={12} sm={6} lg={4} xl={3} key={session._id}>
+                        <Card className="text-center h-100">
+                            <Card.Body>
+                                <Card.Text><strong>{t("session_start_date")}:</strong> {session.startDateTime ? new Date(session.startDateTime).toLocaleString() : 'N/A'}</Card.Text>
+                                <Card.Text><strong>{t("session_end_date")}:</strong> {session.endDateTime ? new Date(session.endDateTime).toLocaleString() : 'N/A'}</Card.Text>
+                                <Card.Text><strong>{t("group_name")}:</strong> {session.group?.title || session.groupTitle || 'N/A'}</Card.Text>
+                            </Card.Body>
+                            <Card.Footer>
+                                <div className="d-grid gap-2">
+                                    <Button variant="success" onClick={() => handleViewSession(session._id)}>
+                                        {t("view")}
+                                    </Button>
+                                    {hasPermission('sessions.update') && (
+                                        <Button variant="success" onClick={() => handleEditSession(session._id)}>
+                                            {t("edit")}
+                                        </Button>
+                                    )}
+                                    {hasPermission('sessions.finish') && (
+                                        <Button variant="success" onClick={() => handleFinishSession(session._id)}>
+                                            {t("session_finish")}
+                                        </Button>
+                                    )}
+                                    {hasPermission('sessions.delete') && (
+                                        <Button variant="danger" onClick={() => handleDeleteSession(session._id)}>
+                                            {t("delete")}
+                                        </Button>
+                                    )}
+                                </div>
+                            </Card.Footer>
+                        </Card>
+                    </Col>
+                ))}
+                {hasPermission("sessions.create") && (
+                    <Col xs={12} sm={6} lg={4} xl={3}>
+                        <Card className="h-100">
+                            <Card.Body className="d-flex align-items-center justify-content-center text-center">
+                                <Button variant="success" size="lg" onClick={handleAddSession}>
+                                    {t("session_add")}
+                                </Button>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                )}
+            </Row>
+
+            <Row className="mb-3">
+                <Col xs={12} className="text-center">
+                    <Button variant="success" onClick={handleSessionHistory} size="lg">
+                        {t("session_history")}
+                    </Button>
+                </Col>
+            </Row>
+
+            {hasPermission('sessions.google') && (
+                <Row className="mb-3">
+                    <Col xs={12}>
+                        <Card>
+                            <Card.Header>
+                                <h5 className="mb-0">{t("google_calendar")}</h5>
+                            </Card.Header>
+                            <Card.Body>
+                                {!signedInGoogle ? (
+                                    <Button variant="outline-primary" onClick={handleGoogleLogin} className="w-100">
+                                        {t("google_login")}
+                                    </Button>
+                                ) : (
+                                    <div className="d-grid gap-2 d-md-block text-center">
+                                        <Button variant="success" onClick={handleAddSessionsToGoogleCalendar} className="me-2">
+                                            {t("sync_google_calendar")}
+                                        </Button>
+                                        <Button variant="outline-danger" onClick={handleGoogleLogout} className="me-2">
+                                            {t("google_logout")}
+                                        </Button>
+                                    </div>
+                                )}
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            )}
+
+            {hasPermission('sessions.microsoft') && (
+                <Row>
+                    <Col xs={12}>
+                        <Card>
+                            <Card.Header>
+                                <h5 className="mb-0">{t("microsoft_calendar")}</h5>
+                            </Card.Header>
+                            <Card.Body>
+                                {!signedInMicrosoft ? (
+                                    <Button variant="outline-primary" onClick={handleMicrosoftLogin} className="w-100">
+                                        {t("microsoft_login")}
+                                    </Button>
+                                ) : (
+                                    <div className="d-grid gap-2 d-md-block text-center">
+                                        <Button variant="success" onClick={handleAddSessionsToMicrosoftCalendar} className="me-2">
+                                            {t("sync_microsoft_calendar")}
+                                        </Button>
+                                        <Button variant="outline-danger" onClick={handleMicrosoftLogout} className="me-2">
+                                            {t("microsoft_logout")}
+                                        </Button>
+                                    </div>
+                                )}
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            )}
+        </Container>
     );
 };
 

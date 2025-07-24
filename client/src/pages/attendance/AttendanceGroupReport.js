@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ExcelJS from "exceljs";
-import "./attendance.css";
+import { Container, Row, Col, Button, Table, Alert } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
 
 const AttendanceGroupReport = () => {
@@ -108,45 +108,65 @@ const AttendanceGroupReport = () => {
     };    
 
     return (
-        <div className="attendance-group-report-container">
-            <h1 className="attendance-group-report-title">{t("attendance_group_report_title")}</h1>
-            {reportData.length > 0 ? (
-                <table className="attendance-group-report-table">
-                    <thead>
-                        <tr>
-                            <th>{t("name_and_surname")}</th>
-                            <th>{t("number_of_hours_studied")}</th>
-                            <th>{t("status")}</th>
-                            <th>{t("certificate_type")}</th>
-                            <th>{t("certificate_number")}</th>
-                            <th>{t("period_of_study")}</th>
-                            <th>{t("issue_date")}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {reportData.map((student, index) => (
-                            <tr key={index}>
-                                <td>{student.name}</td>
-                                <td>{student.totalHours}</td>
-                                <td>{student.status}</td>
-                                <td>{student.certificateType}</td>
-                                <td>{student.certificateNumber}</td>
-                                <td>{student.period}</td>
-                                <td>{student.issueDate}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            ) : (
-                <p>{t("data_none")}</p>
-            )}
-            <button className="attendance-group-report-button" onClick={handleExportToExcel}>
-                {t("export_to_excel")}	
-            </button>
-            <button className="attendance-group-report-button" onClick={handleBack}>
-                {t("back")}
-            </button>
-        </div>
+        <Container fluid className="mt-4">
+            <Row>
+                <Col xs={12}>
+                    <h1 className="text-center mb-4">{t("attendance_group_report_title")}</h1>
+                </Col>
+            </Row>
+
+            <Row>
+                <Col xs={12}>
+                    {reportData.length > 0 ? (
+                        <div className="table-responsive">
+                            <Table striped bordered hover>
+                                <thead className="table-dark">
+                                    <tr>
+                                        <th>{t("name_and_surname")}</th>
+                                        <th>{t("number_of_hours_studied")}</th>
+                                        <th>{t("status")}</th>
+                                        <th>{t("certificate_type")}</th>
+                                        <th>{t("certificate_number")}</th>
+                                        <th>{t("period_of_study")}</th>
+                                        <th>{t("issue_date")}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {reportData.map((student, index) => (
+                                        <tr key={index}>
+                                            <td>{student.name}</td>
+                                            <td>{student.totalHours}</td>
+                                            <td>{student.status}</td>
+                                            <td>{student.certificateType}</td>
+                                            <td>{student.certificateNumber}</td>
+                                            <td>{student.period}</td>
+                                            <td>{student.issueDate}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                        </div>
+                    ) : (
+                        <Alert variant="info" className="text-center">
+                            {t("data_none")}
+                        </Alert>
+                    )}
+                </Col>
+            </Row>
+            
+            <Row className="mb-3">
+                <Col xs={12} className="text-center">
+                    <div className="d-grid gap-2 d-md-block">
+                        <Button variant="success" onClick={handleExportToExcel} className="me-2">
+                            {t("export_to_excel")}
+                        </Button>
+                        <Button variant="danger" onClick={handleBack} className="me-2">
+                            {t("back")}
+                        </Button>
+                    </div>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

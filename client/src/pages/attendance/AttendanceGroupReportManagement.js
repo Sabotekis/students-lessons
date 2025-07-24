@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./attendance.css";
+import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
 
 const AttendanceGroupReportManagement = () => {
@@ -30,29 +30,47 @@ const AttendanceGroupReportManagement = () => {
     };
 
     return (
-        <div className="attendance-group-report-management-container">
-            <h1 className="attendance-group-report-management-title">{t("attendance_group_report_management_title")}</h1>
-            <div>
-                <select
-                    className="attendance-group-report-management-select"
-                    value={selectedGroup}
-                    onChange={(e) => setSelectedGroup(e.target.value)}
-                >
-                    <option value="">{t("group_choose")}</option>
-                    {groups.map(group => (
-                        <option key={group._id} value={group._id}>
-                            {group.title}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            <button className="attendance-group-report-management-button" onClick={handleGenerateReport}>
-                {t("generate")}
-            </button>
-            <button className="attendance-group-report-management-button" onClick={handleBack}>
-                {t("back")}
-            </button>
-        </div>
+        <Container fluid className="mt-4">
+            <Row>
+                <Col xs={12}>
+                    <h1 className="text-center mb-4">{t("attendance_group_report_management_title")}</h1>
+                </Col>
+            </Row>
+
+            <Row className="justify-content-center">
+                <Col xs={12} md={8} lg={6}>
+                    <Card>
+                        <Card.Body>
+                            <Form>
+                                <Form.Group className="mb-3">
+                                    <Form.Select 
+                                        value={selectedGroup}
+                                        onChange={(e) => setSelectedGroup(e.target.value)}
+                                        required
+                                    >
+                                        <option value="">{t("group_choose")}</option>
+                                        {groups.map(group => (
+                                            <option key={group._id} value={group._id}>
+                                                {group.title}
+                                            </option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group>
+
+                                <div className="d-grid gap-2 d-md-flex justify-content-md-center">
+                                    <Button variant="success" onClick={handleGenerateReport}>
+                                        {t("generate")}
+                                    </Button>
+                                    <Button variant="danger" onClick={handleBack}>
+                                        {t("back")}
+                                    </Button>
+                                </div>
+                            </Form>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 
