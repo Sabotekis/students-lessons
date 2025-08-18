@@ -13,12 +13,11 @@ const authMiddleware = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id).populate('role'); 
+    const user = await User.findById(decoded.id).populate('role');
     if (!user) {
       return res.status(404).json({ message: 'User not found.' });
     }
-
-    req.user = { ...decoded, role: user.role };
+    req.user = { ...decoded, username: user.username, email: user.email, role: user.role };
     next();
   } catch (ex) {
     if (ex.name === 'TokenExpiredError') {
