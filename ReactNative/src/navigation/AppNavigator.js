@@ -5,6 +5,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
 import UsersScreen from '../screens/UsersScreen';
 import SessionsScreen from '../screens/SessionsScreen';
+import ScanScreen from '../screens/ScanScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ export default function AppNavigator() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Users" component={UsersScreen} />
         <Stack.Screen name="Sessions" component={SessionsScreen} />
+        <Stack.Screen name="NFC Scan" component={ScanScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -22,6 +22,19 @@ class UserService {
         ).populate('role');
         return user;
     }
+
+    static async assignTagToUser({ userId, tagId }) {
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { tagId },
+            { new: true }
+        );
+        return user;
+    }
+
+    static async getUsersByTagId({ tagId }) {
+        return await User.find({ tagId });
+    }
 }
 
 module.exports = UserService;

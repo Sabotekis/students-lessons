@@ -22,4 +22,24 @@ router.put('/:id/assign-role', checkPermission('roles.assign'), async (req, res)
     }
 });
 
+router.put('/:id/tag', async (req, res) => {
+    try {
+        const { tagId } = req.body;
+        const user = await UserService.assignTagToUser({ userId: req.params.id, tagId });
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ status: "error", message: error.message });
+    }
+});
+
+router.get('/by-tag/:tagId', async (req, res) => {
+    try {
+        const { tagId } = req.params;
+        const users = await UserService.getUsersByTagId({ tagId });
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ status: "error", message: error.message });
+    }
+});
+
 module.exports = router;

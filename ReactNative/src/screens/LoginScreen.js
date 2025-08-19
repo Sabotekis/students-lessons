@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Alert } from 'react-native';
+import { View, TextInput, Alert, TouchableOpacity, Text } from 'react-native';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -14,10 +14,6 @@ const LoginScreen = ({ navigation }) => {
         credentials: 'include'
       });
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
 
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
@@ -43,9 +39,12 @@ const LoginScreen = ({ navigation }) => {
           borderWidth: 1,
           borderColor: '#888',
           borderRadius: 6,
-          padding: 12,
+          padding: 14,
           marginBottom: 8,
+          color: 'black',
+          backgroundColor: '#fff',
         }}
+        placeholderTextColor="#888" 
       />
       <TextInput
         placeholder="Password"
@@ -56,11 +55,19 @@ const LoginScreen = ({ navigation }) => {
           borderWidth: 1,
           borderColor: '#888',
           borderRadius: 6,
-          padding: 12,
+          padding: 14,
           marginBottom: 8,
+          color: 'black', 
+          backgroundColor: '#fff', 
         }}
+        placeholderTextColor="#888" 
       />
-      <Button title="Login" onPress={handleLogin} />
+      <TouchableOpacity
+        style={{ backgroundColor: '#007bff', paddingVertical: 10, borderRadius: 6, alignItems: 'center', marginBottom: 4 }}
+        onPress={handleLogin}
+      >
+        <Text style={{ color: '#fff', fontWeight: 'bold' }}>Login</Text>
+      </TouchableOpacity>
     </View>
   );
 };

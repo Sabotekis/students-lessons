@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Button, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { getLoggedInUser, logoutUser } from '../api/authApi';
 
 export default function HomeScreen({ navigation }) {
@@ -42,16 +42,39 @@ export default function HomeScreen({ navigation }) {
             </TouchableOpacity>
           </View>
           <View style={{ marginBottom: 4 }}>
-              <Button title="Users" onPress={() => navigation.navigate('Users')} />
+            <TouchableOpacity
+              style={{ backgroundColor: '#007bff', paddingVertical: 10, borderRadius: 6, alignItems: 'center', marginBottom: 4 }}
+              onPress={() => navigation.navigate('Users')}
+            >
+              <Text style={{ color: '#fff', fontWeight: 'bold' }}>Users</Text>
+            </TouchableOpacity>
           </View>
           <View style={{ marginBottom: 4 }}>
-              <Button title="Sessions" onPress={() => navigation.navigate('Sessions')} />
+            <TouchableOpacity
+              style={{ backgroundColor: '#007bff', paddingVertical: 10, borderRadius: 6, alignItems: 'center', marginBottom: 4 }}
+              onPress={() => navigation.navigate('Sessions')}
+            >
+              <Text style={{ color: '#fff', fontWeight: 'bold' }}>Sessions</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginBottom: 4 }}>
+            <TouchableOpacity
+              style={{ backgroundColor: '#007bff', paddingVertical: 10, borderRadius: 6, alignItems: 'center', marginBottom: 4 }}
+              onPress={() => navigation.navigate('NFC Scan')}
+            >
+              <Text style={{ color: '#fff', fontWeight: 'bold' }}>Scan</Text>
+            </TouchableOpacity>
           </View>
         </>
       ) : (
         <>
           <View style={{ marginBottom: 4 }}>
-            <Button title="Login" onPress={() => navigation.navigate('Login')} />
+            <TouchableOpacity
+              style={{ backgroundColor: '#4CAF50', paddingVertical: 10, borderRadius: 6, alignItems: 'center', marginBottom: 4 }}
+              onPress={() => navigation.navigate('Login')}
+            >
+              <Text style={{ color: '#fff', fontWeight: 'bold' }}>Login</Text>
+            </TouchableOpacity>
           </View>
         </>
       )}
