@@ -6,6 +6,7 @@ import LoginScreen from '../screens/LoginScreen';
 import UsersScreen from '../screens/UsersScreen';
 import SessionsScreen from '../screens/SessionsScreen';
 import ScanScreen from '../screens/ScanScreen';
+import NotificationScreen from '../screens/NotificationScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ export default function AppNavigator() {
         <Stack.Screen name="Users" component={UsersScreen} />
         <Stack.Screen name="Sessions" component={SessionsScreen} />
         <Stack.Screen name="NFC Scan" component={ScanScreen} />
+        <Stack.Screen name="Notification" component={NotificationScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

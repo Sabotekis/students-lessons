@@ -5,12 +5,19 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const routes = require('./routes');
+const morganChalk = require('./middleware/morganChalk');
 const app = express();
 
 dotenv.config();
 
+app.use(morganChalk); 
+
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: [
+    'http://localhost:3000',
+    'http://192.168.200.124:5000',
+    'http://192.168.200.124:8081', 
+  ],
   credentials: true
 }));
 app.use(bodyParser.json());

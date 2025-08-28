@@ -65,6 +65,14 @@ export default function HomeScreen({ navigation }) {
               <Text style={{ color: '#fff', fontWeight: 'bold' }}>Scan</Text>
             </TouchableOpacity>
           </View>
+          <View style={{ marginBottom: 4 }}>
+            <TouchableOpacity
+              style={{ backgroundColor: '#007bff', paddingVertical: 10, borderRadius: 6, alignItems: 'center', marginBottom: 4 }}
+              onPress={() => navigation.navigate('Notification')}
+            >
+              <Text style={{ color: '#fff', fontWeight: 'bold' }}>Notification</Text>
+            </TouchableOpacity>
+          </View>
         </>
       ) : (
         <>
