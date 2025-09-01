@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { NativeModules } from 'react-native';
+import { requestLocationPermissions } from '../../App';
+
 const { NotificationModule } = NativeModules;
 
 function formatTime(seconds) {
@@ -15,34 +17,58 @@ export default function NotificationScreen() {
   const [elapsed, setElapsed] = useState(0);
   const intervalRef = useRef(null);
   const startTimeRef = useRef(null);
-  const keepAliveRef = useRef(null);
 
-  const sendKeepAlive = async () => {
+  const handleToggleTimer = async () => {
     try {
-      await fetch('http://192.168.200.124:5000/api/keepalive', { method: 'POST' });
-    } catch (e) {
-    }
-  };
+      if (!timerOn) {
+        const hasPerm = await requestLocationPermissions();
+        if (!hasPerm) {
+          console.log("Location permissions not granted");
+          return;
+        }
 
-  const handleToggleTimer = () => {
-    if (!timerOn) {
-      startTimeRef.current = Date.now();
-      intervalRef.current = setInterval(() => {
-        setElapsed(Math.floor((Date.now() - startTimeRef.current) / 1000));
-      }, 1000);
-      keepAliveRef.current = setInterval(sendKeepAlive, 5000);
-      setTimerOn(true);
-      if (NotificationModule && NotificationModule.createAndShowNotification) {
-        NotificationModule.createAndShowNotification();
+        startTimeRef.current = Date.now();
+        intervalRef.current = setInterval(() => {
+          setElapsed(Math.floor((Date.now() - startTimeRef.current) / 1000));
+        }, 1000);
+        setTimerOn(true);
+
+        if (NotificationModule && NotificationModule.createAndShowNotification) {
+          try {
+            NotificationModule.createAndShowNotification();
+          } catch (e) {
+            console.warn("Error creating notification", e);
+          }
+        }
+
+        if (NotificationModule && NotificationModule.showTemporaryNotification) {
+          try {
+            NotificationModule.showTemporaryNotification(
+              'Darbs veiksmīgi uzsākts',
+              'Jūsu atrašanās vieta tiek izsekota',
+              3000
+            );
+          } catch (e) {
+            console.warn("Error showing temporary notification", e);
+          }
+        }
+      } else {
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+        }
+        setTimerOn(false);
+        setElapsed(0);
+
+        if (NotificationModule && NotificationModule.clearNotification) {
+          try {
+            NotificationModule.clearNotification();
+          } catch (e) {
+            console.warn("Error clearing notification", e);
+          }
+        }
       }
-    } else {
-      clearInterval(intervalRef.current);
-      clearInterval(keepAliveRef.current);
-      setTimerOn(false);
-      setElapsed(0);
-      if (NotificationModule && NotificationModule.clearNotification) {
-        NotificationModule.clearNotification();
-      }
+    } catch (err) {
+      console.error("Error in handleToggleTimer", err);
     }
   };
 

@@ -10,7 +10,6 @@ const roles = require('./roles');
 const users = require('./users');
 const google = require('./google');
 const microsoft = require('./microsoft');
-const keepalive = require('./keepalive')
 const router = express.Router();
 
 router
@@ -22,9 +21,8 @@ router
     .use('/attendance', protected, attendance)
     .use('/certificates', protected, certificates)
     .use('/roles', protected, roles)
-    .use('/users', protected, users)
+    .use('/users', users)
     .use('/google', protected, google)
     .use('/microsoft', protected, microsoft)
-    .use('/keepalive', keepalive);
 
 module.exports = router;

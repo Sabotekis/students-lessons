@@ -42,4 +42,10 @@ router.get('/by-tag/:tagId', async (req, res) => {
     }
 });
 
+router.post('/coordinates', async (req, res) => {
+    const { latitude, longitude } = req.body;
+    console.log(`Received coordinates: Latitude ${latitude}, Longitude ${longitude}`);
+    res.status(200).json({ status: "success", message: "Coordinates received" });
+});
+
 module.exports = router;
