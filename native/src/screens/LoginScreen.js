@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, Alert, TouchableOpacity, Text } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setTokenForNative } from '../api/TokenModule';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -17,6 +19,11 @@ const LoginScreen = ({ navigation }) => {
 
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
+      }
+
+      if (data.token) {
+        await AsyncStorage.setItem('accessToken', data.token);
+        await setTokenForNative();
       }
 
       navigation.reset({

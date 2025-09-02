@@ -16,7 +16,7 @@ router.post('/login', async (req, res) => {
       path: '/',
     });
 
-    res.status(200).json({ status: "success", data: null, message: 'Veiksmīgi atgriezti dati' });
+    res.status(200).json({ status: "success", token, message: 'Veiksmīgi atgriezti dati' });
   } catch (error) {
     res.status(400).json({ status: "error", data: null, message: error.message });
   }

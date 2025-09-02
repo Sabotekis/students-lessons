@@ -5,7 +5,13 @@ const User = require('../models/users.model');
 dotenv.config();
 
 const authMiddleware = async (req, res, next) => {
-  const token = req.cookies.token; 
+  let token = req.cookies.token;
+  if (!token && req.headers.authorization) {
+    const authHeader = req.headers.authorization;
+    if (authHeader.startsWith('Bearer ')) {
+      token = authHeader.slice(7);
+    }
+  }
   if (!token) {
     console.log('No token provided'); 
     return res.status(401).json({ message: 'Access denied. No token provided.' });

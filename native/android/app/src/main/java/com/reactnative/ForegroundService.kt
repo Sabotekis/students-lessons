@@ -125,7 +125,9 @@ class ForegroundService : Service() {
                 conn.requestMethod = "POST"
                 conn.doOutput = true
                 conn.setRequestProperty("Content-Type", "application/json")
-
+                TokenHolder.token?.let {
+                    conn.setRequestProperty("Authorization", "Bearer $it")
+                }
                 val json = """{"latitude":$lat,"longitude":$lng}"""
                 conn.outputStream.use { os ->
                     OutputStreamWriter(os).use { writer ->
@@ -133,7 +135,6 @@ class ForegroundService : Service() {
                         writer.flush()
                     }
                 }
-
                 val responseCode = conn.responseCode
                 android.util.Log.d("ForegroundService", "POST /users/coordinates response=$responseCode")
                 conn.disconnect()
