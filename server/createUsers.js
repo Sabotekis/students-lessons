@@ -7,7 +7,7 @@ const { PermissionsData } = require('./components/PermissionsData.js');
 
 dotenv.config();
 
-mongoose.connect(process.env.DB_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.DB_CONNECTION_STRING)
   .then(() => console.log('Connected to the database'))
   .catch(err => console.error('Database connection error:', err));
 

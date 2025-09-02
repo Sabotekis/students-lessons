@@ -21,7 +21,7 @@ router
     .use('/attendance', protected, attendance)
     .use('/certificates', protected, certificates)
     .use('/roles', protected, roles)
-    .use('/users', users)
+    .use('/users', protected, users)
     .use('/google', protected, google)
     .use('/microsoft', protected, microsoft)
 

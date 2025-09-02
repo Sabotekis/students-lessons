@@ -15,15 +15,15 @@ app.use(morganChalk);
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'http://192.168.200.124:5000',
-    'http://192.168.200.124:8081', 
+    'http://192.168.200.173:5000',
+    'http://192.168.200.173:8081', 
   ],
   credentials: true
 }));
 app.use(bodyParser.json());
 app.use(cookieParser()); 
 
-mongoose.connect(process.env.DB_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.DB_CONNECTION_STRING)
   .then(() => console.log('Connected to the database'))
   .catch(err => console.error('Database connection error:', err));
 

@@ -120,7 +120,7 @@ class ForegroundService : Service() {
     private fun sendCoordinatesToServer(lat: Double, lng: Double) {
         Thread {
             try {
-                val url = URL("http://192.168.200.124:5000/api/users/coordinates")
+                val url = URL("http://192.168.200.173:5000/api/users/coordinates")
                 val conn = url.openConnection() as HttpURLConnection
                 conn.requestMethod = "POST"
                 conn.doOutput = true

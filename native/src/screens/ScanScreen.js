@@ -21,7 +21,7 @@ export default function ScanScreen() {
       setCardId(tagId);
 
       setLoadingUsers(true);
-      const response = await fetch(`http://192.168.200.124:5000/api/users/by-tag/${tagId}`, {
+      const response = await fetch(`http://192.168.200.173:5000/api/users/by-tag/${tagId}`, {
         credentials: 'include'
       });
       if (response.ok) {
@@ -56,7 +56,7 @@ export default function ScanScreen() {
 
   const handleRemoveTagFromUser = async (userId) => {
     try {
-      const response = await fetch(`http://192.168.200.124:5000/api/users/${userId}/tag`, {
+      const response = await fetch(`http://192.168.200.173:5000/api/users/${userId}/tag`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tagId: null }),

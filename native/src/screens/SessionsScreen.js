@@ -7,8 +7,8 @@ export default function SessionScreen({ navigation }) {
 
   useEffect(() => {
     Promise.all([
-      fetch('http://192.168.200.124:5000/api/sessions').then(res => res.json()),
-      fetch('http://192.168.200.124:5000/api/sessions/finished').then(res => res.json())
+      fetch('http://192.168.200.173:5000/api/sessions').then(res => res.json()),
+      fetch('http://192.168.200.173:5000/api/sessions/finished').then(res => res.json())
     ])
       .then(([notFinished, finished]) => {
         const allSessions = [

@@ -9,7 +9,7 @@ export default function UsersScreen() {
   const [cancellingScan, setCancellingScan] = useState(false);
 
   useEffect(() => {
-    fetch('http://192.168.200.124:5000/api/users', {
+    fetch('http://192.168.200.173:5000/api/users', {
       credentials: 'include'
     })
       .then(res => res.json())
@@ -30,7 +30,7 @@ export default function UsersScreen() {
 
       const tagId = tag.id;
 
-      const response = await fetch(`http://192.168.200.124:5000/api/users/${userId}/tag`, {
+      const response = await fetch(`http://192.168.200.173:5000/api/users/${userId}/tag`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tagId }),
