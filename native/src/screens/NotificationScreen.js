@@ -33,23 +33,16 @@ export default function NotificationScreen() {
         }, 1000);
         setTimerOn(true);
 
-        if (NotificationModule && NotificationModule.createAndShowNotification) {
-          try {
-            NotificationModule.createAndShowNotification();
-          } catch (e) {
-            console.warn("Error creating notification", e);
-          }
-        }
-
-        if (NotificationModule && NotificationModule.showTemporaryNotification) {
+        if (NotificationModule) {
           try {
             NotificationModule.showTemporaryNotification(
               'Darbs veiksmīgi uzsākts',
               'Jūsu atrašanās vieta tiek izsekota',
               3000
             );
+            NotificationModule.createAndShowNotification();
           } catch (e) {
-            console.warn("Error showing temporary notification", e);
+            console.warn("Error handling notifications", e);
           }
         }
       } else {
